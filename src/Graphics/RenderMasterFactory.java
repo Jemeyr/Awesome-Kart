@@ -34,9 +34,7 @@ public class RenderMasterFactory {
 		{
 			ret = new DebugRenderMaster();
 		}
-		
-		
+
 		return ret;
 	}
-	
 }
