@@ -204,7 +204,6 @@ public class ModelLoader {
 		counter = 0;
 		for(Vector2f v : output_texCoords)
 		{
-			System.out.println(v.x + ", " + v.y);
 			texCoords[counter++] = v.x;
 			texCoords[counter++] = 1.0f - v.y;	
 		}
