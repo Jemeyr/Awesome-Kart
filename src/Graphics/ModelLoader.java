@@ -8,6 +8,7 @@ import java.util.Scanner;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+
 public class ModelLoader {
 
 	public static int loadModel(String s)
@@ -140,7 +141,8 @@ public class ModelLoader {
 			}
 		}
 		
-	
+		int uid = 0;
+		
 		//iterate over here and add it
 		for(Vert[] f : init_faces)
 		{
@@ -163,23 +165,22 @@ public class ModelLoader {
 				
 				if(flag)
 				{
+					v.index = uid++;
 					unique_verts.add(v);
 					index = v.index;
+
+					output_vertices.add(init_vertices.get(v.vertexIndex));
+					output_texCoords.add(init_texCoords.get(v.textureIndex));
+					output_normals.add(init_normals.get(v.normalIndex));
+
 				}
-				
-				
-				
-				output_vertices.add(init_vertices.get(v.vertexIndex));
-				output_texCoords.add(init_texCoords.get(v.textureIndex));
-				output_normals.add(init_normals.get(v.normalIndex));
 				
 				unique_indices.add(index);
 	
 				
 			}
 			
-		}
-		
+		}	
 		
 		elements = new int[unique_indices.size()];
 		vertices = new float[3 * output_vertices.size()];
