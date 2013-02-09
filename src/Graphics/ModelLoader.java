@@ -35,14 +35,12 @@ public class ModelLoader {
 		
 		List<Vert[]> init_faces = new ArrayList<Vert[]>();
 		
-		
 		List<Vert> unique_verts = new ArrayList<Vert>();
 		List<Integer> unique_indices = new ArrayList<Integer>();
 		
 		List<Vector3f> output_vertices = new ArrayList<Vector3f>();
 		List<Vector3f> output_normals = new ArrayList<Vector3f>();
 		List<Vector2f> output_texCoords = new ArrayList<Vector2f>();
-
 		
 		String[] tokens = new String[4];
 		
