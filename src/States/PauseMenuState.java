@@ -22,6 +22,7 @@ public class PauseMenuState implements GameState {
 	@Override
 	public void pause(StateContext stateContext, GameState currentState) {
 		// Effectively unpauses the game
+		System.out.println("In the Pause Menu, going back to Race");
 		stateContext.setState(currentState);
 	}
 
