@@ -11,7 +11,6 @@ public class RacingState implements GameState {
 	@Override
 	public void useActionButton(StateContext stateContext, GameState currentState) {
 		// Delegate to Player/Kart, call some accelerate function on it
-		
 	}
 
 	@Override
@@ -22,43 +21,37 @@ public class RacingState implements GameState {
 	@Override
 	public void useWeapon(StateContext stateContext, GameState currentState) {
 		// Delegate to player/kart, call use weapon.
-		
 	}
 
 	@Override
 	public void pause(StateContext stateContext, GameState currentState) {
+		System.out.println("About to pause the race.");
 		stateContext.setState(new PauseMenuState());
-		
 	}
 
 	@Override
 	public void moveUp(StateContext stateContext, GameState currentState) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void moveDown(StateContext stateContext, GameState currentState) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void moveLeft(StateContext stateContext, GameState currentState) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void moveRight(StateContext stateContext, GameState currentState) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void moveAnalog(StateContext stateContext, GameState currentState) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 }

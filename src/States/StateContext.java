@@ -2,49 +2,49 @@ package States;
 
 public class StateContext {
 	
-	private GameState currentState;
+	private GameState gameState;
 	
 	public StateContext() {
 		setState(new RacingState());
 	}
 	
 	public void setState(final GameState newState){
-		currentState = newState;
+		gameState = newState;
 	}
 
-	public void useActionButton(StateContext stateContext, GameState currentState) {
-		currentState.useActionButton(stateContext, currentState);
+	public void useActionButton(StateContext stateContext) {
+		gameState.useActionButton(stateContext, gameState);
 	}
 
-	public void useBrakeButton(StateContext stateContext, GameState currentState) {
-		currentState.useBrakeButton(stateContext, currentState);
+	public void useBrakeButton(StateContext stateContext) {
+		gameState.useBrakeButton(stateContext, gameState);
 	}
 
-	public void useWeapon(StateContext stateContext, GameState currentState) {
-		currentState.useWeapon(stateContext, currentState);
+	public void useWeapon(StateContext stateContext) {
+		gameState.useWeapon(stateContext, gameState);
 	}
 
-	public void pause(StateContext stateContext, GameState currentState) {
-		currentState.pause(stateContext, currentState);
+	public void pause(StateContext stateContext) {
+		gameState.pause(stateContext, gameState);
 	}
 
-	public void moveUp(StateContext stateContext, GameState currentState) {
-		currentState.moveUp(stateContext, currentState);
+	public void moveUp(StateContext stateContext) {
+		gameState.moveUp(stateContext, gameState);
 	}
 
-	public void moveDown(StateContext stateContext, GameState currentState) {
-		currentState.moveDown(stateContext, currentState);
+	public void moveDown(StateContext stateContext) {
+		gameState.moveDown(stateContext, gameState);
 	}
 
-	public void moveLeft(StateContext stateContext, GameState currentState) {
-		currentState.moveLeft(stateContext, currentState);
+	public void moveLeft(StateContext stateContext) {
+		gameState.moveLeft(stateContext, gameState);
 	}
 
-	public void moveRight(StateContext stateContext, GameState currentState) {
-		currentState.moveRight(stateContext, currentState);
+	public void moveRight(StateContext stateContext) {
+		gameState.moveRight(stateContext, gameState);
 	}
 
-	public void moveAnalog(StateContext stateContext, GameState currentState) {
-		currentState.moveAnalog(stateContext, currentState);
+	public void moveAnalog(StateContext stateContext) {
+		gameState.moveAnalog(stateContext, gameState);
 	}
 }
