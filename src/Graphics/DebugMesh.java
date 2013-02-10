@@ -1,7 +1,35 @@
 package Graphics;
 
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL15.glDeleteBuffers;
+
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,33 +38,78 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
-public class ModelLoader {
 
-	public void loadModel(String s)
-	{	
-		load(s);
-	}
+public class DebugMesh {
 	
-	public FloatBuffer genFloatBuffer(float[] input)
+	protected String id;
+	
+	protected int vao;
+	protected int vbo_v,vbo_t,vbo_n,elem;
+	
+	protected int diffTexId;
+	protected int normTexId;
+	
+	protected DebugMesh(String s)
 	{
+		//set id
+		id = s;
 		
-		FloatBuffer fbuff = null;
-		try{
-			fbuff = BufferUtils.createFloatBuffer(input.length);
-			fbuff.put(input);
 		
-			fbuff.rewind();
-		}
-		catch (Exception e)
-		{
-			System.out.println(e);
-			return null;
-		}
-		return fbuff;
+		//generate a new vertex array (note, this is the mesh, not a component, so this should be instantiated once per load, not per instance
+        vao = glGenVertexArrays();
+
+        glBindVertexArray(vao);
+        
+        //create vbos here when loading model
+        load("assets/" + s + "/object.obj");
+
+        
+        //load textures
+
+
+        diffTexId= glGenTextures();
+        loadTex(s,"diffuse",diffTexId);
+        
 	}
 	
-	protected void load(String fileName)
+	private void loadTex(String s, String texName, int tex)
+	{
+		//Let's load a texture here.
+        InputStream is = null;
+        ByteBuffer buf = null;
+        
+        try{
+        	is = new FileInputStream("assets/" + s + "/" + texName + ".png");
+        	PNGDecoder pd = new PNGDecoder(is);
+        	
+        	buf = ByteBuffer.allocateDirect(4*pd.getWidth()*pd.getHeight());
+        	pd.decode(buf, pd.getWidth()*4, Format.RGBA);
+        	buf.flip();
+
+        	
+        }catch (Exception e)
+        {
+        	System.out.println("error " + e);
+        }
+        
+        
+        glBindTexture(GL_TEXTURE_2D, tex);
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        
+        
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 1024, 1024, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+        
+        glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	
+	private void load(String fileName)
 	{
 
 		int indexCount = 0;
@@ -232,6 +305,37 @@ public class ModelLoader {
 			normals[counter++] = v.z;	
 		}
 		
+		
+		//create floatbuffers from these arrays
+		FloatBuffer vbuff = genFloatBuffer(vertices);
+		FloatBuffer tcbuff = genFloatBuffer(texCoords);
+        FloatBuffer nbuff = genFloatBuffer(normals);
+        
+        IntBuffer ebuff = BufferUtils.createIntBuffer(elements.length);
+        ebuff.put(elements);
+        ebuff.rewind();
+        
+        vbo_v = glGenBuffers();
+        vbo_t = glGenBuffers();
+        vbo_n = glGenBuffers();
+        elem = glGenBuffers();
+        
+        
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_v);
+        glBufferData(GL_ARRAY_BUFFER, vbuff , GL_STATIC_DRAW);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_t);
+        glBufferData(GL_ARRAY_BUFFER, tcbuff, GL_STATIC_DRAW);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_n);
+        glBufferData(GL_ARRAY_BUFFER, nbuff , GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, ebuff, GL_STATIC_DRAW);
+		
+        //unbind
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	
 	
@@ -253,5 +357,32 @@ public class ModelLoader {
 			this(index, Integer.parseInt(v), Integer.parseInt(n), Integer.parseInt(t));
 		}
 	}
-}
+	
+	private FloatBuffer genFloatBuffer(float[] input)
+	{
+		
+		FloatBuffer fbuff = null;
+		try{
+			fbuff = BufferUtils.createFloatBuffer(input.length);
+			fbuff.put(input);
+		
+			fbuff.rewind();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+			return null;
+		}
+		return fbuff;
+	}
 
+	public void destroy() {
+		glDeleteBuffers(vbo_v);
+		glDeleteBuffers(vbo_t);
+		glDeleteBuffers(vbo_n);
+		glDeleteBuffers(elem);
+		
+		glDeleteBuffers(diffTexId);
+		
+	}
+}

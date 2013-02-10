@@ -14,7 +14,7 @@ public class RenderMasterFactory {
 		RenderMaster ret = null;
 		
 		try{
-			Display.setDisplayMode(new DisplayMode(320, 240));
+			Display.setDisplayMode(new DisplayMode(800, 600));
 			Display.create();
 		}
 		catch (Exception e)

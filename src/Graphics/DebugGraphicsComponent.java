@@ -12,8 +12,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class DebugGraphicsComponent {
 	
-	
-	private int vao;
+	private DebugMesh mesh;
 	private Vector3f position;
 	private Quaternion rotation;
 	
@@ -21,10 +20,12 @@ public class DebugGraphicsComponent {
 	
 	protected List<DebugGraphicsComponent> subComponents;
 	
-	protected DebugGraphicsComponent(int vao)
+	protected DebugGraphicsComponent(DebugMesh mesh)
 	{
 		//This is the vao
-		this.vao = vao;
+		this.mesh = mesh;
+		
+		//load the mesh
 		
 		this.position = new Vector3f(0f,0f,0f);
 		
@@ -37,6 +38,8 @@ public class DebugGraphicsComponent {
 		this.modelMat = new Matrix4f(); 
 		modelMat.setIdentity();
 	}
+	
+	
 	
 	public void setPosition(Vector3f position)
 	{
@@ -75,10 +78,10 @@ public class DebugGraphicsComponent {
 	
 	
 	//recursively finds all
-	protected Set<Integer> getCurrentModels()
+	protected Set<DebugMesh> getCurrentModels()
 	{
-		Set<Integer> ret = new HashSet<Integer>();
-		ret.add(vao);
+		Set<DebugMesh> ret = new HashSet<DebugMesh>();
+		ret.add(mesh);
 		
 		for(DebugGraphicsComponent gc : subComponents)
 		{

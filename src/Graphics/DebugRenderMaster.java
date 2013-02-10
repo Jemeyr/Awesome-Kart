@@ -5,12 +5,12 @@ import java.util.*;
 public class DebugRenderMaster implements RenderMaster {
 
 	private List<DebugGraphicsComponent> graphicsComponents;
-	private HashMap<String, Integer> loadedModels;
+	private List<DebugMesh >loadedModels;
 	
 	protected DebugRenderMaster()
 	{
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
-		this.loadedModels = new HashMap<String, Integer>();
+		this.loadedModels = new ArrayList<DebugMesh>();
 	}
 	
 	public void removeModel(GraphicsComponent g)
@@ -19,18 +19,20 @@ public class DebugRenderMaster implements RenderMaster {
 	}
 	
 	
-	public GraphicsComponent addModel(String resourceName)
+	public GraphicsComponent addModel(String id)
 	{
-		Integer vaoIndex = loadedModels.get(resourceName);
 		
-		if(vaoIndex == null)
+		for(DebugMesh dm : loadedModels)
 		{
-			return null;
+			if(dm.id.equals(id))
+			{
+				DebugGraphicsComponent ret = new DebugGraphicsComponent(dm);
+				return (GraphicsComponent) ret;
+			}
 		}
 		
-		DebugGraphicsComponent ret = new DebugGraphicsComponent(vaoIndex);
-		
-		return (GraphicsComponent)ret;
+		//you haven't loaded the model
+		return null;
 	}
 	
 	
@@ -40,27 +42,36 @@ public class DebugRenderMaster implements RenderMaster {
 		System.out.println("An ugly picture of some cars is drawn");
 	}
 
-	@Override
 	public void loadModel(String s) {
-		loadedModels.put(s, ModelLoader.loadModel(s));
+		//if the loaded models already has the id, just use that.
+		for(DebugMesh dm : loadedModels)
+		{
+			if(dm.id.equals(s))
+			{
+				return;
+			}
+		}
+		loadedModels.add(new DebugMesh(s));
+		
 	}
 
 	public void flushUnused() {
 		
 		//find all the used vaos
-		Set<Integer> vaos = new HashSet<Integer>();
+		Set<DebugMesh> meshes = new HashSet<DebugMesh>();
 		
 		for(DebugGraphicsComponent gc : graphicsComponents)
 		{
-			vaos.addAll(gc.getCurrentModels());
+			meshes.addAll(gc.getCurrentModels());
 		}
 		//take every vao and remove the ones which are still used
-		Set<Integer> toRemove = new HashSet<Integer>(loadedModels.values());
-		toRemove.removeAll(vaos);
+		Set<DebugMesh> toRemove = new HashSet<DebugMesh>(loadedModels);
+		toRemove.removeAll(meshes);
 		
 		//remove
-		for(Integer i : toRemove)
+		for(DebugMesh i : toRemove)
 		{
+			i.destroy();
 			loadedModels.remove(i);
 		}
 		
