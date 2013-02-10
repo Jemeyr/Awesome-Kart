@@ -12,7 +12,7 @@ public class Camera {
 	public Camera(Vector3f pos, Vector3f target, float aspectRatio, float fov)
 	{
 		this.position = pos;
-		this.viewMat = buildViewMatrix(position, new Vector3f(0,0,0));
+		this.viewMat = buildViewMatrix(position, target);
 		this.projection = buildPerspectiveMatrix(fov, aspectRatio, 0.1f, 100f);
 		
 	}

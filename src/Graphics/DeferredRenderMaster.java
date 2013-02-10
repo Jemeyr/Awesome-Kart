@@ -2,7 +2,7 @@ package Graphics;
 
 public class DeferredRenderMaster implements RenderMaster {
 
-	protected DeferredRenderMaster()
+	protected DeferredRenderMaster(float aspect)
 	{
 		
 	}

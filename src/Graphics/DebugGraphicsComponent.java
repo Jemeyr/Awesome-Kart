@@ -61,6 +61,15 @@ public class DebugGraphicsComponent {
 		Quaternion.mul(this.rotation, quat, this.rotation);
 	}
 	
+	protected Matrix4f getModelMat()
+	{
+		Matrix4f temp = new Matrix4f();
+		temp.setIdentity();
+		
+		temp.translate(position);
+		return temp;
+	}
+	
 	public void update()
 	{
 		Matrix4f.setIdentity(modelMat);

@@ -1,14 +1,30 @@
 package Graphics;
 
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glEnable;
+
 import java.util.*;
+
+import org.lwjgl.util.vector.Vector3f;
 
 public class DebugRenderMaster implements RenderMaster {
 
 	private List<DebugGraphicsComponent> graphicsComponents;
 	private List<DebugMesh >loadedModels;
 	
-	protected DebugRenderMaster()
+	private Camera cam;
+	
+	private Material m;
+	
+	protected DebugRenderMaster(float aspect)
 	{
+		//freedee
+        glEnable(GL_DEPTH_TEST);
+        
+        m = new Material();
+		
+		this.cam = new Camera(new Vector3f(0f,3f, 10f), new Vector3f(0f,0f,0f), aspect,60.0f);
+		
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
 	}
@@ -39,6 +55,14 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	public void draw()
 	{
+		//how to draw, iterate over all the graphics components and draw their parts
+		for(DebugGraphicsComponent gc : graphicsComponents)
+		{
+			m.draw(cam, gc);
+		}
+		
+		
+		
 		System.out.println("An ugly picture of some cars is drawn");
 	}
 
