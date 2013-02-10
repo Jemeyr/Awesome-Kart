@@ -16,8 +16,8 @@ public class StateContext {
 		gameState.useActionButton(stateContext, gameState);
 	}
 
-	public void useBrakeButton(StateContext stateContext) {
-		gameState.useBrakeButton(stateContext, gameState);
+	public void useBackButton(StateContext stateContext) {
+		gameState.useBackButton(stateContext, gameState);
 	}
 
 	public void useWeapon(StateContext stateContext) {

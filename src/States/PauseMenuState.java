@@ -9,7 +9,7 @@ public class PauseMenuState implements GameState {
 	}
 
 	@Override
-	public void useBrakeButton(StateContext stateContext, GameState currentState) {
+	public void useBackButton(StateContext stateContext, GameState currentState) {
 		// Back out of pause menu
 		stateContext.setState(currentState);
 	}

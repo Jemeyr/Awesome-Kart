@@ -3,7 +3,7 @@ package States;
 public interface GameState {
 	
 	void useActionButton(final StateContext stateContext, final GameState currentState);
-	void useBrakeButton(final StateContext stateContext, final GameState currentState);
+	void useBackButton(final StateContext stateContext, final GameState currentState);
 	void useWeapon(final StateContext stateContext, final GameState currentState);
 	void pause(final StateContext stateContext, final GameState currentState);
 	void moveUp(final StateContext stateContext, final GameState currentState);
