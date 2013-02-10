@@ -28,7 +28,7 @@ public class RenderMasterFactory {
 		
 		if(GLContext.getCapabilities().OpenGL30)
 		{
-			ret = new DeferredRenderMaster(1.33f);//8/6
+			ret = new DebugRenderMaster(1.33f);//DeferredRenderMaster(1.33f);//8/6
 		}
 		else
 		{

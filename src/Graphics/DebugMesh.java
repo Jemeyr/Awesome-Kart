@@ -64,7 +64,7 @@ public class DebugMesh {
         glBindVertexArray(vao);
         
         //create vbos here when loading model
-        load("assets/" + s + "/object.obj");
+        load("assets/graphics/" + s + "/object.obj");
 
         
         //load textures
@@ -82,7 +82,7 @@ public class DebugMesh {
         ByteBuffer buf = null;
         
         try{
-        	is = new FileInputStream("assets/" + s + "/" + texName + ".png");
+        	is = new FileInputStream("assets/graphics/" + s + "/" + texName + ".png");
         	PNGDecoder pd = new PNGDecoder(is);
         	
         	buf = ByteBuffer.allocateDirect(4*pd.getWidth()*pd.getHeight());
@@ -150,41 +150,7 @@ public class DebugMesh {
 
 		String currLine = "";
 	
-		while(fileScanner.hasNext())
-		{
-			currLine = fileScanner.nextLine();
-
-			tokens = currLine.split(" ");
-			float x = Float.parseFloat(tokens[1]);
-			float y = Float.parseFloat(tokens[2]);
-			float z = Float.parseFloat(tokens[3]);
-			
-			if(currLine.startsWith("v "))
-			{
-				init_vertices.add(new Vector3f(x,y,z));
-			}
-			else if (currLine.startsWith("vn "))
-			{
-				init_normals.add(new Vector3f(x,y,z));
-			}
-			else if (currLine.startsWith("vt "))
-			{
-				init_texCoords.add(new Vector2f(x,y));
-			}
-			else if (currLine.startsWith("f "))
-			{
-				Vert[] face = new Vert[3];
-				
-				int j = 0;
-				for(int i = 0; i < 3; i++)
-				{
-					String[] toks = tokens[i].split("/");
-					face[j] = new Vert(indexCount++, toks[0], toks[1], toks[2]);
-					j++;
-				}
-				init_faces.add(face);
-			}
-		}
+		
 
 		while(fileScanner.hasNext())
 		{

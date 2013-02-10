@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Quaternion;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class DebugGraphicsComponent {
+public class DebugGraphicsComponent implements GraphicsComponent {
 	
 	private DebugMesh mesh;
 	private Vector3f position;

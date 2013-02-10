@@ -63,6 +63,10 @@ public class Material {
 		Matrix4f.mul(transform, gc.getModelMat(), transform);
 		
 		setTransform(transform);
+
+		System.out.println("HERE");
+		System.out.println("HERE");
+		System.out.println("HERE");
 		
 		
 		//

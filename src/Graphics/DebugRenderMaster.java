@@ -37,13 +37,13 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	public GraphicsComponent addModel(String id)
 	{
-		
 		for(DebugMesh dm : loadedModels)
 		{
 			if(dm.id.equals(id))
 			{
 				DebugGraphicsComponent ret = new DebugGraphicsComponent(dm);
-				return (GraphicsComponent) ret;
+				graphicsComponents.add(ret);
+				return ret;
 			}
 		}
 		
@@ -63,7 +63,7 @@ public class DebugRenderMaster implements RenderMaster {
 		
 		
 		
-		System.out.println("An ugly picture of some cars is drawn");
+		//System.out.println("An ugly picture of some cars is drawn");
 	}
 
 	public void loadModel(String s) {
