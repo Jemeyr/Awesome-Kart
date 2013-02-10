@@ -2,8 +2,6 @@ package Sound;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -18,25 +16,25 @@ import org.lwjgl.util.WaveData;
 public class SoundMaster {
 	
 	/** Buffers hold sound data. */
-	IntBuffer buffer = BufferUtils.createIntBuffer(1);
+	protected IntBuffer buffer = BufferUtils.createIntBuffer(1);
   
 	/** Sources are points emitting sound. */
-	IntBuffer source = BufferUtils.createIntBuffer(1);
+	protected IntBuffer source = BufferUtils.createIntBuffer(1);
 	
 	 /** Position of the source sound. */
-	  FloatBuffer sourcePos = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
+	protected FloatBuffer sourcePos = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
 	
 	  /** Velocity of the source sound. */
-	  FloatBuffer sourceVel = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
+	protected FloatBuffer sourceVel = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
 	
 	  /** Position of the listener. */
-	  FloatBuffer listenerPos = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
+	protected FloatBuffer listenerPos = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
 	
 	  /** Velocity of the listener. */
-	  FloatBuffer listenerVel = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
+	protected FloatBuffer listenerVel = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
 	
 	  /** Orientation of the listener. (first 3 elements are "at", second 3 are "up") */
-	  FloatBuffer listenerOri =
+	protected FloatBuffer listenerOri =
 	      BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f });
 	  
 	  /**
@@ -49,7 +47,7 @@ public class SoundMaster {
 	   *  Returns 1 on Success
 	   *  Returns 0 on Fail
 	   */
-	  int loadSoundData() {
+	  protected int loadSoundData() {
 		  sourcePos.position(0);
 		  sourceVel.position(0);
 		  listenerPos.position(0);
@@ -105,7 +103,7 @@ public class SoundMaster {
 	   *  We already defined certain values for the Listener, but we need
 	   *  to tell OpenAL to use that data. This function does just that.
 	   */
-	  void setListenerValues() {
+	  protected void setListenerValues() {
 	    AL10.alListener(AL10.AL_POSITION,    listenerPos);
 	    AL10.alListener(AL10.AL_VELOCITY,    listenerVel);
 	    AL10.alListener(AL10.AL_ORIENTATION, listenerOri);
@@ -131,7 +129,7 @@ public class SoundMaster {
 	  
 	  public void execute(){
 		// Initialize OpenAL and clear the error bit.
-		  int state = AL10.AL_PLAYING;
+		  
 		  
 		  try{
 			AL.create();  
@@ -149,6 +147,11 @@ public class SoundMaster {
 		  }
 		  
 		  setListenerValues();
+		  
+	  }
+	  
+	  public void play(){
+		  int state = AL10.AL_PLAYING;
 		  
 		  AL10.alSourcePlay(source.get(0));
 		  
