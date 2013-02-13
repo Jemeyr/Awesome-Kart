@@ -31,13 +31,16 @@ public class Game {
 		
 		this.soundMaster.execute();
 		
+
+		this.soundMaster.play();
+		
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
 			renderMaster.draw();
+			
 		}
 		System.out.println("CONTI'S ELEC 360 POWER LEVEL IS OVER 9000!!!!!!!!!!!");
 		
-		this.soundMaster.play();
 		
 	}
 	

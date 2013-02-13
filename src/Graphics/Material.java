@@ -64,9 +64,7 @@ public class Material {
 		
 		setTransform(transform);
 
-		System.out.println("HERE");
-		System.out.println("HERE");
-		System.out.println("HERE");
+		//set vbo and stuff here
 		
 		
 		//

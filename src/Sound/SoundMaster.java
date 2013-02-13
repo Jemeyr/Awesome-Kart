@@ -1,10 +1,12 @@
 package Sound;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import javax.sound.sampled.AudioSystem;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -61,17 +63,29 @@ public class SoundMaster {
 		  if (AL10.alGetError() != AL10.AL_NO_ERROR)
 			  return AL10.AL_FALSE;
 		  InputStream is = null;
+		  InputStream bufferedIs = null;
+		  WaveData waveFile= null;
 		  
 			try {
-				is = new FileInputStream("./assets/sound/swvader02.wav");
+				is = new FileInputStream("assets/sound/swvader02.wav");
+				
+				bufferedIs = new BufferedInputStream(is);
+				
+				
+				waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
+			
 				//is = new FileInputStream("./assets/sound/FancyPants.wav");
-			} catch (FileNotFoundException e) {
+			
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				
 			}
+			
+			
 		  //WaveData waveFile = WaveData.create("/assets/sound/Cantina1.mid");
-		  WaveData waveFile = WaveData.create(is);
+		  
+
 		  
 		  AL10.alBufferData(buffer.get(0), waveFile.format, waveFile.data, waveFile.samplerate);
 		  
