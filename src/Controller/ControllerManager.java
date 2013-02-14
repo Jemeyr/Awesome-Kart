@@ -2,6 +2,7 @@ package Controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import States.StateContext;
 import net.java.games.input.Controller;
@@ -12,11 +13,11 @@ import net.java.games.input.EventQueue;
 public class ControllerManager {
 
 	private StateContext stateContext;
-	private HashMap<Integer, GameController> gameControllers;
+	private HashMap<Controller, GameController> gameControllers;
 	
 	public ControllerManager() {
 		this.stateContext = new StateContext();
-		this.gameControllers = new HashMap<Integer, GameController>();
+		this.gameControllers = new HashMap<Controller, GameController>();
 		addController();
 	}
 	
@@ -24,21 +25,26 @@ public class ControllerManager {
 		if(ControllerEnvironment.getDefaultEnvironment().getControllers().length > gameControllers.size()){
 			GameController newController = new XboxController();
 			for(Controller c : ControllerEnvironment.getDefaultEnvironment().getControllers()){
-				if(gameControllers.get(c.getPortNumber()) == null){
-					gameControllers.put(c.getPortNumber(), newController);
+				if(gameControllers.get(c) == null){
+					gameControllers.put(c, newController);
 				}
 			}
 		}
 	}
 	
 	public void poll(){
-		for(Controller c : ControllerEnvironment.getDefaultEnvironment().getControllers()){
+		for(Map.Entry<Controller, GameController> entry : getControllersMap().entrySet()){
+			Controller c = entry.getKey();
 			c.poll();
 			EventQueue eq = c.getEventQueue();
 			Event event = new Event();
 			if(eq.getNextEvent(event)){
-				gameControllers.get(c.getPortNumber()).handleEvent(event);
+				entry.getValue().handleEvent(event);
 			}
 		}
+	}
+	
+	public HashMap<Controller, GameController> getControllersMap(){
+		return gameControllers;
 	}
 }
