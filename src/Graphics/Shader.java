@@ -9,28 +9,42 @@ import static org.lwjgl.opengl.GL20.glCreateProgram;
 import static org.lwjgl.opengl.GL20.glCreateShader;
 import static org.lwjgl.opengl.GL20.glGetShader;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 
-public class Material {
+public class Shader {
 
-	int vert_id;
-	int frag_id;
-	int shaderProgram;
+	private int vert_id;
+	private int frag_id;
 	
-	public Material()
+	private int wvpMatIndex;
+	private int camDirIndex;
+	
+	
+	private int shaderProgram;
+	
+	private boolean active;
+	
+	private Matrix4f viewProjection;
+	
+	public Shader()
 	{
-
+		active = false;
+		
     	vert_id = loadShader("default_vertex.glslv", GL_VERTEX_SHADER);
     	frag_id = loadShader("default_frag.glslf", GL_FRAGMENT_SHADER);
     	
@@ -44,30 +58,60 @@ public class Material {
         
         glLinkProgram(shaderProgram);
         
+        wvpMatIndex = glGetUniformLocation(shaderProgram, "wvpMatrix");
+        camDirIndex = glGetUniformLocation(shaderProgram, "camDir");
+        
+        viewProjection = new Matrix4f();
+        
 	}
 	
-	protected void setTransform(Matrix4f mat)
+	private void setTransform(Matrix4f mat)
 	{
-		//set shader thing here.
 		
+        glUniformMatrix4(wvpMatIndex, true, genFloatBuffer(mat));
+        
+	}
+	
+	protected void useCam(Camera cam)
+	{
+		Matrix4f transform = new Matrix4f();
+		transform.setIdentity();
+		
+		Matrix4f.mul(cam.projection, cam.viewMat, this.viewProjection);
+	
+		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
 	}
 
-	protected void draw(Camera cam, DebugGraphicsComponent gc)
+	protected void begin()
 	{
 		glUseProgram(shaderProgram);
+		active = true;
+	}
+	
+	protected void end()
+	{
+		glUseProgram(0);
+		active = false;
+	}
+	
+	protected void draw(DebugGraphicsComponent gc)
+	{
+		if(!active)
+		{
+			System.out.println("Shader has not begun");
+			return;
+		}
 		
 		Matrix4f transform = new Matrix4f();
 		transform.setIdentity();
 		
-		Matrix4f.mul(cam.projection, cam.viewMat, transform);
-		Matrix4f.mul(transform, gc.getModelMat(), transform);
+
+		
+		Matrix4f.mul(viewProjection, gc.getModelMat(), transform);
 		
 		setTransform(transform);
 
-		//set vbo and stuff here
 		
-		
-		//
 
         glUseProgram(0);
 	}
@@ -123,4 +167,25 @@ public class Material {
 		return shader;
 	}
 	
+	
+	
+	public FloatBuffer genFloatBuffer(Matrix4f input)
+	{
+		
+        FloatBuffer fbuff = null;
+        try{
+        	fbuff = BufferUtils.createFloatBuffer(16);
+	        input.store(fbuff);
+        	
+	        fbuff.rewind();
+        }
+        catch (Exception e)
+        {
+        	System.out.println(e);
+        	return null;
+        }
+        
+        return fbuff;
+		
+	}
 }

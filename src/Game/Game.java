@@ -32,7 +32,7 @@ public class Game {
 		this.soundMaster.execute();
 		
 
-		this.soundMaster.play();
+		//this.soundMaster.play();
 		
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));

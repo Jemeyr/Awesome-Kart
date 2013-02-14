@@ -1,6 +1,6 @@
 #version 150
 
-uniform vec3 cam;
+uniform vec3 camDir;
 out vec4 outColor;
 
 in vec2 texCoordPS;
@@ -13,8 +13,8 @@ uniform sampler2D tex;
 void main() // 
 {
 	float light = 0.2;
-	light += max(0.0, dot(normalize(norm), normalize(cam)));
-	light += pow(max(0.0, dot(normalize(norm), normalize(cam))),32);
+	light += max(0.0, dot(normalize(norm), normalize(camDir)));
+	light += pow(max(0.0, dot(normalize(norm), normalize(camDir))),32);
 	
 	outColor = texture(tex, texCoordPS) * light;
 	

@@ -14,14 +14,14 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	private Camera cam;
 	
-	private Material m;
+	private Shader shader;
 	
 	protected DebugRenderMaster(float aspect)
 	{
 		//freedee
         glEnable(GL_DEPTH_TEST);
         
-        m = new Material();
+        shader = new Shader();
 		
 		this.cam = new Camera(new Vector3f(0f,3f, 10f), new Vector3f(0f,0f,0f), aspect,60.0f);
 		
@@ -56,13 +56,15 @@ public class DebugRenderMaster implements RenderMaster {
 	public void draw()
 	{
 		//how to draw, iterate over all the graphics components and draw their parts
+		shader.begin();
+		shader.useCam(cam);
+		
 		for(DebugGraphicsComponent gc : graphicsComponents)
 		{
-			m.draw(cam, gc);
+			shader.draw(gc);
 		}
 		
-		
-		
+		shader.end();
 		//System.out.println("An ugly picture of some cars is drawn");
 	}
 

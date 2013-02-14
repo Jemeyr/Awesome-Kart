@@ -1,6 +1,6 @@
 #version 150
 
-uniform mat4 viewMatrix, projMatrix;
+uniform mat4 wvpMatrix;
 
 in vec3 position;
 in vec3 normal;
@@ -15,5 +15,5 @@ void main() {
 	norm = normal;
 
 	texCoordPS = texCoord;
-	gl_Position =   projMatrix * viewMatrix * pos;
+	gl_Position =   wvpMatrix * pos;
 }

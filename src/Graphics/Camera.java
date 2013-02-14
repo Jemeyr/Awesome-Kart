@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
 	protected Vector3f position;
+	protected Vector3f direction;
 	
 	protected Matrix4f viewMat, projection;
 	//should this have some for of where it's rendering to?
@@ -15,7 +16,10 @@ public class Camera {
 		this.viewMat = buildViewMatrix(position, target);
 		this.projection = buildPerspectiveMatrix(fov, aspectRatio, 0.1f, 100f);
 		
+		this.direction = new Vector3f();
+		Vector3f.sub(target, position, this.direction);
 	}
+	
 	
 
 	Matrix4f buildPerspectiveMatrix(float fov, float ratio, float nearP, float farP) 
