@@ -48,6 +48,7 @@ public class DebugMesh {
 	
 	protected int vao;
 	protected int vbo_v,vbo_t,vbo_n,elem;
+	protected int elementCount;
 	
 	protected int diffTexId;
 	protected int normTexId;
@@ -298,7 +299,15 @@ public class DebugMesh {
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, ebuff, GL_STATIC_DRAW);
-		
+        
+        
+        //elementCount = ebuff.array().length;	
+        ebuff.flip();
+        elementCount = ebuff.capacity();
+
+        System.out.println("Mesh: buffering some data. count is " + elementCount);
+
+        
         //unbind
         glBindBuffer(GL_ARRAY_BUFFER,0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

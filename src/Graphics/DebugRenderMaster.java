@@ -1,6 +1,9 @@
 package Graphics;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.*;
@@ -23,8 +26,9 @@ public class DebugRenderMaster implements RenderMaster {
         
         shader = new Shader();
 		
-		this.cam = new Camera(new Vector3f(0f,3f, 10f), new Vector3f(0f,0f,0f), aspect,60.0f);
+		this.cam = new Camera(new Vector3f(0f,3f, 5f), new Vector3f(0f,0f,0f), aspect,60.0f);
 		
+		System.out.println("DebugRenderMaster: created shader and camera");
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
 	}
@@ -55,6 +59,9 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	public void draw()
 	{
+
+    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
 		//how to draw, iterate over all the graphics components and draw their parts
 		shader.begin();
 		shader.useCam(cam);

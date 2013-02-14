@@ -1,5 +1,12 @@
 package Graphics;
 
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
@@ -7,6 +14,8 @@ import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
 import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glGetAttribLocation;
 import static org.lwjgl.opengl.GL20.glGetShader;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
@@ -15,6 +24,7 @@ import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 
 import java.io.BufferedReader;
@@ -34,6 +44,9 @@ public class Shader {
 	private int wvpMatIndex;
 	private int camDirIndex;
 	
+	private int position_attr;
+	private int normal_attr;
+	private int texCoord_attr;
 	
 	private int shaderProgram;
 	
@@ -45,9 +58,8 @@ public class Shader {
 	{
 		active = false;
 		
-    	vert_id = loadShader("default_vertex.glslv", GL_VERTEX_SHADER);
-    	frag_id = loadShader("default_frag.glslf", GL_FRAGMENT_SHADER);
-    	
+    	vert_id = loadShader("vertexShader.glslv", GL_VERTEX_SHADER);
+    	frag_id = loadShader("fragmentShader.glslf", GL_FRAGMENT_SHADER);
 
         shaderProgram = glCreateProgram();
         
@@ -60,6 +72,12 @@ public class Shader {
         
         wvpMatIndex = glGetUniformLocation(shaderProgram, "wvpMatrix");
         camDirIndex = glGetUniformLocation(shaderProgram, "camDir");
+        
+
+        position_attr = glGetAttribLocation( shaderProgram, "position");
+        normal_attr = glGetAttribLocation( shaderProgram, "normal");
+        texCoord_attr = glGetAttribLocation( shaderProgram, "texCoord");
+
         
         viewProjection = new Matrix4f();
         
@@ -77,6 +95,7 @@ public class Shader {
 		Matrix4f transform = new Matrix4f();
 		transform.setIdentity();
 		
+		System.out.println("Shader: setting camera");
 		Matrix4f.mul(cam.projection, cam.viewMat, this.viewProjection);
 	
 		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
@@ -105,15 +124,29 @@ public class Shader {
 		Matrix4f transform = new Matrix4f();
 		transform.setIdentity();
 		
-
-		
 		Matrix4f.mul(viewProjection, gc.getModelMat(), transform);
-		
 		setTransform(transform);
 
+		//
+        glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_v);
+        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(position_attr);
 		
+        glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_t);
+        glVertexAttribPointer( texCoord_attr, 2, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(texCoord_attr);
+		
+        glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_n);
+        glVertexAttribPointer( normal_attr, 3, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(normal_attr);
+		
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gc.mesh.elem);
 
-        glUseProgram(0);
+        glDrawElements(GL_TRIANGLES, gc.mesh.elementCount, GL_UNSIGNED_INT, 0);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	
 	public int loadShader(String fileName, int shaderType)
@@ -136,6 +169,7 @@ public class Shader {
 			
 		}catch	(Exception e)
 		{
+			System.out.println("Shader: " + e);
 			return -1;
 		}
 		//load the shader from its source

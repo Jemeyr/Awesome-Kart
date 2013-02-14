@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class DebugGraphicsComponent implements GraphicsComponent {
 	
-	private DebugMesh mesh;
+	protected DebugMesh mesh;
 	private Vector3f position;
 	private Quaternion rotation;
 	

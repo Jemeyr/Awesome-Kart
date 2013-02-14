@@ -16,6 +16,8 @@ public class Camera {
 		this.viewMat = buildViewMatrix(position, target);
 		this.projection = buildPerspectiveMatrix(fov, aspectRatio, 0.1f, 100f);
 		
+		System.out.println("Cam: initializing, building view and projection matrices");
+		
 		this.direction = new Vector3f();
 		Vector3f.sub(target, position, this.direction);
 	}

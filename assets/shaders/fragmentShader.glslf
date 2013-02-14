@@ -16,7 +16,7 @@ void main() //
 	light += max(0.0, dot(normalize(norm), normalize(camDir)));
 	light += pow(max(0.0, dot(normalize(norm), normalize(camDir))),32);
 	
-	outColor = texture(tex, texCoordPS) * light;
+	outColor = vec4(1.0, 1.0, 0.0, 1.0);//texture(tex, texCoordPS) * light;
 	
 }
 
