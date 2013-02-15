@@ -4,10 +4,12 @@ import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.*;
 
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
 public class DebugRenderMaster implements RenderMaster {
@@ -23,6 +25,7 @@ public class DebugRenderMaster implements RenderMaster {
 	{
 		//freedee
         glEnable(GL_DEPTH_TEST);
+        glClearColor(0f, 0f, 0f, 1f);
         
         shader = new Shader();
 		
@@ -71,8 +74,11 @@ public class DebugRenderMaster implements RenderMaster {
 			shader.draw(gc);
 		}
 		
+		
 		shader.end();
-		//System.out.println("An ugly picture of some cars is drawn");
+		
+		Display.update();
+		
 	}
 
 	public void loadModel(String s) {

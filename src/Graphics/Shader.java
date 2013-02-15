@@ -26,6 +26,7 @@ import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -127,10 +128,13 @@ public class Shader {
 		Matrix4f.mul(viewProjection, gc.getModelMat(), transform);
 		setTransform(transform);
 
+		
+		glBindVertexArray(gc.mesh.vao);
+		
 		//
-        glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_v);
-        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(position_attr);
+        glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_v);							//These three and their order
+        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);		//
+        glEnableVertexAttribArray(position_attr);								//
 		
         glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_t);
         glVertexAttribPointer( texCoord_attr, 2, GL_FLOAT, false, 0, 0);
