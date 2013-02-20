@@ -22,7 +22,6 @@ import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glGetAttribLocation;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
@@ -319,10 +318,9 @@ public class DebugMesh {
         System.out.println("Mesh: buffering some data. count is " + elementCount);
 
 
-        int position_attr = glGetAttribLocation( shader.getShaderProgram(), "position");
-        int normal_attr = glGetAttribLocation( shader.getShaderProgram(), "normal");
-        int texCoord_attr = glGetAttribLocation( shader.getShaderProgram(), "texCoord");
-        
+        int position_attr = shader.position_attr;
+        int normal_attr = shader.normal_attr;
+        int texCoord_attr = shader.texCoord_attr;
         
 
 		//

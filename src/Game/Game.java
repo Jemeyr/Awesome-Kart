@@ -3,9 +3,11 @@ package Game;
 import org.lwjgl.util.vector.Vector3f;
 
 import Controller.ControllerManager;
-import States.StateContext;
-import Graphics.*;
-import Sound.*;
+import Graphics.DebugGraphicsComponent;
+import Graphics.DebugRenderMaster;
+import Graphics.RenderMaster;
+import Graphics.RenderMasterFactory;
+import Sound.SoundMaster;
 
 public class Game {
 	

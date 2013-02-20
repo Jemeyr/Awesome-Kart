@@ -40,9 +40,9 @@ public class Shader {
 	private int wvpMatIndex;
 	private int camDirIndex;
 	
-	private int position_attr;
-	private int normal_attr;
-	private int texCoord_attr;
+	protected int position_attr;
+	protected int normal_attr;
+	protected int texCoord_attr;
 	
 	private int shaderProgram;
 	
