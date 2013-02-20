@@ -1,5 +1,6 @@
 package Graphics;
 
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
@@ -18,9 +19,11 @@ import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
-
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glGetAttribLocation;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
@@ -45,6 +48,7 @@ import de.matthiasmann.twl.utils.PNGDecoder.Format;
 public class DebugMesh {
 	
 	protected String id;
+	protected int texId;
 	
 	protected int vao;
 	protected int vbo_v,vbo_t,vbo_n,elem;
@@ -53,8 +57,12 @@ public class DebugMesh {
 	protected int diffTexId;
 	protected int normTexId;
 	
-	protected DebugMesh(String s)
+	private Shader shader;
+	
+	protected DebugMesh(String s, Shader shader)
 	{
+		this.shader = shader;
+		
 		//set id
 		id = s;
 		
@@ -68,12 +76,13 @@ public class DebugMesh {
         load("assets/graphics/" + s + "/object.obj");
 
         
-        //load textures
-
-
-        diffTexId= glGenTextures();
-        loadTex(s,"diffuse",diffTexId);
+        //load textures TODO: ACTUALLY LOAD TEXTURES
         
+
+        //diffTexId= glGenTextures();
+        //loadTex(s,"diffuse",diffTexId);
+        texId = glGenTextures();
+        loadTex(s,"debug",texId);
 	}
 	
 	private void loadTex(String s, String texName, int tex)
@@ -305,12 +314,38 @@ public class DebugMesh {
         ebuff.flip();
         elementCount = ebuff.capacity();
 
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem);
+        
         System.out.println("Mesh: buffering some data. count is " + elementCount);
 
+
+        int position_attr = glGetAttribLocation( shader.getShaderProgram(), "position");
+        int normal_attr = glGetAttribLocation( shader.getShaderProgram(), "normal");
+        int texCoord_attr = glGetAttribLocation( shader.getShaderProgram(), "texCoord");
         
-        //unbind
+        
+
+		//
+        glBindBuffer(GL_ARRAY_BUFFER, 	vbo_v);								//These three and their order
+        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);		//
+        glEnableVertexAttribArray(position_attr);								//
+		
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_t);
+        glVertexAttribPointer( texCoord_attr, 2, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(texCoord_attr);
+		
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_n);
+        glVertexAttribPointer( normal_attr, 3, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(normal_attr);
+		
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
+        
+        
+        
+        //unbind vao
         glBindBuffer(GL_ARRAY_BUFFER,0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 	}
 	
 	

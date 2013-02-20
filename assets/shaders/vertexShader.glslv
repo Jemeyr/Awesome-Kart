@@ -15,5 +15,5 @@ void main() {
 	norm = normal;
 
 	texCoordPS = texCoord;
-	gl_Position =   wvpMatrix * pos;
+	gl_Position = wvpMatrix * pos;
 }

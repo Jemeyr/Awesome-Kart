@@ -1,12 +1,8 @@
 package Graphics;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
@@ -14,7 +10,6 @@ import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
 import static org.lwjgl.opengl.GL20.glCreateShader;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glGetAttribLocation;
 import static org.lwjgl.opengl.GL20.glGetShader;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
@@ -24,7 +19,6 @@ import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL20.glUseProgram;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
@@ -39,6 +33,7 @@ import org.lwjgl.util.vector.Matrix4f;
 
 public class Shader {
 
+	
 	private int vert_id;
 	private int frag_id;
 	
@@ -86,8 +81,7 @@ public class Shader {
 	
 	private void setTransform(Matrix4f mat)
 	{
-		
-        glUniformMatrix4(wvpMatIndex, true, genFloatBuffer(mat));
+		glUniformMatrix4(wvpMatIndex, true, genFloatBuffer(mat));
         
 	}
 	
@@ -96,9 +90,27 @@ public class Shader {
 		Matrix4f transform = new Matrix4f();
 		transform.setIdentity();
 		
-		System.out.println("Shader: setting camera");
-		Matrix4f.mul(cam.projection, cam.viewMat, this.viewProjection);
-	
+		//System.out.println("Shader: setting camera");
+		Matrix4f camProj = new Matrix4f(cam.projection);
+		Matrix4f camView = new Matrix4f(cam.viewMat);
+		Matrix4f camVP = new Matrix4f();
+		
+		
+		camProj.transpose();
+		camView.transpose();
+		
+		
+		
+//		Matrix4f.mul(cam.projection, cam.viewMat, this.viewProjection);
+		Matrix4f.mul(camProj, camView, camVP);
+			
+		camVP.transpose();
+		this.viewProjection = camVP;
+		System.out.println("VP: ");
+		System.out.println(camVP);
+		
+		//TODO: WHY THE FUCK DOES THIS WORK?
+		
 		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
 	}
 
@@ -125,32 +137,20 @@ public class Shader {
 		Matrix4f transform = new Matrix4f();
 		transform.setIdentity();
 		
+		
+		
 		Matrix4f.mul(viewProjection, gc.getModelMat(), transform);
 		setTransform(transform);
 
 		
 		glBindVertexArray(gc.mesh.vao);
 		
-		//
-        glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_v);							//These three and their order
-        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);		//
-        glEnableVertexAttribArray(position_attr);								//
-		
-        glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_t);
-        glVertexAttribPointer( texCoord_attr, 2, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(texCoord_attr);
-		
-        glBindBuffer(GL_ARRAY_BUFFER, gc.mesh.vbo_n);
-        glVertexAttribPointer( normal_attr, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(normal_attr);
-		
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gc.mesh.elem);
 
         glDrawElements(GL_TRIANGLES, gc.mesh.elementCount, GL_UNSIGNED_INT, 0);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		glBindVertexArray(0);
+	
 	}
 	
 	public int loadShader(String fileName, int shaderType)
@@ -207,7 +207,7 @@ public class Shader {
 	
 	
 	
-	public FloatBuffer genFloatBuffer(Matrix4f input)
+	private FloatBuffer genFloatBuffer(Matrix4f input)
 	{
 		
         FloatBuffer fbuff = null;
@@ -226,4 +226,12 @@ public class Shader {
         return fbuff;
 		
 	}
+
+	
+	public int getShaderProgram()
+	{
+		return this.shaderProgram;
+	}
+
+	
 }

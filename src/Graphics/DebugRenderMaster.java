@@ -17,6 +17,8 @@ public class DebugRenderMaster implements RenderMaster {
 	private List<DebugGraphicsComponent> graphicsComponents;
 	private List<DebugMesh >loadedModels;
 	
+	private static int N;
+	
 	private Camera cam;
 	
 	private Shader shader;
@@ -63,8 +65,7 @@ public class DebugRenderMaster implements RenderMaster {
 	public void draw()
 	{
 
-    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+    	
 		//how to draw, iterate over all the graphics components and draw their parts
 		shader.begin();
 		shader.useCam(cam);
@@ -78,7 +79,13 @@ public class DebugRenderMaster implements RenderMaster {
 		shader.end();
 		
 		Display.update();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		System.out.println("frame " + ++N);
+		for(long i = 0; i < 10000000000l;)
+		{
+			i++;
+		}
 	}
 
 	public void loadModel(String s) {
@@ -90,7 +97,7 @@ public class DebugRenderMaster implements RenderMaster {
 				return;
 			}
 		}
-		loadedModels.add(new DebugMesh(s));
+		loadedModels.add(new DebugMesh(s,shader));
 		
 	}
 

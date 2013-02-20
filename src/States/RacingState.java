@@ -14,7 +14,7 @@ public class RacingState implements GameState {
 	}
 
 	@Override
-	public void useBrakeButton(StateContext stateContext, GameState currentState) {
+	public void useBackButton(StateContext stateContext, GameState currentState) {
 		// Delegate to player/kart, call a brake function.
 	}
 
