@@ -8,36 +8,39 @@ public class Camera {
 	protected Vector3f direction;
 	
 	protected Matrix4f viewMat, projection;
+	
+	private float aspectRatio, fov, near, far;
 	//should this have some for of where it's rendering to?
 	
 	public Camera(Vector3f pos, Vector3f target, float aspectRatio, float fov)
 	{
+		this.aspectRatio = aspectRatio;
+		this.fov = fov;
+		this.near = 0.1f;
+		this.far = 10000f;
 
-		System.out.println("**********************************************");
-		System.out.println("cam info");
-		System.out.println("aspect ratio " + aspectRatio + "\nfov " + fov + "\ntarget " + target + "\npos " + pos);
-		System.out.println("**********************************************");
 		
 		this.position = pos;
 		this.viewMat = buildViewMatrix(position, target);
-		this.projection = buildPerspectiveMatrix(fov, aspectRatio, 0.1f, 100f);
+		this.projection = buildPerspectiveMatrix(this.fov, this.aspectRatio, near, far);
 		
-		System.out.println("**********************************************");
-		System.out.println("view");
-		System.out.println(viewMat);
-		System.out.println("**********************************************");
-		System.out.println("proj");
-		System.out.println(projection);
-		System.out.println("**********************************************");
-		
-		//System.out.println("Cam: initializing, building view and projection matrices");
 		
 		
 		this.direction = new Vector3f();
 		Vector3f.sub(target, position, this.direction);
 	}
 	
+	public void setFOV(float fov)
+	{
+		this.fov = fov;
+		this.projection = buildPerspectiveMatrix(this.fov, this.aspectRatio, this.near, this.far);
+	}
 	
+	public void setAspectRatio(float aspectRatio)
+	{
+		this.aspectRatio = aspectRatio;
+		this.projection = buildPerspectiveMatrix(this.fov, this.aspectRatio, this.near, this.far);
+	}
 
 	Matrix4f buildPerspectiveMatrix(float fov, float ratio, float nearP, float farP) 
 	{

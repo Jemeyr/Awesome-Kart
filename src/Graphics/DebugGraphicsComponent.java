@@ -67,6 +67,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		temp.setIdentity();
 		
 		temp.translate(position);
+		temp.transpose();
 		return temp;
 	}
 	
@@ -130,6 +131,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		ret.m31 = 0;
 		ret.m32 = 0;
 		ret.m33 = 1;
+		
 		
 		return ret;
 	}

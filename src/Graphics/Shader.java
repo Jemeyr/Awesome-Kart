@@ -87,9 +87,6 @@ public class Shader {
 	
 	protected void useCam(Camera cam)
 	{
-		Matrix4f transform = new Matrix4f();
-		transform.setIdentity();
-		
 		//System.out.println("Shader: setting camera");
 		Matrix4f camProj = new Matrix4f(cam.projection);
 		Matrix4f camView = new Matrix4f(cam.viewMat);
@@ -101,13 +98,14 @@ public class Shader {
 		
 		
 		
+		
+		
+		
 //		Matrix4f.mul(cam.projection, cam.viewMat, this.viewProjection);
 		Matrix4f.mul(camProj, camView, camVP);
 			
 		camVP.transpose();
 		this.viewProjection = camVP;
-		System.out.println("VP: ");
-		System.out.println(camVP);
 		
 		//TODO: WHY THE FUCK DOES THIS WORK?
 		

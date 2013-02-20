@@ -32,22 +32,25 @@ public class Game {
 		elec360power = 0;
 
 		renderMaster.loadModel("test");
-		renderMaster.addModel("test");
 		
-		DebugGraphicsComponent second = (DebugGraphicsComponent)renderMaster.addModel("test");
-		second.setPosition(new Vector3f(3,0,0));
+		DebugGraphicsComponent t = (DebugGraphicsComponent)renderMaster.addModel("test");
+		t.setPosition(new Vector3f(0,-0.4f,0));
 		
 		this.soundMaster.execute();
+		
 		
 
 		//this.soundMaster.play();
 		
 		while(Conti && elec360power <= 9000){
-			System.out.println(String.format("Conti's power is at %d", ++elec360power));
-			renderMaster.draw();
+			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
 
-			elec360power += 18;
+
+			elec360power += 1;
+			((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
+
 			
+			renderMaster.draw();
 			
 			controllerManager.poll();
 
