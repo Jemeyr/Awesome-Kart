@@ -32,7 +32,8 @@ public class DebugRenderMaster implements RenderMaster {
 		
 		this.cam = new Camera(new Vector3f(0f,3f, 5f), new Vector3f(0f,0f,0f), aspect,60.0f);
 		
-		System.out.println("DebugRenderMaster: created shader and camera");
+		//System.out.println("DebugRenderMaster: created shader and camera");
+		
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
 	}

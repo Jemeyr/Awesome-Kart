@@ -24,7 +24,6 @@ public class RenderMasterFactory {
 		}
 		
 		
-		System.out.println();
 		
 		if(GLContext.getCapabilities().OpenGL30)
 		{

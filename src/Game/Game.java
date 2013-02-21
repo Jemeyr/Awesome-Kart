@@ -1,5 +1,6 @@
 package Game;
 
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
 import Controller.ControllerManager;
@@ -55,6 +56,11 @@ public class Game {
 			renderMaster.draw();
 			
 			controllerManager.poll();
+			
+			if(Display.isCloseRequested())
+			{
+				elec360power = 9001;
+			}
 
 		}
 		System.out.println("CONTI'S ELEC 360 POWER LEVEL IS OVER 9000!!!!!!!!!!!");

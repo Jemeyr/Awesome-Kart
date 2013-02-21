@@ -1,7 +1,9 @@
 package Graphics;
 
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
@@ -142,10 +144,12 @@ public class Shader {
 
 		
 		glBindVertexArray(gc.mesh.vao);
-		
+
+        glBindTexture(GL_TEXTURE_2D, gc.mesh.texId);
 
         glDrawElements(GL_TRIANGLES, gc.mesh.elementCount, GL_UNSIGNED_INT, 0);
 
+        glBindTexture(GL_TEXTURE_2D, 0);
 
 		glBindVertexArray(0);
 	

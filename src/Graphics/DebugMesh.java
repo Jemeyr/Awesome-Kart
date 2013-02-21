@@ -75,7 +75,6 @@ public class DebugMesh {
         load("assets/graphics/" + s + "/object.obj");
 
         
-        //load textures TODO: ACTUALLY LOAD TEXTURES
         
 
         //diffTexId= glGenTextures();
@@ -315,7 +314,7 @@ public class DebugMesh {
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem);
         
-        System.out.println("Mesh: buffering some data. count is " + elementCount);
+        //System.out.println("Mesh: buffering some data. count is " + elementCount);
 
 
         int position_attr = shader.position_attr;
