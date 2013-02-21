@@ -35,9 +35,12 @@ public class Game {
 		elec360power = 0;
 
 		renderMaster.loadModel("test");
+		renderMaster.loadModel("testTer");
 		
-		DebugGraphicsComponent t = (DebugGraphicsComponent)renderMaster.addModel("test");
-		t.setPosition(new Vector3f(0,-0.4f,0));
+		renderMaster.addModel("testTer");
+		
+		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
+		triforce.setPosition(new Vector3f(0,-0.4f,0));
 		
 		this.soundMaster.execute();
 		
@@ -51,7 +54,7 @@ public class Game {
 
 			elec360power += 1;
 			((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
-
+			
 			
 			renderMaster.draw();
 			
