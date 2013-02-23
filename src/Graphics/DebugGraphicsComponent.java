@@ -68,7 +68,6 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	
 	public void update()
 	{
-		System.out.println(this.rotation);
 		Matrix4f trans = new Matrix4f();
 		trans.setIdentity();
 		
@@ -86,7 +85,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		yaw.m20 = 0f - (float)Math.sin(rotation.y);
 		
 		
-		this.modelMat = trans;//Matrix4f.mul(yaw, trans, null);
+		this.modelMat = Matrix4f.mul(yaw, trans, null);
 
 		
 		
