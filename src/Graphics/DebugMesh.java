@@ -119,7 +119,7 @@ public class DebugMesh {
 	
 	private void load(String fileName)
 	{
-
+		System.out.println("Loading " + fileName);
 		int indexCount = 0;
 		
 		float[] vertices;

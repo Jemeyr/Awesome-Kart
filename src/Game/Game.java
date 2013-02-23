@@ -37,8 +37,13 @@ public class Game {
 
 		renderMaster.loadModel("test");
 		renderMaster.loadModel("testTer");
+		renderMaster.loadModel("kart");
 		
 		renderMaster.addModel("testTer");
+		
+		DebugGraphicsComponent kart = (DebugGraphicsComponent)renderMaster.addModel("kart");
+		kart.setPosition(new Vector3f(5,0,0));
+		
 		
 		Camera cam = ((DebugRenderMaster)renderMaster).getCamera();
 		
@@ -57,9 +62,12 @@ public class Game {
 			elec360power += 1;
 			//((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
 			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
-			triforce.setPosition(new Vector3f(-3f + 6*elec360power/1500f, 0, 0));
+			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 			
-			cam.setPosition(new Vector3f(10f*(float)Math.sin(elec360power/600f),5f,10f*(float)Math.cos(elec360power/600f)));
+			kart.setRotation(new Vector3f(0,0, 4*3.14f * (elec360power/(9001f - elec360power))));
+			
+			
+			cam.setPosition(new Vector3f(30f*(float)Math.sin(elec360power/600f),10f,30f*(float)Math.cos(elec360power/600f)));
 			
 			
 			renderMaster.draw();
