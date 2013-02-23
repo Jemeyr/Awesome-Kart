@@ -68,26 +68,25 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	
 	public void update()
 	{
+		System.out.println(this.rotation);
+		Matrix4f trans = new Matrix4f();
+		trans.setIdentity();
 		
-		Matrix4f temp = new Matrix4f();
-		temp.rotate(this.rotation.x, new Vector3f(0,1,0));
-		temp.rotate(this.rotation.y, new Vector3f(1,0,0));
-		temp.rotate(this.rotation.z, new Vector3f(0,0,1));
+		//translate
+		trans.m03 += position.x;
+		trans.m13 += position.y;
+		trans.m23 += position.z;
 		
-		//System.out.println("temp is");
-		//System.out.println(temp);
+		Matrix4f yaw = new Matrix4f();
+		yaw.setIdentity();
 		
-
-		temp.m03 += position.x;
-		temp.m13 += position.y;
-		temp.m23 += position.z;
-		
-		
-		//System.out.println("temp is now ");
-		//System.out.println(temp);
+		yaw.m00 = (float)Math.cos(rotation.y);
+		yaw.m02 = (float)Math.sin(rotation.y);
+		yaw.m22 = (float)Math.cos(rotation.y);
+		yaw.m20 = 0f - (float)Math.sin(rotation.y);
 		
 		
-		this.modelMat = temp;
+		this.modelMat = trans;//Matrix4f.mul(yaw, trans, null);
 
 		
 		

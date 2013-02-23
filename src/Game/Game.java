@@ -58,12 +58,10 @@ public class Game {
 
 			elec360power += 1;
 			//((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
-			//triforce.setRotation(new Vector3f(0,(elec360power/9000f),0));
-			//triforce.setPosition(new Vector3f(0, elec360power/9000f, 0));
+			//triforce.setRotation(new Vector3f(0f,3.14f * (elec360power/9000f),0f));
+			triforce.setPosition(new Vector3f(0, 2 - elec360power/1500f, 0));
 			
-			cam.setPosition(new Vector3f(	10f*(float)Math.sin(elec360power/600f),
-											5f,
-											10f*(float)Math.cos(elec360power/600f)));
+			cam.setPosition(new Vector3f(10f*(float)Math.sin(elec360power/600f),5f,10f*(float)Math.cos(elec360power/600f)));
 			
 			
 			renderMaster.draw();
