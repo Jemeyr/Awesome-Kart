@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Quaternion;
-
 import org.lwjgl.util.vector.Vector3f;
 
 public class DebugGraphicsComponent implements GraphicsComponent {
@@ -76,17 +74,21 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		trans.m13 += position.y;
 		trans.m23 += position.z;
 		
+		
 		Matrix4f yaw = new Matrix4f();
-		yaw.setIdentity();
-		
-		yaw.m00 = (float)Math.cos(rotation.y);
-		yaw.m02 = (float)Math.sin(rotation.y);
-		yaw.m22 = (float)Math.cos(rotation.y);
-		yaw.m20 = 0f - (float)Math.sin(rotation.y);
-		
+		Matrix4f pitch = new Matrix4f();
+		Matrix4f roll = new Matrix4f();
+
+		pitch.rotate(rotation.x, new Vector3f(1,0,0));
+		yaw.rotate(-rotation.y, new Vector3f(0,1,0));
+		roll.rotate(rotation.z, new Vector3f(0,0,1));
 		
 		this.modelMat = Matrix4f.mul(yaw, trans, null);
-
+		Matrix4f.mul(pitch, modelMat, modelMat);
+		Matrix4f.mul(roll, modelMat, modelMat);
+		
+		
+		
 		
 		
 		for(DebugGraphicsComponent gc : subComponents)

@@ -7,7 +7,6 @@ import Controller.ControllerManager;
 import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
-import Graphics.QuaternionHelper;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
@@ -49,7 +48,6 @@ public class Game {
 		this.soundMaster.execute();
 		
 		
-
 		//this.soundMaster.play();
 		
 		while(Conti && elec360power <= 9000){
@@ -58,8 +56,8 @@ public class Game {
 
 			elec360power += 1;
 			//((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
-			triforce.setRotation(new Vector3f(0f,-3.14f * (elec360power/1500f),0f));
-			triforce.setPosition(new Vector3f(0, -3f + 6*elec360power/1500f, 0));
+			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
+			triforce.setPosition(new Vector3f(-3f + 6*elec360power/1500f, 0, 0));
 			
 			cam.setPosition(new Vector3f(10f*(float)Math.sin(elec360power/600f),5f,10f*(float)Math.cos(elec360power/600f)));
 			
