@@ -4,8 +4,10 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
 import Controller.ControllerManager;
+import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
+import Graphics.QuaternionHelper;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
@@ -39,8 +41,10 @@ public class Game {
 		
 		renderMaster.addModel("testTer");
 		
+		Camera cam = ((DebugRenderMaster)renderMaster).getCamera();
+		
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
-		triforce.setPosition(new Vector3f(0,-0.4f,0));
+		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
 		this.soundMaster.execute();
 		
@@ -53,7 +57,13 @@ public class Game {
 
 
 			elec360power += 1;
-			((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
+			//((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
+			//triforce.setRotation(new Vector3f(0,(elec360power/9000f),0));
+			//triforce.setPosition(new Vector3f(0, elec360power/9000f, 0));
+			
+			cam.setPosition(new Vector3f(	10f*(float)Math.sin(elec360power/600f),
+											5f,
+											10f*(float)Math.cos(elec360power/600f)));
 			
 			
 			renderMaster.draw();

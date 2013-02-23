@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
 	protected Vector3f position;
+	protected Vector3f target;
 	protected Vector3f direction;
 	
 	protected Matrix4f viewMat, projection;
@@ -25,8 +26,15 @@ public class Camera {
 		this.projection = buildPerspectiveMatrix(this.fov, this.aspectRatio, near, far);
 		
 		
-		
+		this.target = target;
 		this.direction = new Vector3f();
+		Vector3f.sub(target, position, this.direction);
+	}
+	
+	public void setPosition(Vector3f pos)
+	{
+		this.position = pos;
+		this.viewMat = buildViewMatrix(position, target);
 		Vector3f.sub(target, position, this.direction);
 	}
 	
@@ -62,8 +70,6 @@ public class Camera {
 	
 	Matrix4f buildViewMatrix(Vector3f camPos, Vector3f target)
 	{
-		camPos = new Vector3f(0,3,5);
-		target = new Vector3f(0,0,0);
 		
 		
 		Vector3f dir,up,right;

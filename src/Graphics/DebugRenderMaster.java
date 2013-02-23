@@ -43,6 +43,11 @@ public class DebugRenderMaster implements RenderMaster {
 		this.graphicsComponents.remove(g);
 	}
 	
+	public Camera getCamera()
+	{
+		return this.cam;
+		
+	}
 	
 	public GraphicsComponent addModel(String id)
 	{

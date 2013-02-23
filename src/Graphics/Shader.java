@@ -95,18 +95,19 @@ public class Shader {
 		Matrix4f camVP = new Matrix4f();
 		
 		
+//		Matrix4f.mul(cam.projection, cam.viewMat, this.viewProjection);
+
+		/*
 		camProj.transpose();
 		camView.transpose();
 		
-		
-		
-		
-		
-		
-//		Matrix4f.mul(cam.projection, cam.viewMat, this.viewProjection);
 		Matrix4f.mul(camProj, camView, camVP);
 			
 		camVP.transpose();
+		*/
+		
+		camVP = Matrix4f.mul(camView, camProj, null);
+		
 		this.viewProjection = camVP;
 		
 		//TODO: WHY THE FUCK DOES THIS WORK?

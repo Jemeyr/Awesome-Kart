@@ -14,7 +14,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	
 	protected DebugMesh mesh;
 	private Vector3f position;
-	private Quaternion rotation;
+	private Vector3f rotation;//yaw pitch roll
 	
 	private Matrix4f modelMat;
 	
@@ -28,9 +28,8 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		//load the mesh
 		
 		this.position = new Vector3f(0f,0f,0f);
+		this.rotation = new Vector3f();
 		
-		this.rotation = new Quaternion();
-		rotation.setIdentity();
 		
 		this.subComponents = new LinkedList<DebugGraphicsComponent>();
 		
@@ -46,9 +45,9 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		this.position = position;
 	}
 	
-	public void setRotation(Quaternion quat)
+	public void setRotation(Vector3f rot)
 	{
-		this.rotation = quat;
+		this.rotation = rot;
 	}
 	
 	public void updatePosition(Vector3f position)
@@ -56,29 +55,41 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		Vector3f.add(this.position, position, this.position);
 	}
 	
-	public void updateRotation(Quaternion quat)
+	public void updateRotation(Vector3f rot)
 	{
-		Quaternion.mul(this.rotation, quat, this.rotation);
+		Vector3f.add(this.rotation, rot, this.rotation);
 	}
 	
 	protected Matrix4f getModelMat()
 	{
-		Matrix4f temp = new Matrix4f();
-		temp.setIdentity();
-		
-		temp.translate(position);
-		temp.transpose();
-		return temp;
+		update();
+		return this.modelMat;
 	}
 	
 	public void update()
 	{
-		Matrix4f.setIdentity(modelMat);
-		modelMat.translate(this.position);
 		
-		Matrix4f rot = quat2mat(this.rotation);
+		Matrix4f temp = new Matrix4f();
+		temp.rotate(this.rotation.x, new Vector3f(0,1,0));
+		temp.rotate(this.rotation.y, new Vector3f(1,0,0));
+		temp.rotate(this.rotation.z, new Vector3f(0,0,1));
 		
-		Matrix4f.mul(rot, modelMat, rot);
+		//System.out.println("temp is");
+		//System.out.println(temp);
+		
+
+		temp.m03 += position.x;
+		temp.m13 += position.y;
+		temp.m23 += position.z;
+		
+		
+		//System.out.println("temp is now ");
+		//System.out.println(temp);
+		
+		
+		this.modelMat = temp;
+
+		
 		
 		for(DebugGraphicsComponent gc : subComponents)
 		{
@@ -102,39 +113,6 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	}
 	
 	
-	
-	//put this in a util class maybe?
-	private static Matrix4f quat2mat(Quaternion q)
-	{
-		Matrix4f ret = new Matrix4f();
-		float x = q.x;
-		float y = q.y;
-		float z = q.z;
-		float w = q.w;
-		
-		ret.m00 = 1 - 2 * (y*y - z*z); 
-		ret.m01 = 2 * (x*y + w*z);
-		ret.m02 = 2 * (x*z - w*y);
-		ret.m03 = 0;
-		
-		ret.m10 = 2 * (x*y - w*z);
-		ret.m11 = 1 - 2 * (x*x - z*z);
-		ret.m12 = 2 * (y*z + w*x);
-		ret.m13 = 0;
-		
-		ret.m20 = 2 * (x*z + w*y);
-		ret.m21 = 2 * (y*z - w*x);
-		ret.m22 = 1 - 2 * (x*x - y*y);
-		ret.m23 = 0;
-		
-		ret.m30 = 0;
-		ret.m31 = 0;
-		ret.m32 = 0;
-		ret.m33 = 1;
-		
-		
-		return ret;
-	}
 	
 	
 }
