@@ -124,14 +124,23 @@ public class Shader {
 			return;
 		}
 		
-		Matrix4f transform = new Matrix4f();
-		transform.setIdentity();
-		
-		
-		Matrix4f.mul(gc.getModelMat(), viewProjection, transform);
 		//Matrix4f.mul(viewProjection, gc.getModelMat(), transform);
-		setTransform(transform);
+	
+		bindDraw(gc);
+		for(DebugGraphicsComponent sgc : gc.subComponents)
+		{
+			bindDraw(sgc);
+		}
+		
+		
+	}
 
+	private void bindDraw(DebugGraphicsComponent gc)
+	{
+		Matrix4f transform = new Matrix4f();
+		Matrix4f.mul(gc.getModelMat(), viewProjection, transform);
+		
+		setTransform(transform);
 		
 		glBindVertexArray(gc.mesh.vao);
 
@@ -142,8 +151,9 @@ public class Shader {
         glBindTexture(GL_TEXTURE_2D, 0);
 
 		glBindVertexArray(0);
-	
+
 	}
+	
 	
 	public int loadShader(String fileName, int shaderType)
 	{

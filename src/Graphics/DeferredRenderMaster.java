@@ -36,4 +36,10 @@ public class DeferredRenderMaster implements RenderMaster {
 		
 	}
 
+	@Override
+	public GraphicsComponent addSubModel(String s) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

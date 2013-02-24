@@ -14,6 +14,8 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	private Vector3f position;
 	private Vector3f rotation;//yaw pitch roll
 	
+	private Matrix4f parentMat;
+	
 	private Matrix4f modelMat;
 	
 	protected List<DebugGraphicsComponent> subComponents;
@@ -34,6 +36,9 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		//set the model matrix
 		this.modelMat = new Matrix4f(); 
 		modelMat.setIdentity();
+		
+		this.parentMat = new Matrix4f(); 
+		parentMat.setIdentity();
 	}
 	
 	
@@ -41,31 +46,41 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	public void setPosition(Vector3f position)
 	{
 		this.position = position;
+		update();
 	}
 	
 	public void setRotation(Vector3f rot)
 	{
 		this.rotation = rot;
+		update();
 	}
 	
 	public void updatePosition(Vector3f position)
 	{
 		Vector3f.add(this.position, position, this.position);
+		update();
 	}
 	
 	public void updateRotation(Vector3f rot)
 	{
 		Vector3f.add(this.rotation, rot, this.rotation);
+		update();
 	}
 	
 	protected Matrix4f getModelMat()
 	{
-		update();
 		return this.modelMat;
+	}
+	
+	public void setParentMat(Matrix4f parent)
+	{
+		this.parentMat = parent;
 	}
 	
 	public void update()
 	{
+		
+		
 		Matrix4f trans = new Matrix4f();
 		trans.setIdentity();
 		
@@ -83,9 +98,22 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		yaw.rotate(-rotation.y, new Vector3f(0,1,0));
 		roll.rotate(rotation.z, new Vector3f(0,0,1));
 		
-		this.modelMat = Matrix4f.mul(yaw, trans, null);
-		Matrix4f.mul(pitch, modelMat, modelMat);
-		Matrix4f.mul(roll, modelMat, modelMat);
+		
+		
+		this.modelMat.setIdentity();
+		
+		
+		
+		Matrix4f.mul(modelMat, yaw, modelMat);
+		Matrix4f.mul(modelMat, pitch, modelMat);
+		Matrix4f.mul(modelMat, roll, modelMat);
+		
+
+		Matrix4f.mul(modelMat, trans, modelMat);
+		
+		//parent matrix
+		Matrix4f.mul(modelMat, parentMat, modelMat);
+		
 		
 		
 		
@@ -93,7 +121,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		
 		for(DebugGraphicsComponent gc : subComponents)
 		{
-			gc.update();
+			gc.setParentMat(this.modelMat);
 		}
 	}
 	
@@ -110,6 +138,18 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		}
 		
 		return ret;
+	}
+
+
+
+	
+	public GraphicsComponent addSubComponent(String s, RenderMaster r) {
+		
+		GraphicsComponent gc = r.addSubModel(s);
+		
+		this.subComponents.add((DebugGraphicsComponent)gc);
+		
+		return gc;
 	}
 	
 	

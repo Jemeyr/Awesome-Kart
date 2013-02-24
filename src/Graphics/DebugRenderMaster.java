@@ -123,5 +123,23 @@ public class DebugRenderMaster implements RenderMaster {
 		
 	}
 
+	
+	public GraphicsComponent addSubModel(String id) 
+	{
+		
+
+		for(DebugMesh dm : loadedModels)
+		{
+			if(dm.id.equals(id))
+			{
+				DebugGraphicsComponent ret = new DebugGraphicsComponent(dm);
+				return ret;//is not added to the list of rendering models, implicitly rendered by supermodel
+			}
+		}
+		
+		//you haven't loaded the model
+		return null;
+	}
+
 
 }
