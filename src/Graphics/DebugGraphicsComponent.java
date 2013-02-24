@@ -122,6 +122,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		for(DebugGraphicsComponent gc : subComponents)
 		{
 			gc.setParentMat(this.modelMat);
+			gc.update();
 		}
 	}
 	

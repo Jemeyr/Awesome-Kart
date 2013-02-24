@@ -12,7 +12,7 @@ uniform sampler2D tex;
 
 void main() // 
 {
-	float normWeight = 0.75;
+	float normWeight = 0.5;
 	float light = 1.0 - normWeight;
 	
 	//crappy psuedolighting
