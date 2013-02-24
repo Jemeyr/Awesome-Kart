@@ -39,6 +39,7 @@ public class Game {
 		renderMaster.loadModel("testTer");
 		renderMaster.loadModel("kart");
 		renderMaster.loadModel("hat");
+		renderMaster.loadModel("wheel");
 		
 		renderMaster.addModel("testTer");
 		
@@ -48,6 +49,12 @@ public class Game {
 		rider.setPosition(new Vector3f(0,4,0));
 		DebugGraphicsComponent hat = (DebugGraphicsComponent) kart.addSubComponent("hat", renderMaster);
 		hat.setPosition(new Vector3f(0,7,0));
+		
+		for(int i = 0;  i < 4; i++)
+		{
+			DebugGraphicsComponent temp = (DebugGraphicsComponent) kart.addSubComponent("wheel", renderMaster);
+			temp.setPosition(new Vector3f(-4 + 3 * i,0.8f,0));
+		}
 		
 		
 		Camera cam = ((DebugRenderMaster)renderMaster).getCamera();
