@@ -52,8 +52,9 @@ public class Game {
 		for(int i = 0; i < 16; i++)
 		{
 			Kart k = new Kart(null, renderMaster);
-			k.position = new Vector3f((i/4) * 30.0f, 0, (i%4) * 30.0f);
+			k.position = new Vector3f((i/4) * 75.0f, 0, (i%4) * 75.0f);
 			karts.add(k);
+			k.rotation = new Vector3f(0,0,i*1234);
 		}
 		
 		Camera cam = ((DebugRenderMaster)renderMaster).getCamera();
@@ -68,9 +69,10 @@ public class Game {
 		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
-
+			int i = 0;
 			for(Kart k : karts)
 			{
+				
 				k.killmenow(elec360power);
 			}
 

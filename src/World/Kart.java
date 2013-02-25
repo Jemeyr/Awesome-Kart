@@ -69,10 +69,11 @@ public class Kart {
 		
 	}
 	
-	public void killmenow(float elec360power)
+	public void killmenow(float e)
 	{
-		graphicsComponent.setPosition(new Vector3f(this.position.x + 10f * (float)Math.cos(elec360power/90f), 0,this.position.z +  10f * (float)Math.sin(elec360power/90f)));
-		graphicsComponent.setRotation(new Vector3f(0,-3.1415f * 0.333f * (elec360power/90f),0));
+		float elec360power = e/90f + rotation.z;
+		graphicsComponent.setPosition(new Vector3f(this.position.x + 10f * (float)Math.cos(elec360power), -22.5f,this.position.z +  10f * (float)Math.sin(elec360power)));
+		graphicsComponent.setRotation(new Vector3f(0,-(elec360power),0));
 		
 	}
 	
