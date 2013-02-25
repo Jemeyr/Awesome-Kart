@@ -1,5 +1,8 @@
 package Game;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -10,6 +13,7 @@ import Graphics.DebugRenderMaster;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
+import World.Kart;
 
 public class Game {
 	
@@ -43,19 +47,14 @@ public class Game {
 		
 		renderMaster.addModel("testTer");
 		
-		DebugGraphicsComponent kart = (DebugGraphicsComponent)renderMaster.addModel("kart");
-		kart.setPosition(new Vector3f(5,0,0));
-		DebugGraphicsComponent rider = (DebugGraphicsComponent) kart.addSubComponent("test", renderMaster);
-		rider.setPosition(new Vector3f(0,4,0));
-		DebugGraphicsComponent hat = (DebugGraphicsComponent) kart.addSubComponent("hat", renderMaster);
-		hat.setPosition(new Vector3f(0,7,0));
+		List<Kart> karts = new LinkedList<Kart>();
 		
-		for(int i = 0;  i < 4; i++)
+		for(int i = 0; i < 16; i++)
 		{
-			DebugGraphicsComponent temp = (DebugGraphicsComponent) kart.addSubComponent("wheel", renderMaster);
-			temp.setPosition(new Vector3f(-4 + 3 * i,0.8f,0));
+			Kart k = new Kart(null, renderMaster);
+			k.position = new Vector3f((i/4) * 30.0f, 0, (i%4) * 30.0f);
+			karts.add(k);
 		}
-		
 		
 		Camera cam = ((DebugRenderMaster)renderMaster).getCamera();
 		
@@ -66,20 +65,21 @@ public class Game {
 		
 		
 		//this.soundMaster.play();
-		
+		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
 
+			for(Kart k : karts)
+			{
+				k.killmenow(elec360power);
+			}
 
 			elec360power += 1;
 			//((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
 			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
 			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 			
-			kart.setRotation(new Vector3f(0,0, 4*3.14f * (elec360power/(1 + Math.abs(4500f - elec360power)))));
-			rider.setRotation(new Vector3f(0, 4*3.14f * (elec360power/(1 + Math.abs(4500f - elec360power))),0));
-			
-			cam.setPosition(new Vector3f(30f*(float)Math.sin(elec360power/600f),10f,30f*(float)Math.cos(elec360power/600f)));
+			//cam.setPosition(new Vector3f(30f*(float)Math.sin(elec360power/600f),10f,30f*(float)Math.cos(elec360power/600f)));
 			
 			
 			renderMaster.draw();
