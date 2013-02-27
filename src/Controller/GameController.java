@@ -1,10 +1,11 @@
 package Controller;
 
+import States.StateContext;
 import net.java.games.input.Event;
 
 public interface GameController {
 	
-	public void handleEvent(Event event);
+	public void handleEvent(Event event, StateContext stateContext);
 	
 	void actionButton();
 	void backButton();

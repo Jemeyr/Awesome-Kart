@@ -1,28 +1,37 @@
 package Game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
 import Controller.ControllerManager;
+import Controller.EventManager;
 import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
+import States.StateContext;
+import World.Kart;
 
 public class Game {
 	
 	private RenderMaster renderMaster;
 	private SoundMaster soundMaster;
-	private ControllerManager 	controllerManager;
-	
+	private ControllerManager 	controllerManager;	
+	private EventManager eventManager;
+	private StateContext stateContext;
 	//a state machine belongs here
 	
 	public Game(){
-		this.renderMaster = RenderMasterFactory.getRenderMaster();
+		//this.renderMaster = RenderMasterFactory.getRenderMaster();
 		this.soundMaster = new SoundMaster();
 		this.controllerManager = new ControllerManager();
+		this.eventManager = new EventManager();
+		this.stateContext = new StateContext();
 	}
 
 	
@@ -69,7 +78,8 @@ public class Game {
 		
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
-
+			controllerManager.poll();
+			eventManager.handleEvents(controllerManager.getEvents(), stateContext);
 
 			elec360power += 1;
 			//((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
@@ -83,8 +93,6 @@ public class Game {
 			
 			
 			renderMaster.draw();
-			
-			controllerManager.poll();
 			
 			if(Display.isCloseRequested())
 			{

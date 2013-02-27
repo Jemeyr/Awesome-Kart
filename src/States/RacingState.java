@@ -11,16 +11,19 @@ public class RacingState implements GameState {
 	@Override
 	public void useActionButton(StateContext stateContext, GameState currentState) {
 		// Delegate to Player/Kart, call some accelerate function on it
+		System.out.println("Accelerating in this direction.");
 	}
 
 	@Override
 	public void useBackButton(StateContext stateContext, GameState currentState) {
 		// Delegate to player/kart, call a brake function.
+		System.out.println("Braking!!!");
 	}
 
 	@Override
 	public void useWeapon(StateContext stateContext, GameState currentState) {
 		// Delegate to player/kart, call use weapon.
+		System.out.println("Fire Homing Torpedoes!");
 	}
 
 	@Override

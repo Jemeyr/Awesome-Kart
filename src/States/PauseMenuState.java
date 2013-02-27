@@ -6,17 +6,21 @@ public class PauseMenuState implements GameState {
 	@Override
 	public void useActionButton(StateContext stateContext, GameState currentState) {
 		// Select the specific item, go to state based on where it is selected
+		System.out.println("The paused A button. Back to race");
+		stateContext.setState(new RacingState());
 	}
 
 	@Override
 	public void useBackButton(StateContext stateContext, GameState currentState) {
 		// Back out of pause menu
-		stateContext.setState(currentState);
+		System.out.println("Returning to Game");
+		stateContext.setState(new RacingState());
 	}
 
 	@Override
 	public void useWeapon(StateContext stateContext, GameState currentState) {
 		// Do Nothing probably
+		System.out.println("I do nothing");
 	}
 
 	@Override
