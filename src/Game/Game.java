@@ -48,10 +48,18 @@ public class Game {
 		renderMaster.addModel("testTer");
 		
 		List<Kart> karts = new LinkedList<Kart>();
+		Kart pk = null;
 		
 		for(int i = 0; i < 16; i++)
 		{
+			
 			Kart k = new Kart(null, renderMaster);
+			
+			if(pk == null)
+			{
+				pk = k;
+			}
+			
 			k.position = new Vector3f((i/4) * 75.0f, 0, (i%4) * 75.0f);
 			karts.add(k);
 			k.rotation = new Vector3f(0,0,i*1234);
@@ -81,7 +89,9 @@ public class Game {
 			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
 			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 			
-			//cam.setPosition(new Vector3f(30f*(float)Math.sin(elec360power/600f),10f,30f*(float)Math.cos(elec360power/600f)));
+	//		Vector3f campos = new Vector3f()
+			
+			cam.setPosition(new Vector3f(100f*(float)Math.sin(elec360power/600f),50f,100f*(float)Math.cos(elec360power/600f)));
 			
 			
 			renderMaster.draw();
