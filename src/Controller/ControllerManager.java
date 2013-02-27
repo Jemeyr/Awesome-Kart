@@ -12,36 +12,39 @@ import net.java.games.input.EventQueue;
 
 public class ControllerManager {
 
-	private StateContext stateContext;
 	private HashMap<Controller, GameController> gameControllers;
+	private HashMap<Event, GameController> eventMappings;
 	
 	public ControllerManager() {
-		this.stateContext = new StateContext();
 		this.gameControllers = new HashMap<Controller, GameController>();
-		addController();
 	}
 	
-	public void addController() {
+	public void addController(GameController gameController) {
 		if(ControllerEnvironment.getDefaultEnvironment().getControllers().length > gameControllers.size()){
-			GameController newController = new XboxController();
 			for(Controller c : ControllerEnvironment.getDefaultEnvironment().getControllers()){
 				if(gameControllers.get(c) == null){
-					gameControllers.put(c, newController);
+					gameControllers.put(c, gameController);
 				}
 			}
 		}
 	}
 	
 	public void poll(){
+		eventMappings = new HashMap<Event, GameController>();
 		for(Map.Entry<Controller, GameController> entry : getControllersMap().entrySet()){
 			Controller c = entry.getKey();
 			c.poll();
 			EventQueue eq = c.getEventQueue();
 			Event event = new Event();
 			if(eq.getNextEvent(event)){
-				entry.getValue().handleEvent(event);
+				//System.out.println("event name " + event.getComponent() + " event value " + event.getValue());
+				eventMappings.put(event, entry.getValue());
 			}
 		}
+	}
+	
+	public HashMap<Event, GameController> getEvents(){
+		return eventMappings;
 	}
 	
 	public HashMap<Controller, GameController> getControllersMap(){

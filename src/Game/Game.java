@@ -16,20 +16,24 @@ import Graphics.GraphicsComponent;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
+import States.StateContext;
 import World.Kart;
 
 public class Game {
 	
 	private RenderMaster renderMaster;
 	private SoundMaster soundMaster;
-	private ControllerManager 	controllerManager;
-	
+	private ControllerManager 	controllerManager;	
+	//private EventManager eventManager;
+	private StateContext stateContext;
 	//a state machine belongs here
 	
 	public Game(){
 		this.renderMaster = RenderMasterFactory.getRenderMaster();
 		this.soundMaster = new SoundMaster();
 		this.controllerManager = new ControllerManager();
+		//this.eventManager = new EventManager();
+		this.stateContext = new StateContext();
 	}
 
 	
@@ -78,18 +82,22 @@ public class Game {
 		
 		this.soundMaster.execute();
 		
+		long startTime = System.currentTimeMillis();
 		
-
 		
 		//this.soundMaster.play();
 		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
-			
+
+			controllerManager.poll();
+			//eventManager.handleEvents(controllerManager.getEvents(), stateContext);
+	
 			for(Kart k : karts)
 			{ 
 				k.killmenow(elec360power);
 			}
+
 
 			elec360power += 1;
 			//((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
@@ -112,8 +120,6 @@ public class Game {
 			
 			renderMaster.draw();
 			
-			controllerManager.poll();
-			
 			if(Display.isCloseRequested())
 			{
 				elec360power = 9001;
@@ -122,7 +128,9 @@ public class Game {
 		}
 		System.out.println("CONTI'S ELEC 360 POWER LEVEL IS OVER 9000!!!!!!!!!!!");
 		
-		
+		float totalTime = (System.currentTimeMillis() - startTime)/1000f;
+		System.out.println(totalTime + " total seconds for 9001 frames");
+		System.out.println("fps ave: " + 9001.0f/totalTime);
 	}
 	
 }

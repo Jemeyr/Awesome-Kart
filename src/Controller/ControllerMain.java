@@ -1,5 +1,6 @@
 package Controller;
 
+import States.StateContext;
 import net.java.games.input.*;
 
 /**
@@ -9,16 +10,14 @@ import net.java.games.input.*;
 public class ControllerMain {
 
 		public static void main(String[] args) throws Exception {
+			ControllerManager cm = new ControllerManager();
+			cm.addController(new XboxController());
+			//EventManager em = new EventManager();
+			//StateContext stateContext = new StateContext();
+			
 			for(;;){
-				for(Controller c : ControllerEnvironment.getDefaultEnvironment().getControllers()){
-					c.poll();
-					EventQueue eq = c.getEventQueue();
-					Event event = new Event();
-					if(eq.getNextEvent(event)){
-						System.out.println(event.getComponent());
-						System.out.println(c.getPortNumber());
-					}
-				}
+				cm.poll();
+				//em.handleEvents(cm.getEvents(), stateContext);
 			}
 		}
 }
