@@ -46,8 +46,11 @@ public class Game {
 		renderMaster.loadModel("kart");
 		renderMaster.loadModel("hat");
 		renderMaster.loadModel("wheel");
+		renderMaster.loadModel("aktext");
 		
 		renderMaster.addModel("testTer");
+		renderMaster.addModel("aktext");
+		
 		
 		List<Kart> karts = new LinkedList<Kart>();
 		Kart pk = null;
