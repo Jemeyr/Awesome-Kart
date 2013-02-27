@@ -92,17 +92,17 @@ public class Game {
 			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
 			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 			
+			float latOffset = 17.5f;
+			Vector4f campos = new Vector4f(latOffset,8,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
+			Vector4f targ = new Vector4f(latOffset/2f,1,0,1);		//divide by 2, I don't know why, height one for overhead.
 			
-			Vector4f campos = new Vector4f(12.5f,10,-35, 1);
-			Vector4f targ = new Vector4f(12.5f/2,1,0,1);
+			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
 			
-			Matrix4f model = ((DebugGraphicsComponent)pk.graphicsComponent).DEBUGgetModelMat();
-			Matrix4f.invert(model, model);
-			
-			Matrix4f.transform(model, campos, campos);
-			Matrix4f.transform(model, targ, targ);
+			Matrix4f.transform(modelInv, campos, campos);
+			Matrix4f.transform(modelInv, targ, targ);
 			
 			//cam.setPosition(new Vector3f(100f*(float)Math.sin(elec360power/600f),50f,100f*(float)Math.cos(elec360power/600f)));
+			
 			cam.setPosition(new Vector3f(campos.x, campos.y, campos.z));
 			cam.setTarget(new Vector3f(targ.x, targ.y, targ.z));
 			

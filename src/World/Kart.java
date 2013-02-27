@@ -13,7 +13,7 @@ public class Kart {
 	private static float wheelBackOffset = 3.125f;
 	private static float wheelSideOffset = 4.125f;
 	private static float wheelHeightOffset = 1.8f;
-	private static float wheelRad = 1.8f;
+	//private static float wheelRad = 1.8f;
 	
 	public float killme;
 	public Vector3f killmeVec;
