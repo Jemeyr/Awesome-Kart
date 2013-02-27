@@ -15,6 +15,8 @@ public class Kart {
 	private static float wheelHeightOffset = 1.8f;
 	private static float wheelRad = 1.8f;
 	
+	public float killme;
+	public Vector3f killmeVec;
 	
 	
 	public GameController controller;
@@ -71,9 +73,14 @@ public class Kart {
 	
 	public void killmenow(float e)
 	{
-		float elec360power = e/90f + rotation.z;
-		graphicsComponent.setPosition(new Vector3f(this.position.x + 10f * (float)Math.cos(elec360power), -22.5f,this.position.z +  10f * (float)Math.sin(elec360power)));
-		graphicsComponent.setRotation(new Vector3f(0,-(elec360power),0));
+		float elec360power = e/180f + killme;
+		Vector3f pos = new Vector3f(killmeVec.x + 10f * (float)Math.cos(elec360power), -22.5f,killmeVec.z +  10f * (float)Math.sin(elec360power));
+		Vector3f rot = new Vector3f(0,-(elec360power),0);
+		graphicsComponent.setPosition(pos);
+		graphicsComponent.setRotation(rot);
+		
+		this.position = pos;
+		this.rotation = rot;
 		
 	}
 	

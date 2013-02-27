@@ -38,6 +38,13 @@ public class Camera {
 		Vector3f.sub(target, position, this.direction);
 	}
 	
+	public void setTarget(Vector3f tar)
+	{
+		this.target = tar;
+		this.viewMat = buildViewMatrix(position, target);
+		Vector3f.sub(target, position, this.direction);
+	}
+	
 	public void setFOV(float fov)
 	{
 		this.fov = fov;

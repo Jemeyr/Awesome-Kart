@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import Controller.ControllerManager;
 import Graphics.Camera;
@@ -55,14 +57,14 @@ public class Game {
 			
 			Kart k = new Kart(null, renderMaster);
 			
-			if(pk == null)
+			if(pk == null && i == 10)
 			{
 				pk = k;
 			}
 			
-			k.position = new Vector3f((i/4) * 75.0f, 0, (i%4) * 75.0f);
+			k.killmeVec = new Vector3f((i/4) * 75.0f, 0, (i%4) * 75.0f);
 			karts.add(k);
-			k.rotation = new Vector3f(0,0,i*1234);
+			k.killme = i*1234f;
 		}
 		
 		Camera cam = ((DebugRenderMaster)renderMaster).getCamera();
@@ -73,14 +75,15 @@ public class Game {
 		this.soundMaster.execute();
 		
 		
+
+		
 		//this.soundMaster.play();
 		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
-			int i = 0;
+			
 			for(Kart k : karts)
-			{
-				
+			{ 
 				k.killmenow(elec360power);
 			}
 
@@ -89,10 +92,19 @@ public class Game {
 			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
 			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 			
-	//		Vector3f campos = new Vector3f()
 			
-			cam.setPosition(new Vector3f(100f*(float)Math.sin(elec360power/600f),50f,100f*(float)Math.cos(elec360power/600f)));
+			Vector4f campos = new Vector4f(12.5f,10,-35, 1);
+			Vector4f targ = new Vector4f(12.5f/2,1,0,1);
 			
+			Matrix4f model = ((DebugGraphicsComponent)pk.graphicsComponent).DEBUGgetModelMat();
+			Matrix4f.invert(model, model);
+			
+			Matrix4f.transform(model, campos, campos);
+			Matrix4f.transform(model, targ, targ);
+			
+			//cam.setPosition(new Vector3f(100f*(float)Math.sin(elec360power/600f),50f,100f*(float)Math.cos(elec360power/600f)));
+			cam.setPosition(new Vector3f(campos.x, campos.y, campos.z));
+			cam.setTarget(new Vector3f(targ.x, targ.y, targ.z));
 			
 			renderMaster.draw();
 			
