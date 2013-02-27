@@ -72,6 +72,18 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		return this.modelMat;
 	}
 	
+	public Matrix4f getInvModelMat()
+	{
+		Matrix4f ret = new Matrix4f();
+		Matrix4f.invert(this.modelMat, ret);
+		return ret;
+	}
+	
+	public Matrix4f DEBUGgetModelMat()
+	{
+		return this.modelMat;
+	}
+	
 	public void setParentMat(Matrix4f parent)
 	{
 		this.parentMat = parent;
@@ -125,6 +137,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 			gc.update();
 		}
 	}
+	
 	
 	
 	//recursively finds all

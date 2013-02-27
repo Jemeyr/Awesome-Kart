@@ -129,7 +129,7 @@ public class Shader {
 		bindDraw(gc);
 		for(DebugGraphicsComponent sgc : gc.subComponents)
 		{
-			bindDraw(sgc);
+			draw(sgc);
 		}
 		
 		

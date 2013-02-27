@@ -1,16 +1,19 @@
 package Game;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import Controller.ControllerManager;
 import Controller.EventManager;
 import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
+import Graphics.GraphicsComponent;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
@@ -27,7 +30,7 @@ public class Game {
 	//a state machine belongs here
 	
 	public Game(){
-		//this.renderMaster = RenderMasterFactory.getRenderMaster();
+		this.renderMaster = RenderMasterFactory.getRenderMaster();
 		this.soundMaster = new SoundMaster();
 		this.controllerManager = new ControllerManager();
 		this.eventManager = new EventManager();
@@ -49,22 +52,29 @@ public class Game {
 		renderMaster.loadModel("kart");
 		renderMaster.loadModel("hat");
 		renderMaster.loadModel("wheel");
+		renderMaster.loadModel("aktext");
 		
 		renderMaster.addModel("testTer");
+		GraphicsComponent text = renderMaster.addModel("aktext");
+		text.setPosition(new Vector3f(-200, 40, 100));
 		
-		DebugGraphicsComponent kart = (DebugGraphicsComponent)renderMaster.addModel("kart");
-		kart.setPosition(new Vector3f(5,0,0));
-		DebugGraphicsComponent rider = (DebugGraphicsComponent) kart.addSubComponent("test", renderMaster);
-		rider.setPosition(new Vector3f(0,4,0));
-		DebugGraphicsComponent hat = (DebugGraphicsComponent) kart.addSubComponent("hat", renderMaster);
-		hat.setPosition(new Vector3f(0,7,0));
+		List<Kart> karts = new LinkedList<Kart>();
+		Kart pk = null;
 		
-		for(int i = 0;  i < 4; i++)
+		for(int i = 0; i < 16; i++)
 		{
-			DebugGraphicsComponent temp = (DebugGraphicsComponent) kart.addSubComponent("wheel", renderMaster);
-			temp.setPosition(new Vector3f(-4 + 3 * i,0.8f,0));
+			
+			Kart k = new Kart(null, renderMaster);
+			
+			if(pk == null && i == 10)
+			{
+				pk = k;
+			}
+			
+			k.killmeVec = new Vector3f((i/4) * 75.0f, 0, (i%4) * 75.0f);
+			karts.add(k);
+			k.killme = i*1234f;
 		}
-		
 		
 		Camera cam = ((DebugRenderMaster)renderMaster).getCamera();
 		
@@ -73,24 +83,41 @@ public class Game {
 		
 		this.soundMaster.execute();
 		
+		long startTime = System.currentTimeMillis();
+		
 		
 		//this.soundMaster.play();
-		
+		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
+
 			controllerManager.poll();
 			eventManager.handleEvents(controllerManager.getEvents(), stateContext);
+	
+			for(Kart k : karts)
+			{ 
+				k.killmenow(elec360power);
+			}
+
 
 			elec360power += 1;
 			//((DebugRenderMaster)renderMaster).cam.setFOV(10 + elec360power * (80f/9000f));
 			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
 			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 			
-			kart.setRotation(new Vector3f(0,0, 4*3.14f * (elec360power/(1 + Math.abs(4500f - elec360power)))));
-			rider.setRotation(new Vector3f(0, 4*3.14f * (elec360power/(1 + Math.abs(4500f - elec360power))),0));
+			float latOffset = 17.5f;
+			Vector4f campos = new Vector4f(latOffset,8,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
+			Vector4f targ = new Vector4f(latOffset/2f,1,0,1);		//divide by 2, I don't know why, height one for overhead.
 			
-			cam.setPosition(new Vector3f(30f*(float)Math.sin(elec360power/600f),10f,30f*(float)Math.cos(elec360power/600f)));
+			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
 			
+			Matrix4f.transform(modelInv, campos, campos);
+			Matrix4f.transform(modelInv, targ, targ);
+			
+			//cam.setPosition(new Vector3f(100f*(float)Math.sin(elec360power/600f),50f,100f*(float)Math.cos(elec360power/600f)));
+			
+			cam.setPosition(new Vector3f(campos.x, campos.y, campos.z));
+			cam.setTarget(new Vector3f(targ.x, targ.y, targ.z));
 			
 			renderMaster.draw();
 			
@@ -102,7 +129,9 @@ public class Game {
 		}
 		System.out.println("CONTI'S ELEC 360 POWER LEVEL IS OVER 9000!!!!!!!!!!!");
 		
-		
+		float totalTime = (System.currentTimeMillis() - startTime)/1000f;
+		System.out.println(totalTime + " total seconds for 9001 frames");
+		System.out.println("fps ave: " + 9001.0f/totalTime);
 	}
 	
 }
