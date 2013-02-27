@@ -12,6 +12,7 @@ import Controller.ControllerManager;
 import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
+import Graphics.GraphicsComponent;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
@@ -49,8 +50,8 @@ public class Game {
 		renderMaster.loadModel("aktext");
 		
 		renderMaster.addModel("testTer");
-		renderMaster.addModel("aktext");
-		
+		GraphicsComponent text = renderMaster.addModel("aktext");
+		text.setPosition(new Vector3f(-200, 40, 100));
 		
 		List<Kart> karts = new LinkedList<Kart>();
 		Kart pk = null;
