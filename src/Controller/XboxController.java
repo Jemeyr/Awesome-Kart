@@ -9,59 +9,58 @@ public class XboxController implements GameController {
 	private static final String RIGHT_THUMB_BUTTON 	= "Right Thumb";
 	private static final String B_BUTTON 			= "B";
 	private static final String A_BUTTON 			= "A";
-
-	@Override
-	public void actionButton() {
-	}
-
-	@Override
-	public void backButton() {
-	}
-
-	@Override
-	public void weaponButton() {
-	}
-
-	@Override
-	public void pauseButton() {
-	}
-
-	@Override
-	public void moveUp() {
-	}
-
-	@Override
-	public void moveDown() {
-	}
-
-	@Override
-	public void moveLeft() {
-	}
-
-	@Override
-	public void moveRight() {
-	}
-
-	@Override
-	public void moveAnalog() {
+	
+	private int aButtonValue;
+	private int bButtonValue;
+	private int weaponButtonValue;
+	private int pauseButtonValue;
+	
+	public XboxController() {
+		aButtonValue = 0;
+		bButtonValue = 0;
+		weaponButtonValue = 0;
+		pauseButtonValue = 0;
 	}
 
 	@Override
 	public void handleEvent(Event event, StateContext stateContext) {
-		if(event.getValue() > 0){
-			if(A_BUTTON.equals(event.getComponent().toString())){
+		float eventValue = event.getValue();
+		int intEventValue = (int)eventValue;
+		if(A_BUTTON.equals(event.getComponent().toString())){
+			if(intEventValue > 0){
 				stateContext.useActionButton(stateContext);
 			}
-			else if(B_BUTTON.equals(event.getComponent().toString())){
-				stateContext.useBackButton(stateContext);
-			}
-			else if(RIGHT_THUMB_BUTTON.equals(event.getComponent().toString())){
-				stateContext.useWeapon(stateContext);
-			}
-			else if(START_BUTTON.equals(event.getComponent().toString())){
-				stateContext.pause(stateContext);
-			}
+			aButtonValue = intEventValue;
 		}
+		else if(B_BUTTON.equals(event.getComponent().toString())){
+			stateContext.useBackButton(stateContext);
+		}
+		else if(RIGHT_THUMB_BUTTON.equals(event.getComponent().toString())){
+			stateContext.useWeapon(stateContext);
+		}
+		else if(START_BUTTON.equals(event.getComponent().toString())){
+			stateContext.pause(stateContext);
+		}
+	}
+
+	@Override
+	public int getActionValue() {
+		return aButtonValue;
+	}
+
+	@Override
+	public int getBrakeValue() {
+		return bButtonValue;
+	}
+
+	@Override
+	public int getWeaponValue() {
+		return weaponButtonValue;
+	}
+
+	@Override
+	public int getPauseValue() {
+		return pauseButtonValue;
 	}
 
 }

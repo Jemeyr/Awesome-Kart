@@ -8,6 +8,10 @@ public class StateContext {
 		setState(new RacingState());
 	}
 	
+	public GameState getState(){
+		return gameState;
+	}
+	
 	public void setState(final GameState newState){
 		gameState = newState;
 	}

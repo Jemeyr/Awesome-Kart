@@ -7,14 +7,9 @@ public interface GameController {
 	
 	public void handleEvent(Event event, StateContext stateContext);
 	
-	void actionButton();
-	void backButton();
-	void weaponButton();
-	void pauseButton();
-	void moveUp();
-	void moveDown();
-	void moveLeft();
-	void moveRight();
-	void moveAnalog();
+	public int getActionValue();
+	public int getBrakeValue();
+	public int getWeaponValue();
+	public int getPauseValue();
 	
 }
