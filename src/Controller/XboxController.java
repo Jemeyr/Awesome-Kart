@@ -10,6 +10,7 @@ public class XboxController implements GameController {
 	private static final String B_BUTTON 			= "B";
 	private static final String A_BUTTON 			= "A";
 	
+	private int id;
 	private int aButtonValue;
 	private int bButtonValue;
 	private int weaponButtonValue;
@@ -33,14 +34,28 @@ public class XboxController implements GameController {
 			aButtonValue = intEventValue;
 		}
 		else if(B_BUTTON.equals(event.getComponent().toString())){
-			stateContext.useBackButton(stateContext);
+			if(intEventValue > 0){
+				stateContext.useBackButton(stateContext);
+			}
+			bButtonValue = intEventValue;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(event.getComponent().toString())){
-			stateContext.useWeapon(stateContext);
+			if(intEventValue > 0){
+				stateContext.useWeapon(stateContext);
+			}
+			weaponButtonValue = intEventValue;
 		}
 		else if(START_BUTTON.equals(event.getComponent().toString())){
-			stateContext.pause(stateContext);
+			if(intEventValue > 0){
+				stateContext.pause(stateContext);
+			}
+			pauseButtonValue = intEventValue;
 		}
+	}
+	
+	@Override
+	public int getId(){
+		return id;
 	}
 
 	@Override

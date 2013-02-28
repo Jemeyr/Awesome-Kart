@@ -19,14 +19,17 @@ public class ControllerManager {
 		this.gameControllers = new HashMap<Controller, GameController>();
 	}
 	
-	public void addController(GameController gameController) {
+	public GameController addController() {
 		if(ControllerEnvironment.getDefaultEnvironment().getControllers().length > gameControllers.size()){
 			for(Controller c : ControllerEnvironment.getDefaultEnvironment().getControllers()){
 				if(gameControllers.get(c) == null){
+					GameController gameController = new XboxController();
 					gameControllers.put(c, gameController);
+					return gameController;
 				}
 			}
 		}
+		return null;
 	}
 	
 	public void poll(){
@@ -36,7 +39,7 @@ public class ControllerManager {
 			c.poll();
 			EventQueue eq = c.getEventQueue();
 			Event event = new Event();
-			if(eq.getNextEvent(event)){
+			while(eq.getNextEvent(event)){
 				//System.out.println("event name " + event.getComponent() + " event value " + event.getValue());
 				eventMappings.put(event, entry.getValue());
 			}

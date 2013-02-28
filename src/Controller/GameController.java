@@ -7,6 +7,7 @@ public interface GameController {
 	
 	public void handleEvent(Event event, StateContext stateContext);
 	
+	public int getId();
 	public int getActionValue();
 	public int getBrakeValue();
 	public int getWeaponValue();
