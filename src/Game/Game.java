@@ -82,9 +82,10 @@ public class Game {
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
 		this.soundMaster.execute();
+		int musicCode = this.soundMaster.addSound("assets/sound/ACiv Battle 2.wav", false);
 		
 		long startTime = System.currentTimeMillis();
-		
+		this.soundMaster.playSound(musicCode);
 		
 		//this.soundMaster.play();
 		cam.setPosition(new Vector3f(-50,40,-30));
@@ -123,10 +124,12 @@ public class Game {
 			
 			if(Display.isCloseRequested())
 			{
+				
 				elec360power = 9001;
 			}
 
 		}
+		this.soundMaster.cleanUpALData();
 		System.out.println("CONTI'S ELEC 360 POWER LEVEL IS OVER 9000!!!!!!!!!!!");
 		
 		float totalTime = (System.currentTimeMillis() - startTime)/1000f;
