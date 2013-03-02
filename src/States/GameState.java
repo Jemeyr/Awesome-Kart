@@ -10,6 +10,5 @@ public interface GameState {
 	void moveDown(final StateContext stateContext, final GameState currentState);
 	void moveLeft(final StateContext stateContext, final GameState currentState);
 	void moveRight(final StateContext stateContext, final GameState currentState);
-	void moveAnalog(final StateContext stateContext, final GameState currentState); // For Xbox Controllers
 	
 }

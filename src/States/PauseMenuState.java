@@ -52,9 +52,4 @@ public class PauseMenuState implements GameState {
 
 	}
 
-	@Override
-	public void moveAnalog(StateContext stateContext, GameState currentState) {
-		// Would go up or down based on direction
-	}
-
 }

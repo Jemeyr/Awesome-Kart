@@ -5,6 +5,12 @@ import States.StateContext;
 
 public class KeyboardController implements GameController {
 	
+	private int id;
+	
+	public KeyboardController(int id){
+		this.id = id;
+	}
+	
 	@Override
 	public void handleEvent(Event event, StateContext stateContext) {	
 
@@ -12,8 +18,7 @@ public class KeyboardController implements GameController {
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return id;
 	}
 	
 	@Override
@@ -37,6 +42,11 @@ public class KeyboardController implements GameController {
 	@Override
 	public int getPauseValue() {
 		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public float getLeftRightValue(){
 		return 0;
 	}
 

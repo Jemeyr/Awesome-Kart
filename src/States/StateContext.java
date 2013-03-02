@@ -47,8 +47,4 @@ public class StateContext {
 	public void moveRight(StateContext stateContext) {
 		gameState.moveRight(stateContext, gameState);
 	}
-
-	public void moveAnalog(StateContext stateContext) {
-		gameState.moveAnalog(stateContext, gameState);
-	}
 }

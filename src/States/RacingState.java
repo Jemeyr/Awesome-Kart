@@ -44,17 +44,12 @@ public class RacingState implements GameState {
 
 	@Override
 	public void moveLeft(StateContext stateContext, GameState currentState) {
-		// TODO Auto-generated method stub
+		System.out.println("Turning left!");
 	}
 
 	@Override
 	public void moveRight(StateContext stateContext, GameState currentState) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void moveAnalog(StateContext stateContext, GameState currentState) {
-		// TODO Auto-generated method stub
+		System.out.println("Turning Right!");
 	}
 	
 }
