@@ -14,5 +14,6 @@ public interface GameController {
 	public int getPauseValue();			// Button which pauses the game
 	public float getLeftRightValue();	// Determines their steering position in terms of x axis
 										// Note: From -2 to to 2, as keyboard has value 2.0 for held key, 1.0 for pressed
-	
+	public float getUpDownValue();		// Determines up/down, probably just used for selecting in menus and shit
+										// Same as above. 2 is up, -2 is down
 }

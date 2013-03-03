@@ -46,7 +46,12 @@ public class KeyboardController implements GameController {
 	}
 	
 	@Override
-	public float getLeftRightValue(){
+	public float getLeftRightValue() {
+		return 0;
+	}
+	
+	@Override
+	public float getUpDownValue() {
 		return 0;
 	}
 
