@@ -11,7 +11,7 @@ public class ControllerMain {
 
 		public static void main(String[] args) throws Exception {
 			ControllerManager cm = new ControllerManager();
-			GameController gameController = cm.addController(ControllerType.XBOX);
+			GameController gameController = cm.addController(ControllerType.KEYBOARD);
 			EventManager em = new EventManager();
 			StateContext stateContext = new StateContext();
 			

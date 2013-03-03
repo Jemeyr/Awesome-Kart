@@ -51,7 +51,7 @@ public class ControllerManager {
 			EventQueue eq = c.getEventQueue();
 			Event event = new Event();
 			while(eq.getNextEvent(event)){
-				//System.out.println("event name bunkai " + event.getComponent() + " event value " + event.getValue());
+				System.out.println("event name bunkai " + event.getComponent() + " event value " + event.getValue());
 				eventMappings.put(event, entry.getValue());
 			}
 		}
