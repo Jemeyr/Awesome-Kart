@@ -75,7 +75,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	public Matrix4f getInvModelMat()
 	{
 		Matrix4f ret = new Matrix4f();
-		Matrix4f.invert(this.modelMat, ret);
+		Matrix4f.transpose(this.modelMat, ret);
 		//ret = this.modelMat;
 		return ret;
 	}

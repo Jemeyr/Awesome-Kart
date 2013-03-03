@@ -121,9 +121,8 @@ public class Game {
 			text.setRotation(new Vector3f(0,elec360power/1500f, 0));
 			
 			//set the camera position
-			float latOffset = 10f;
-			Vector4f campos = new Vector4f(latOffset,8,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
-			Vector4f targ = new Vector4f(latOffset,1,0.00005f,1);		//divide by 2, I don't know why, height one for overhead.
+			Vector4f campos = new Vector4f(0,35,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
+			Vector4f targ = new Vector4f(0,1,0,1);		//divide by 2, I don't know why, height one for overhead.
 			
 			
 			//System.out.println("campos " + campos + "\ntarg" + targ);
