@@ -120,5 +120,16 @@ public class KeyboardController implements GameController {
 	public float getUpDownValue() {
 		return (upValue >= downValue) ? upValue : downValue * -1;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof KeyboardController)){
+			return false;
+		}
+		
+		KeyboardController otherController = (KeyboardController)other;
+		return (otherController.getId() == this.getId());
+	}
+
 
 }

@@ -1,6 +1,7 @@
 package Controller;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import net.java.games.input.EventQueue;
 public class ControllerManager {
 
 	private HashMap<Controller, GameController> gameControllers;
-	private HashMap<Event, GameController> eventMappings;
+	private HashSet<GameEvent> gameEvents;
 	private int currentId;
 	
 	public ControllerManager() {
@@ -44,7 +45,7 @@ public class ControllerManager {
 	}
 	
 	public void poll(){
-		eventMappings = new HashMap<Event, GameController>();
+		gameEvents = new HashSet<GameEvent>();
 		for(Map.Entry<Controller, GameController> entry : getControllersMap().entrySet()){
 			Controller c = entry.getKey();
 			c.poll();
@@ -52,13 +53,13 @@ public class ControllerManager {
 			Event event = new Event();
 			while(eq.getNextEvent(event)){
 				//System.out.println("event name bunkai " + event.getComponent() + " event value " + event.getValue());
-				eventMappings.put(event, entry.getValue());
+				gameEvents.add(new GameEvent(event, entry.getValue()));
 			}
 		}
 	}
 	
-	public HashMap<Event, GameController> getEvents(){
-		return eventMappings;
+	public HashSet<GameEvent> getEvents(){
+		return gameEvents;
 	}
 	
 	public HashMap<Controller, GameController> getControllersMap(){

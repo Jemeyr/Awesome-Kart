@@ -117,5 +117,15 @@ public class XboxController implements GameController {
 	public float getUpDownValue() {
 		return upDownValue;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof XboxController)){
+			return false;
+		}
+		
+		XboxController otherController = (XboxController)other;
+		return (otherController.getId() == this.getId());
+	}
 
 }

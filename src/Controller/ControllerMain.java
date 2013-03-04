@@ -14,7 +14,6 @@ public class ControllerMain {
 			GameController gameController = cm.addController(ControllerType.KEYBOARD);
 			EventManager em = new EventManager();
 			StateContext stateContext = new StateContext();
-			
 			for(;;){
 				cm.poll();
 				em.handleEvents(cm.getEvents(), stateContext);
