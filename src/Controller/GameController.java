@@ -9,7 +9,7 @@ public interface GameController {
 	
 	public int getId();					// Unique id of the controller
 	public int getActionValue();		// Action button, like go, select, etc..
-	public int getBrakeValue();			// Back button which will also be brake/reverse
+	public int getBackValue();			// Back button which will also be brake/reverse
 	public int getWeaponValue();		// Button which triggers weapon usage
 	public int getPauseValue();			// Button which pauses the game
 	public float getLeftRightValue();	// Determines their steering position in terms of x axis

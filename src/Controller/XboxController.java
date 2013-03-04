@@ -92,7 +92,7 @@ public class XboxController implements GameController {
 	}
 
 	@Override
-	public int getBrakeValue() {
+	public int getBackValue() {
 		return bButtonValue;
 	}
 
