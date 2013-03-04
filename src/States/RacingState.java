@@ -29,17 +29,17 @@ public class RacingState implements GameState {
 	@Override
 	public void pause(StateContext stateContext, GameState currentState) {
 		System.out.println("About to pause the race.");
-		stateContext.setState(new PauseMenuState());
+		stateContext.setState(StateContext.PAUSE_MENU_STATE);
 	}
 
 	@Override
 	public void moveUp(StateContext stateContext, GameState currentState) {
-		// TODO Auto-generated method stub
+		System.out.println("Moving up");
 	}
 
 	@Override
 	public void moveDown(StateContext stateContext, GameState currentState) {
-		// TODO Auto-generated method stub
+		System.out.println("Moving down");
 	}
 
 	@Override

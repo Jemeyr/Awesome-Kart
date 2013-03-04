@@ -14,7 +14,7 @@ public class PauseMenuState implements GameState {
 	public void useBackButton(StateContext stateContext, GameState currentState) {
 		// Back out of pause menu
 		System.out.println("Returning to Game");
-		stateContext.setState(new RacingState());
+		stateContext.setState(StateContext.RACING_STATE);
 	}
 
 	@Override
@@ -27,12 +27,14 @@ public class PauseMenuState implements GameState {
 	public void pause(StateContext stateContext, GameState currentState) {
 		// Effectively unpauses the game
 		System.out.println("In the Pause Menu, going back to Race");
-		stateContext.setState(currentState);
+		stateContext.setState(StateContext.RACING_STATE);
 	}
 
 	@Override
 	public void moveUp(StateContext stateContext, GameState currentState) {
 		// Select the next up box, wraps around to bottom?
+		// This state should have some idea of what the "active item" in the menu
+		// so that it can act accordingly on it
 
 	}
 

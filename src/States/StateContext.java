@@ -2,6 +2,9 @@ package States;
 
 public class StateContext {
 	
+	protected static final GameState RACING_STATE 		= new RacingState();
+	protected static final GameState PAUSE_MENU_STATE 	= new PauseMenuState();
+	
 	private GameState gameState;
 	
 	public StateContext() {

@@ -12,6 +12,8 @@ public class XboxController implements GameController {
 	private static final String JOYSTICK_X_DIR		= "x";
 	private static final String JOYSTICK_Y_DIR		= "y";
 	
+	private static final int 	MULTIPLIER			= 2; // Keyboard has 1 as pressed, 2 as held, this maps it from Xbox
+	
 	private int id;
 	private int aButtonValue;
 	private int bButtonValue;
@@ -39,28 +41,28 @@ public class XboxController implements GameController {
 			if(intEventValue > 0){
 				stateContext.useActionButton(stateContext);
 			}
-			aButtonValue = intEventValue;
+			aButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(B_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
 				stateContext.useBackButton(stateContext);
 			}
-			bButtonValue = intEventValue;
+			bButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
 				stateContext.useWeapon(stateContext);
 			}
-			weaponButtonValue = intEventValue;
+			weaponButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(START_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
 				stateContext.pause(stateContext);
 			}
-			pauseButtonValue = intEventValue;
+			pauseButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(JOYSTICK_X_DIR.equals(eventComponentString)){
-			int multiplier = 2;
+			int multiplier = MULTIPLIER;
 			if(eventValue < 0){
 				stateContext.moveLeft(stateContext);
 				multiplier *= -1;
@@ -70,7 +72,7 @@ public class XboxController implements GameController {
 			leftRightValue = eventValue * multiplier;
 		}
 		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
-			int multiplier = 2;
+			int multiplier = MULTIPLIER;
 			if(eventValue < 0){
 				stateContext.moveDown(stateContext);
 				multiplier *= -1;
