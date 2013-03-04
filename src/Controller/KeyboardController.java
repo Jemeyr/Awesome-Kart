@@ -40,7 +40,15 @@ public class KeyboardController implements GameController {
 	
 	@Override
 	public void handleEvent(Event event, StateContext stateContext) {
-		
+		float eventValue = event.getValue();
+		int intEventValue = (int)eventValue;
+		String eventComponentString = event.getComponent().toString();
+		if(ACTION_KEY.equals(eventComponentString)){
+			if (intEventValue == 1) {
+				stateContext.useActionButton(stateContext);
+			}
+			actionValue = intEventValue;
+		}
 	}
 
 	@Override
