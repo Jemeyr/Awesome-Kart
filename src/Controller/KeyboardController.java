@@ -1,6 +1,7 @@
 package Controller;
 
 import net.java.games.input.Event;
+import Graphics.RenderMaster;
 import States.StateContext;
 
 public class KeyboardController implements GameController {
@@ -39,48 +40,48 @@ public class KeyboardController implements GameController {
 	}
 	
 	@Override
-	public void handleEvent(Event event, StateContext stateContext) {
+	public void handleEvent(Event event, StateContext stateContext, RenderMaster renderMaster) {
 		float eventValue = event.getValue();
 		int intEventValue = (int)eventValue;
 		String eventComponentString = event.getComponent().toString();
 		if(ACTION_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.useActionButton(stateContext);
+				stateContext.useActionButton(stateContext, renderMaster);
 			}
 			actionValue = intEventValue;
 		} else if(BACK_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.useBackButton(stateContext);
+				stateContext.useBackButton(stateContext, renderMaster);
 			}
 			backValue = intEventValue;
 		} else if(WEAPON_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.useWeapon(stateContext);
+				stateContext.useWeapon(stateContext, renderMaster);
 			}
 			weaponValue = intEventValue;
 		} else if(PAUSE_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.pause(stateContext);
+				stateContext.pause(stateContext, renderMaster);
 			}
 			pauseValue = intEventValue;
 		} else if(UP_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.moveUp(stateContext);
+				stateContext.moveUp(stateContext, renderMaster);
 			}
 			upValue = intEventValue;
 		} else if(DOWN_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.moveDown(stateContext);
+				stateContext.moveDown(stateContext, renderMaster);
 			}
 			downValue = intEventValue;
 		} else if(LEFT_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.moveLeft(stateContext);
+				stateContext.moveLeft(stateContext, renderMaster);
 			}
 			leftValue = intEventValue;
 		} else if(RIGHT_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.moveRight(stateContext);
+				stateContext.moveRight(stateContext, renderMaster);
 			}
 			rightValue = intEventValue;
 		}

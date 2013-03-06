@@ -1,11 +1,12 @@
 package Controller;
 
+import Graphics.RenderMaster;
 import States.StateContext;
 import net.java.games.input.Event;
 
 public interface GameController {
 	
-	public void handleEvent(Event event, StateContext stateContext);
+	public void handleEvent(Event event, StateContext stateContext, RenderMaster renderMaster);
 	
 	public int getId();					// Unique id of the controller
 	public int getActionValue();		// Action button, like go, select, etc..

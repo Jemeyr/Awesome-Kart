@@ -16,7 +16,7 @@ public class ControllerMain {
 			StateContext stateContext = new StateContext();
 			for(;;){
 				cm.poll();
-				em.handleEvents(cm.getEvents(), stateContext);
+				em.handleEvents(cm.getEvents(), stateContext, null);
 			}
 		}
 }

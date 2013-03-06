@@ -1,5 +1,6 @@
 package Controller;
 
+import Graphics.RenderMaster;
 import States.StateContext;
 import net.java.games.input.Event;
 
@@ -33,51 +34,51 @@ public class XboxController implements GameController {
 	}
 
 	@Override
-	public void handleEvent(Event event, StateContext stateContext) {
+	public void handleEvent(Event event, StateContext stateContext, RenderMaster renderMaster) {
 		float eventValue = event.getValue();
 		int intEventValue = (int)eventValue;
 		String eventComponentString = event.getComponent().toString();
 		if(A_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.useActionButton(stateContext);
+				stateContext.useActionButton(stateContext, renderMaster);
 			}
 			aButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(B_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.useBackButton(stateContext);
+				stateContext.useBackButton(stateContext, renderMaster);
 			}
 			bButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.useWeapon(stateContext);
+				stateContext.useWeapon(stateContext, renderMaster);
 			}
 			weaponButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(START_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.pause(stateContext);
+				stateContext.pause(stateContext, renderMaster);
 			}
 			pauseButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(JOYSTICK_X_DIR.equals(eventComponentString)){
 			int multiplier = MULTIPLIER;
 			if(eventValue < 0){
-				stateContext.moveLeft(stateContext);
+				stateContext.moveLeft(stateContext, renderMaster);
 				multiplier *= -1;
 			} else if (eventValue > 0){
-				stateContext.moveRight(stateContext);
+				stateContext.moveRight(stateContext, renderMaster);
 			}
 			leftRightValue = eventValue * multiplier;
 		}
 		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
 			int multiplier = MULTIPLIER;
 			if(eventValue < 0){
-				stateContext.moveDown(stateContext);
+				stateContext.moveDown(stateContext, renderMaster);
 				multiplier *= -1;
 			} else if(eventValue > 0){
-				stateContext.moveUp(stateContext);
+				stateContext.moveUp(stateContext, renderMaster);
 			}
 			upDownValue = eventValue * multiplier;
 		}
