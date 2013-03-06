@@ -42,7 +42,7 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	private float aspect;
 	
-	private Shader shader;
+	private Shader normalShader;
 	
 	private int fboId, texId, dbufId;
 	
@@ -52,8 +52,9 @@ public class DebugRenderMaster implements RenderMaster {
         glEnable(GL_DEPTH_TEST);
         glClearColor(0f, 0f, 0f, 1f);
         
-        this.shader = new Shader();
+        this.normalShader = new Shader();
 		
+        
         this.aspect = aspect;
 		
         
@@ -123,17 +124,24 @@ public class DebugRenderMaster implements RenderMaster {
 		//this should draw each object for each view, then draw the view to screen on a quad with a simple shader
     	for(View v : views)
     	{
+    		v.setRenderTarget();
+    		
+    		
 			//how to draw, iterate over all the graphics components and draw their parts
-			shader.begin();
-			shader.useCam(v.cam);
+			normalShader.begin();
+			normalShader.useCam(v.cam);
 			
 			for(DebugGraphicsComponent gc : graphicsComponents)
 			{
-				shader.draw(gc);
+				normalShader.draw(gc);
 			}
 			
 			
-			shader.end();
+			normalShader.end();
+			
+			v.unsetRenderTarget();
+			
+			
     	}
     	
     	Display.sync(60);
@@ -151,7 +159,7 @@ public class DebugRenderMaster implements RenderMaster {
 				return;
 			}
 		}
-		loadedModels.add(new DebugMesh(s,shader));
+		loadedModels.add(new DebugMesh(s,normalShader));
 		
 	}
 
