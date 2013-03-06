@@ -3,9 +3,25 @@ package Graphics;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
+import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.GL_RENDERBUFFER;
+import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
+import static org.lwjgl.opengl.GL30.glBindRenderbuffer;
+import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
+import static org.lwjgl.opengl.GL30.glGenFramebuffers;
+import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
+import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,13 +44,15 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	private Shader shader;
 	
+	private int fboId, texId, dbufId;
+	
 	protected DebugRenderMaster(float aspect)
 	{
 		//freedee
         glEnable(GL_DEPTH_TEST);
         glClearColor(0f, 0f, 0f, 1f);
         
-        shader = new Shader();
+        this.shader = new Shader();
 		
         this.aspect = aspect;
 		
@@ -45,6 +63,26 @@ public class DebugRenderMaster implements RenderMaster {
 		
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
+		
+		
+		this.fboId = glGenFramebuffers();
+		this.texId = glGenTextures();
+		this.dbufId = glGenRenderbuffers();
+		
+		glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+		
+		glBindTexture(GL_TEXTURE_2D, texId);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId);
+	
+		glBindRenderbuffer(GL_RENDERBUFFER, dbufId);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+		
+		//unbind fbo
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
+		
+
 	}
 	
 	public void removeModel(GraphicsComponent g)
@@ -82,7 +120,7 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	public void draw()
 	{
-
+		//this should draw each object for each view, then draw the view to screen on a quad with a simple shader
     	for(View v : views)
     	{
 			//how to draw, iterate over all the graphics components and draw their parts
