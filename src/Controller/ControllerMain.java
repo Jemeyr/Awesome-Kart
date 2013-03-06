@@ -11,13 +11,12 @@ public class ControllerMain {
 
 		public static void main(String[] args) throws Exception {
 			ControllerManager cm = new ControllerManager();
-			cm.addController(new XboxController());
+			GameController gameController = cm.addController(ControllerType.KEYBOARD);
 			EventManager em = new EventManager();
 			StateContext stateContext = new StateContext();
-			
 			for(;;){
 				cm.poll();
-				em.handleEvents(cm.getEvents(), stateContext);
+				em.handleEvents(cm.getEvents(), stateContext, null);
 			}
 		}
 }

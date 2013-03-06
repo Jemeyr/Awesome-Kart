@@ -1,5 +1,6 @@
 package Controller;
 
+import Graphics.RenderMaster;
 import States.StateContext;
 import net.java.games.input.Event;
 
@@ -9,38 +10,83 @@ public class XboxController implements GameController {
 	private static final String RIGHT_THUMB_BUTTON 	= "Right Thumb";
 	private static final String B_BUTTON 			= "B";
 	private static final String A_BUTTON 			= "A";
+	private static final String JOYSTICK_X_DIR		= "x";
+	private static final String JOYSTICK_Y_DIR		= "y";
 	
+	private static final int 	MULTIPLIER			= 2; // Keyboard has 1 as pressed, 2 as held, this maps it from Xbox
+	
+	private int id;
 	private int aButtonValue;
 	private int bButtonValue;
 	private int weaponButtonValue;
 	private int pauseButtonValue;
+	private float leftRightValue;
+	private float upDownValue;
 	
-	public XboxController() {
+	public XboxController(int id) {
 		aButtonValue = 0;
 		bButtonValue = 0;
 		weaponButtonValue = 0;
 		pauseButtonValue = 0;
+		leftRightValue = 0;
+		upDownValue = 0;
+		this.id = id;
 	}
 
 	@Override
-	public void handleEvent(Event event, StateContext stateContext) {
+	public void handleEvent(Event event, StateContext stateContext, RenderMaster renderMaster) {
 		float eventValue = event.getValue();
 		int intEventValue = (int)eventValue;
-		if(A_BUTTON.equals(event.getComponent().toString())){
+		String eventComponentString = event.getComponent().toString();
+		if(A_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.useActionButton(stateContext);
+				stateContext.useActionButton(stateContext, renderMaster);
 			}
-			aButtonValue = intEventValue;
+			aButtonValue = intEventValue * MULTIPLIER;
 		}
-		else if(B_BUTTON.equals(event.getComponent().toString())){
-			stateContext.useBackButton(stateContext);
+		else if(B_BUTTON.equals(eventComponentString)){
+			if(intEventValue > 0){
+				stateContext.useBackButton(stateContext, renderMaster);
+			}
+			bButtonValue = intEventValue * MULTIPLIER;
 		}
-		else if(RIGHT_THUMB_BUTTON.equals(event.getComponent().toString())){
-			stateContext.useWeapon(stateContext);
+		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
+			if(intEventValue > 0){
+				stateContext.useWeapon(stateContext, renderMaster);
+			}
+			weaponButtonValue = intEventValue * MULTIPLIER;
 		}
-		else if(START_BUTTON.equals(event.getComponent().toString())){
-			stateContext.pause(stateContext);
+		else if(START_BUTTON.equals(eventComponentString)){
+			if(intEventValue > 0){
+				stateContext.pause(stateContext, renderMaster);
+			}
+			pauseButtonValue = intEventValue * MULTIPLIER;
 		}
+		else if(JOYSTICK_X_DIR.equals(eventComponentString)){
+			int multiplier = MULTIPLIER;
+			if(eventValue < 0){
+				stateContext.moveLeft(stateContext, renderMaster);
+				multiplier *= -1;
+			} else if (eventValue > 0){
+				stateContext.moveRight(stateContext, renderMaster);
+			}
+			leftRightValue = eventValue * multiplier;
+		}
+		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
+			int multiplier = MULTIPLIER;
+			if(eventValue < 0){
+				stateContext.moveDown(stateContext, renderMaster);
+				multiplier *= -1;
+			} else if(eventValue > 0){
+				stateContext.moveUp(stateContext, renderMaster);
+			}
+			upDownValue = eventValue * multiplier;
+		}
+	}
+	
+	@Override
+	public int getId(){
+		return id;
 	}
 
 	@Override
@@ -49,7 +95,7 @@ public class XboxController implements GameController {
 	}
 
 	@Override
-	public int getBrakeValue() {
+	public int getBackValue() {
 		return bButtonValue;
 	}
 
@@ -61,6 +107,26 @@ public class XboxController implements GameController {
 	@Override
 	public int getPauseValue() {
 		return pauseButtonValue;
+	}
+	
+	@Override
+	public float getLeftRightValue(){
+		return leftRightValue;
+	}
+	
+	@Override
+	public float getUpDownValue() {
+		return upDownValue;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof XboxController)){
+			return false;
+		}
+		
+		XboxController otherController = (XboxController)other;
+		return (otherController.getId() == this.getId());
 	}
 
 }

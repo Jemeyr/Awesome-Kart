@@ -97,7 +97,7 @@ public class Game {
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
 
 			controllerManager.poll();
-			eventManager.handleEvents(controllerManager.getEvents(), stateContext);
+			eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);
 			
 			frames++;
 
