@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -76,7 +77,7 @@ public class Game {
 			k.killme = i*1234f;
 		}
 		
-		Camera cam = ((DebugRenderMaster)renderMaster).getCamera();
+		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(-1,-1,2,2));
 		
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
 		triforce.setPosition(new Vector3f(0,0.4f,0));

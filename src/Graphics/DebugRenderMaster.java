@@ -7,9 +7,14 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Vector3f;
 
 public class DebugRenderMaster implements RenderMaster {
@@ -17,8 +22,9 @@ public class DebugRenderMaster implements RenderMaster {
 	private List<DebugGraphicsComponent> graphicsComponents;
 	private List<DebugMesh >loadedModels;
 	
+	private List<View> views;
 	
-	public Camera cam;
+	private float aspect;
 	
 	private Shader shader;
 	
@@ -30,9 +36,12 @@ public class DebugRenderMaster implements RenderMaster {
         
         shader = new Shader();
 		
-		this.cam = new Camera(new Vector3f(0f,3f, 5f), new Vector3f(0f,0f,0f), aspect,60.0f);
+        this.aspect = aspect;
 		
-		//System.out.println("DebugRenderMaster: created shader and camera");
+        
+        this.views = new LinkedList<View>();
+
+        //System.out.println("DebugRenderMaster: created shader and camera");
 		
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
@@ -43,10 +52,14 @@ public class DebugRenderMaster implements RenderMaster {
 		this.graphicsComponents.remove(g);
 	}
 	
-	public Camera getCamera()
+	
+	public Camera addView(Rectangle r)
 	{
-		return this.cam;
 		
+		Camera c = new Camera(new Vector3f(0f,1f, 1f), new Vector3f(0f,0f,0f), aspect * (r.getWidth()/r.getHeight()),60.0f);
+		this.views.add(new View(r,c));
+		
+		return c;
 	}
 	
 	public GraphicsComponent addModel(String id)
@@ -70,19 +83,22 @@ public class DebugRenderMaster implements RenderMaster {
 	public void draw()
 	{
 
+    	for(View v : views)
+    	{
+			//how to draw, iterate over all the graphics components and draw their parts
+			shader.begin();
+			shader.useCam(v.cam);
+			
+			for(DebugGraphicsComponent gc : graphicsComponents)
+			{
+				shader.draw(gc);
+			}
+			
+			
+			shader.end();
+    	}
     	
-		//how to draw, iterate over all the graphics components and draw their parts
-		shader.begin();
-		shader.useCam(cam);
-		
-		for(DebugGraphicsComponent gc : graphicsComponents)
-		{
-			shader.draw(gc);
-		}
-		
-		
-		shader.end();
-		
+    	Display.sync(60);
 		Display.update();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
