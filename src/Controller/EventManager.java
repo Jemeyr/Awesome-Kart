@@ -11,8 +11,7 @@ import States.StateContext;
 
 public class EventManager {
 	
-		public EventManager(){
-		}
+		public EventManager(){ }
 		
 		public void handleEvents(HashSet<GameEvent> gameEvents, StateContext stateContext, RenderMaster renderMaster){
 			int lockedControllerId = stateContext.getLockedControllerId();
