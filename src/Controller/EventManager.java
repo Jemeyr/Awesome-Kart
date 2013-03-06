@@ -15,8 +15,11 @@ public class EventManager {
 		}
 		
 		public void handleEvents(HashSet<GameEvent> gameEvents, StateContext stateContext, RenderMaster renderMaster){
+			int lockedControllerId = stateContext.getLockedControllerId();
 			for(GameEvent gameEvent : gameEvents){
-				gameEvent.getGameController().handleEvent(gameEvent.getEvent(), stateContext, renderMaster);
+				if(lockedControllerId == 0 || lockedControllerId == gameEvent.getGameController().getId()){
+					gameEvent.getGameController().handleEvent(gameEvent.getEvent(), stateContext, renderMaster);
+				}
 			}
 		}
 }

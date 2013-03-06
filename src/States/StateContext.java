@@ -8,9 +8,11 @@ public class StateContext {
 	protected static final GameState PAUSE_MENU_STATE 	= new PauseMenuState();
 	
 	private GameState gameState;
+	private int lockedControllerId; // ID of Controller with "lock" (For Pausing and Such). 0 For Nobody
 	
 	public StateContext() {
 		setState(new RacingState());
+		setLockedControllerId(0);
 	}
 	
 	public GameState getState(){
@@ -19,6 +21,14 @@ public class StateContext {
 	
 	public void setState(final GameState newState){
 		gameState = newState;
+	}
+	
+	public int getLockedControllerId(){
+		return lockedControllerId;
+	}
+	
+	public void setLockedControllerId(int newLockedControllerId){
+		lockedControllerId = newLockedControllerId;
 	}
 
 	public void useActionButton(StateContext stateContext, RenderMaster renderMaster) {
