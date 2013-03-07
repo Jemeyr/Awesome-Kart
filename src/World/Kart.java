@@ -73,7 +73,7 @@ public class Kart {
 	
 	public void killmenow(float e)
 	{
-		float elec360power = e/180f + killme;
+		float elec360power = e/90f + killme;
 		Vector3f pos = new Vector3f(killmeVec.x + 10f * (float)Math.cos(elec360power), -22.5f,killmeVec.z +  10f * (float)Math.sin(elec360power));
 		Vector3f rot = new Vector3f(0,-(elec360power),0);
 		graphicsComponent.setPosition(pos);

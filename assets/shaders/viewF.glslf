@@ -10,6 +10,12 @@ void main()
 {
 	vec4 color = texture(tex,vTexCoord);
 	
-	outColor = color;
+	float edge = 1.0;
+	if (vTexCoord.y < 0.005 || vTexCoord.y > 0.995 ||vTexCoord.x < 0.005 || vTexCoord.x > 0.995 )
+	{
+		edge = 0.05;
+	}
+	
+	outColor = color * edge;
 }
 
