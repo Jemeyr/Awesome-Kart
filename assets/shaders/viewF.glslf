@@ -8,6 +8,13 @@ uniform sampler2D tex;
 
 void main()
 {
-	outColor = texture(tex, vTexCoord);// + vec4(0.5, 0.0, 0.0, 1.0);
+	vec4 color = texture(tex, vTexCoord);
+
+	
+	vec2 mid = 2 * vTexCoord - vec2(1.0, 1.0);
+	
+	float dist = 1.0 - sqrt(mid.x * mid.x + mid.y * mid.y);
+	
+	outColor = color * dist;
 }
 

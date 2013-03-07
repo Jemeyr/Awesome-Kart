@@ -97,9 +97,9 @@ public class View {
 		
 		//set up depth buffer
 		glBindRenderbuffer(GL_RENDERBUFFER, dbufId);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 800, 600);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
 		
-		glFramebufferRenderbuffer(GL_DEPTH_BUFFER, GL_DEPTH_ATTACHMENT, dbufId, 0);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, dbufId);
 		
 		
 		//unbind fbo
