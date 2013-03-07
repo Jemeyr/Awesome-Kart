@@ -71,8 +71,8 @@ public class ViewShader extends Shader{
         vbo_v = glGenBuffers();
         elem = glGenBuffers();
         
-        float[] f = {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f};
-        int[] e = {0,1,2,0,2,3};
+        float[] f = {-0.0f, -0.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f};
+        int[] e = {0,1,2};//,0,2,3};
         
         
         elementCount = e.length;
@@ -110,8 +110,6 @@ public class ViewShader extends Shader{
 		glBindTexture(GL_TEXTURE_2D, v.getTexId());
 
 
-		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
         glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
 

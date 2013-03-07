@@ -127,12 +127,12 @@ public class DebugRenderMaster implements RenderMaster {
     	for(View v : views)
     	{
     		v.setRenderTarget();
-    		
 			glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     		
 			//how to draw, iterate over all the graphics components and draw their parts
 			normalShader.begin();
+			
 			normalShader.useCam(v.cam);
 			
 			for(DebugGraphicsComponent gc : graphicsComponents)
@@ -142,6 +142,7 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			
 			normalShader.end();
+			
 			
 			v.unsetRenderTarget();
 			
@@ -153,6 +154,8 @@ public class DebugRenderMaster implements RenderMaster {
     	
     	Display.sync(60);
 		Display.update();
+		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 	}
 
