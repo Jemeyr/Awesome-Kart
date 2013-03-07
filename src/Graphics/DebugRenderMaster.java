@@ -42,7 +42,8 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	private float aspect;
 	
-	private Shader normalShader;
+	private NormalShader normalShader;
+	private ViewShader viewShader;
 	
 	private int fboId, texId, dbufId;
 	
@@ -52,8 +53,8 @@ public class DebugRenderMaster implements RenderMaster {
         glEnable(GL_DEPTH_TEST);
         glClearColor(0f, 0f, 0f, 1f);
         
-        this.normalShader = new Shader();
-		
+        this.normalShader = new NormalShader();
+		this.viewShader = new ViewShader();
         
         this.aspect = aspect;
 		
@@ -81,6 +82,7 @@ public class DebugRenderMaster implements RenderMaster {
 		
 		//unbind fbo
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
 		
 		
 
@@ -141,6 +143,9 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			v.unsetRenderTarget();
 			
+			viewShader.begin();
+			viewShader.draw(v);
+			viewShader.end();
 			
     	}
     	

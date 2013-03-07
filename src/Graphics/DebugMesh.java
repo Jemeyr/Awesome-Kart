@@ -56,9 +56,9 @@ public class DebugMesh {
 	protected int diffTexId;
 	protected int normTexId;
 	
-	private Shader shader;
+	private NormalShader shader;
 	
-	protected DebugMesh(String s, Shader shader)
+	protected DebugMesh(String s, NormalShader shader)
 	{
 		this.shader = shader;
 		
