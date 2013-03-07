@@ -1,6 +1,7 @@
 package Graphics;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
@@ -103,9 +104,15 @@ public class ViewShader extends Shader{
 			System.out.println("Shader has not begun");
 			return;
 		}
+
+		
 		glBindVertexArray(vao);
 		glBindTexture(GL_TEXTURE_2D, v.getTexId());
 
+
+		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
         glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
 
         glBindTexture(GL_TEXTURE_2D, 0);

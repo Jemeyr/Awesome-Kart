@@ -18,6 +18,11 @@ import static org.lwjgl.opengl.GL30.glGenFramebuffers;
 import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import static org.lwjgl.opengl.GL32.glFramebufferTexture;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL32.*;
+
 
 import org.lwjgl.util.Rectangle;
 
@@ -29,7 +34,6 @@ public class View {
 	
 	protected void unsetRenderTarget()
 	{
-
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		
 	}
@@ -41,6 +45,10 @@ public class View {
 		glBindTexture(GL_TEXTURE_2D, 0);//unbind texture
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, fboId);//bind fbo
+		
+		//clear fbo
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	}
 	
 	protected int getTexId()
@@ -54,23 +62,31 @@ public class View {
 		this.cam = c;
 		
 		
-		
+		//init and bind
 		this.fboId = glGenFramebuffers();
 		this.texId = glGenTextures();
 		this.dbufId = glGenRenderbuffers();
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, fboId);
-		
+
+		//set up texture
 		glBindTexture(GL_TEXTURE_2D, texId);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 800, 600, 0,GL_RGBA, GL_INT, (java.nio.ByteBuffer) null); 
+		
+		
 		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId);
-	
+		
+		
+		
+		//set up depth buffer
 		glBindRenderbuffer(GL_RENDERBUFFER, dbufId);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 800, 600);
+		
 
-		//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texId, 0);
+		glFramebufferRenderbuffer(GL_DEPTH_BUFFER, GL_DEPTH_ATTACHMENT, dbufId, 0);
 		//??might be required
 		
 		//unbind fbo
