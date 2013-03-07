@@ -71,8 +71,8 @@ public class ViewShader extends Shader{
         vbo_v = glGenBuffers();
         elem = glGenBuffers();
         
-        float[] f = {-0.0f, -0.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f};
-        int[] e = {0,1,2};//,0,2,3};
+        float[] f = {-1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f};
+        int[] e = {0,1,2,0,2,3};
         
         
         elementCount = e.length;

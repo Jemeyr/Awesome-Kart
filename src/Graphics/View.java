@@ -88,19 +88,10 @@ public class View {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		
 		
-		ByteBuffer buf = null;
-        try{
-        	buf = ByteBuffer.allocateDirect(4*4*800*600);
-        }catch (Exception e)
-        {
-        	System.out.println("error " + e);
-        }
-        
-		//(java.nio.ByteBuffer) null
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 800, 600, 0,GL_RGBA, GL_INT, buf); //subbing a buffer here = black
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null); //subbing a buffer here = black
 		
 		
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
 		
 		
 		
