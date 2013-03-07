@@ -77,7 +77,7 @@ public class Game {
 			k.killme = i*1234f;
 		}
 		
-		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(-1,-1,2,2));
+		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,600));
 		
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
 		triforce.setPosition(new Vector3f(0,0.4f,0));

@@ -19,7 +19,10 @@ import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glGetAttribLocation;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -29,6 +32,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.util.Rectangle;
 
 public class ViewShader extends Shader{
 
@@ -42,6 +46,8 @@ public class ViewShader extends Shader{
 	
 	protected int position_attr;
 	protected int texCoord_attr;
+
+	private int posUniform, sizeUniform;
 	
 	
 	public ViewShader()
@@ -64,6 +70,10 @@ public class ViewShader extends Shader{
         
 		position_attr = glGetAttribLocation( shaderProgram, "position");
         
+
+		posUniform = glGetUniformLocation(shaderProgram, "pos");
+		sizeUniform = glGetUniformLocation(shaderProgram, "size");
+		
         vao = glGenVertexArrays();
         glBindVertexArray(vao);
         
@@ -104,10 +114,12 @@ public class ViewShader extends Shader{
 			System.out.println("Shader has not begun");
 			return;
 		}
-
+		//set uniforms from the view
+		glUniform2f(posUniform,  v.screenPos[0], v.screenPos[1]);
+		glUniform2f(sizeUniform, v.screenSize[0], v.screenSize[1]);
 		
 		glBindVertexArray(vao);
-		glBindTexture(GL_TEXTURE_2D, v.getTexId());
+		glBindTexture(GL_TEXTURE_2D, v.getRenderTexture());
 
 
 		

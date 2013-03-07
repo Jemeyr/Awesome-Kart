@@ -97,7 +97,7 @@ public class DebugRenderMaster implements RenderMaster {
 	public Camera addView(Rectangle r)
 	{
 		
-		Camera c = new Camera(new Vector3f(0f,1f, 1f), new Vector3f(0f,0f,0f), aspect * (r.getWidth()/r.getHeight()),60.0f);
+		Camera c = new Camera(new Vector3f(0f,1f, 1f), new Vector3f(0f,0f,0f), aspect,60.0f);
 		this.views.add(new View(r,c));
 		
 		return c;

@@ -40,72 +40,51 @@ public class View {
 	protected Rectangle rect;
 	protected Camera cam;
 	
-	private int fboId, texId, dbufId;
+	private RenderTarget renderTarget;
 	
-	protected void unsetRenderTarget()
+	protected float screenPos[];
+	protected float screenSize[];
+
+//	protected float screenPos[] = {-1.0f, -1.0f};
+//	protected float screenSize[] = {1.0f, 1.0f};
+	
+	
+	
+	protected View(Rectangle r, Camera c)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		this.rect = r; //this assumes windowsize of 800,600
+		this.cam = c;
+		
+		this.renderTarget = new RenderTarget();
+		
+		screenPos = new float[2];
+		screenPos[0] = r.getX() / 400.0f - 1.0f;
+		screenPos[1] = r.getY() / 300.0f - 1.0f;
+		
+		screenSize = new float[2];
+		screenSize[0] = r.getWidth() / 400.0f;
+		screenSize[1] = r.getHeight() / 300.0f;
+		
+		c.setAspectRatio((float)r.getWidth() / (float)r.getHeight());
+		
+		
 		
 	}
 	
 	protected void setRenderTarget()
 	{
-		glBindTexture(GL_TEXTURE_2D, 0);//unbind texture
-		
-		glBindFramebuffer(GL_FRAMEBUFFER, fboId);//bind fbo
-		
-		glViewport(0,0,800,600);//set to our texture size. adjust this later depending on the resolution and view size
-		
-		
-		//clear fbo
-
-		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		renderTarget.set();
 	}
 	
-	protected int getTexId()
+	protected void unsetRenderTarget()
 	{
-		return texId;
+		renderTarget.unset();
 	}
 	
-	protected View(Rectangle r, Camera c)
+	protected int getRenderTexture()
 	{
-		this.rect = r;
-		this.cam = c;
+		return this.renderTarget.getTexId();
 		
-		
-		//init and bind
-		this.fboId = glGenFramebuffers();
-		this.texId = glGenTextures();
-		this.dbufId = glGenRenderbuffers();
-		
-		glBindFramebuffer(GL_FRAMEBUFFER, fboId);
-
-		//set up texture
-		glBindTexture(GL_TEXTURE_2D, texId);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		
-		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null); //subbing a buffer here = black
-		
-		
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
-		
-		
-		
-		//set up depth buffer
-		glBindRenderbuffer(GL_RENDERBUFFER, dbufId);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
-		
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, dbufId);
-		
-		
-		//unbind fbo
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-	
-	
 	
 }
