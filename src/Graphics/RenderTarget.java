@@ -27,8 +27,13 @@ import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
 import static org.lwjgl.opengl.GL30.glGenFramebuffers;
 import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL21.*;
+import static org.lwjgl.opengl.GL20.*;
+
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
@@ -36,7 +41,7 @@ import org.lwjgl.BufferUtils;
 public class RenderTarget {
 	
 
-	private int fboId, texId, dbufId;
+	private int fboId, colorId, normalId, positionId, depthId;
 	
 	public RenderTarget()
 	{
@@ -44,34 +49,49 @@ public class RenderTarget {
 
 		//init and bind
 		this.fboId = glGenFramebuffers();
-		this.texId = glGenTextures();
-		this.dbufId = glGenRenderbuffers();
+		this.colorId = glGenTextures();
+		this.normalId = glGenTextures();
+		this.depthId = glGenRenderbuffers();
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
 		//set up texture
-		glBindTexture(GL_TEXTURE_2D, texId);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		
-		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null); //subbing a buffer here = black
-		
-		
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
+		addAttachment(colorId, 0);
+		addAttachment(normalId, 1);
+		addAttachment(positionId, 2);
 		
 		
 		
 		//set up depth buffer
-		glBindRenderbuffer(GL_RENDERBUFFER, dbufId);
+		glBindRenderbuffer(GL_RENDERBUFFER, depthId);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
 		
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, dbufId);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthId);
 		
+		
+		IntBuffer drawBuf = BufferUtils.createIntBuffer(3);
+        drawBuf.put(GL_COLOR_ATTACHMENT0);
+        drawBuf.put(GL_COLOR_ATTACHMENT1);
+        drawBuf.put(GL_COLOR_ATTACHMENT2);
+        
+        //this breaks things
+        //glDrawBuffers(drawBuf);
 		
 		//unbind fbo
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	}
+	
+	private void addAttachment(int id, int attachmentNo)
+	{
+		glBindTexture(GL_TEXTURE_2D, id);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+		
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
+		
+		
 	}
 	
 	protected void set()
@@ -97,7 +117,7 @@ public class RenderTarget {
 
 	protected int getTexId()
 	{
-		return texId;
+		return colorId;
 	}
 
 	protected FloatBuffer genFloatBuffer(float[] input)

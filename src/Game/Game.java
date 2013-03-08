@@ -76,7 +76,7 @@ public class Game {
 			karts.add(k);
 			k.killme = i*1234f;
 		}
-		
+
 		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300,800,300));
 		Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));
  
@@ -125,33 +125,28 @@ public class Game {
 			
 			//set the camera position
 			Vector4f campos = new Vector4f(0,35,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
-			Vector4f targ = new Vector4f(0,1,0,1);		//divide by 2, I don't know why, height one for overhead.
-			Vector4f campos2 = new Vector4f(0,35, 50,1);
+			Vector4f targ = new Vector4f(0,10,0,1);		//divide by 2, I don't know why, height one for overhead.
+			Vector4f campos2 = new Vector4f(0,20, 2 ,1);
+			Vector4f targ2 = new Vector4f(0,20,1,1);		//divide by 2, I don't know why, height one for overhead.
 			
 			//System.out.println("campos " + campos + "\ntarg" + targ);
 			
-			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
+			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat(); //cache that shit? actually do I ened to?
+			
 			Matrix4f.transform(modelInv, campos, campos);
-			modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
 			Matrix4f.transform(modelInv, targ, targ);
 			
-
-			modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
 			Matrix4f.transform(modelInv, campos2, campos2);
-			/*
-			System.out.println("	campos " + campos + "\n\ttarg" + targ);
-			System.out.println("------------------------------------------------------------");
-			System.out.println(modelInv);
-			System.out.println("------------------------------------------------------------");
-			*/
+			Matrix4f.transform(modelInv, targ2, targ2);
 			
 			
-			cam.setPosition(new Vector3f(campos.x, campos.y, campos.z));
-			cam.setTarget(new Vector3f(targ.x, targ.y, targ.z));
 			
-			cam2.setPosition(new Vector3f(campos2.x, campos2.y, campos2.z));
-			cam2.setTarget(new Vector3f(targ.x, targ.y, targ.z));
 			
+			cam.setPosition(new Vector3f(campos));
+			cam.setTarget(new Vector3f(targ));
+			
+			cam2.setPosition(new Vector3f(campos2));
+			cam2.setTarget(new Vector3f(targ2));
 			
 			
 			//draw

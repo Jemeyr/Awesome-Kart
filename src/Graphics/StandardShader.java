@@ -19,15 +19,13 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-public class NormalShader extends Shader{
+public class StandardShader extends Shader{
 
 	
 	private int vert_id;
 	private int frag_id;
 	
-	private int wMatIndex;
-	private int vpMatIndex;
-	
+	private int wvpMatIndex;
 	private int camDirIndex;
 	private Matrix4f viewProjection;
 	
@@ -37,12 +35,12 @@ public class NormalShader extends Shader{
 	
 	
 	
-	public NormalShader()
+	public StandardShader()
 	{
 		active = false;
 				
-    	vert_id = loadShader("normal.glslv", GL_VERTEX_SHADER);
-    	frag_id = loadShader("normal.glslf", GL_FRAGMENT_SHADER);
+    	vert_id = loadShader("vertexShader.glslv", GL_VERTEX_SHADER);
+    	frag_id = loadShader("fragmentShader.glslf", GL_FRAGMENT_SHADER);
 
         shaderProgram = glCreateProgram();
         
@@ -53,9 +51,7 @@ public class NormalShader extends Shader{
         
         glLinkProgram(shaderProgram);
        
-        wMatIndex = glGetUniformLocation(shaderProgram, "worldMatrix");
-        vpMatIndex = glGetUniformLocation(shaderProgram, "vpMatrix");
-		
+		wvpMatIndex = glGetUniformLocation(shaderProgram, "wvpMatrix");
         camDirIndex = glGetUniformLocation(shaderProgram, "camDir");
         
 		position_attr = glGetAttribLocation( shaderProgram, "position");
@@ -67,10 +63,9 @@ public class NormalShader extends Shader{
         
 	}
 		
-	private void setTransform(Matrix4f world, Matrix4f vp)
+	private void setTransform(Matrix4f mat)
 	{
-		glUniformMatrix4(wMatIndex, true, genFloatBuffer(world));
-		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
+		glUniformMatrix4(wvpMatIndex, true, genFloatBuffer(mat));
 	}
 	
 	protected void useCam(Camera cam)
@@ -111,7 +106,10 @@ public class NormalShader extends Shader{
 
 	private void bindDraw(DebugGraphicsComponent gc)
 	{
-		setTransform(gc.getModelMat(), viewProjection);
+		Matrix4f transform = new Matrix4f();
+		Matrix4f.mul(gc.getModelMat(), viewProjection, transform);
+		
+		setTransform(transform);
 		
 		glBindVertexArray(gc.mesh.vao);
 
