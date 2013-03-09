@@ -30,8 +30,12 @@ import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL21.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL11.*;
 
 
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -51,6 +55,8 @@ public class RenderTarget {
 		this.fboId = glGenFramebuffers();
 		this.colorId = glGenTextures();
 		this.normalId = glGenTextures();
+		this.positionId = glGenTextures();
+		
 		this.depthId = glGenRenderbuffers();
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, fboId);
@@ -58,8 +64,7 @@ public class RenderTarget {
 		//set up texture
 		addAttachment(colorId, 0);
 		addAttachment(normalId, 1);
-		addAttachment(positionId, 2);
-		
+		//addAttachment(positionId, 2);
 		
 		
 		//set up depth buffer
@@ -69,14 +74,30 @@ public class RenderTarget {
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthId);
 		
 		
-		IntBuffer drawBuf = BufferUtils.createIntBuffer(3);
+		IntBuffer temp = BufferUtils.createIntBuffer(16);
+				
+		glGetInteger(GL_MAX_COLOR_ATTACHMENTS, temp);
+		if(temp.get(0) < 4)
+		{
+			System.out.println("ERROR: Support for color attachments is not sufficient. Fuggg.");
+		}
+		   
+		
+		IntBuffer drawBuf = BufferUtils.createIntBuffer(2);
         drawBuf.put(GL_COLOR_ATTACHMENT0);
         drawBuf.put(GL_COLOR_ATTACHMENT1);
-        drawBuf.put(GL_COLOR_ATTACHMENT2);
+        //drawBuf.put(GL_COLOR_ATTACHMENT2);
         
-        //this breaks things
-        //glDrawBuffers(drawBuf);
-		
+        //this breaks things for now
+        glDrawBuffers(drawBuf);
+        
+        int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE)
+        {
+        	System.out.println("Error " + status + " in frame buffer object generation");
+        }
+        
+        
 		//unbind fbo
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -115,10 +136,16 @@ public class RenderTarget {
 		
 	}
 
-	protected int getTexId()
+	protected int getColId()
 	{
 		return colorId;
 	}
+	protected int getNormId()
+	{
+		return normalId;
+	}
+	
+	
 
 	protected FloatBuffer genFloatBuffer(float[] input)
 	{

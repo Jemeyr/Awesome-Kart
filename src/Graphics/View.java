@@ -81,10 +81,14 @@ public class View {
 		renderTarget.unset();
 	}
 	
-	protected int getRenderTexture()
+	protected int getColorTexture()
 	{
-		return this.renderTarget.getTexId();
-		
+		return this.renderTarget.getColId();
+	}
+	
+	protected int getNormalTexture()
+	{
+		return this.renderTarget.getNormId();
 	}
 	
 }
