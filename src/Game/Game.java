@@ -85,8 +85,9 @@ public class Game {
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
 		this.soundMaster.execute();
-		int musicCode = this.soundMaster.addSound("assets/sound/ACiv Battle 2.wav", false);
-		
+		int musicCode = this.soundMaster.addSound("Music",0, false);
+		int accCode = this.soundMaster.addSound("Acc",0, false);
+		int pewCode = this.soundMaster.addSound("Pew",0, true);
 		long startTime = System.currentTimeMillis();
 
 		int frames = 0;
