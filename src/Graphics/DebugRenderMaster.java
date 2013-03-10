@@ -45,7 +45,6 @@ public class DebugRenderMaster implements RenderMaster {
 	private NormalShader normalShader;
 	private ViewShader viewShader;
 	
-	private int fboId, texId, dbufId;
 	
 	protected DebugRenderMaster(float aspect)
 	{
@@ -65,24 +64,6 @@ public class DebugRenderMaster implements RenderMaster {
 		
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
-		
-		
-		this.fboId = glGenFramebuffers();
-		this.texId = glGenTextures();
-		this.dbufId = glGenRenderbuffers();
-		
-		glBindFramebuffer(GL_FRAMEBUFFER, fboId);
-		
-		glBindTexture(GL_TEXTURE_2D, texId);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId);
-	
-		glBindRenderbuffer(GL_RENDERBUFFER, dbufId);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
-		
-		//unbind fbo
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		
 		
 		
 
@@ -127,9 +108,7 @@ public class DebugRenderMaster implements RenderMaster {
     	for(View v : views)
     	{
     		v.setRenderTarget();
-			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    		
+			
 			//how to draw, iterate over all the graphics components and draw their parts
 			normalShader.begin();
 			

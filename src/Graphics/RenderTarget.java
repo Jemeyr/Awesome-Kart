@@ -89,7 +89,7 @@ public class RenderTarget {
         //drawBuf.put(GL_COLOR_ATTACHMENT2);
         
         //this breaks things for now
-        glDrawBuffers(drawBuf);
+        //glDrawBuffers(drawBuf);
         
         int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (status != GL_FRAMEBUFFER_COMPLETE)
@@ -132,8 +132,7 @@ public class RenderTarget {
 	
 	protected void unset()
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);	
 	}
 
 	protected int getColId()

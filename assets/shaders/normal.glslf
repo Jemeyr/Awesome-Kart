@@ -9,7 +9,7 @@ smooth in vec3 norm;
 void main()
 {
 	
-	outColor = vec4(1.0, 0.0, 0.0, 1.0);
+	outColor = vec4(norm, 1.0);
 	outNormal = vec4(0.0, 1.0, 0.0, 1.0);
 	
 }
