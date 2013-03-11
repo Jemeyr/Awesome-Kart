@@ -1,5 +1,6 @@
 package Controller;
 
+import Game.DigitalRightsManagement;
 import States.StateContext;
 import net.java.games.input.*;
 

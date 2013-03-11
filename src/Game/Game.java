@@ -28,7 +28,7 @@ public class Game {
 	private ControllerManager 	controllerManager;	
 	private EventManager eventManager;
 	private StateContext stateContext;
-	//a state machine belongs here
+	private DigitalRightsManagement drm;
 	
 	public Game(){
 		this.renderMaster = RenderMasterFactory.getRenderMaster();
@@ -36,6 +36,7 @@ public class Game {
 		this.controllerManager = new ControllerManager();
 		this.eventManager = new EventManager();
 		this.stateContext = new StateContext();
+		this.drm = new DigitalRightsManagement();
 	}
 
 	
@@ -98,7 +99,10 @@ public class Game {
 		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
-
+			if(!drm.isValid()){
+				System.exit(7);
+			}
+			
 			controllerManager.poll();
 			eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);
 			
