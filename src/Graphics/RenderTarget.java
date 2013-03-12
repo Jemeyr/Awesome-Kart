@@ -3,6 +3,7 @@ package Graphics;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
@@ -12,6 +13,7 @@ import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glGetError;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.glViewport;
@@ -88,20 +90,19 @@ public class RenderTarget {
         //drawBuf.put(GL_COLOR_ATTACHMENT2);
         
         //this breaks things for now
-        //glDrawBuffers(drawBuf);
+        glDrawBuffers(drawBuf);
         
+        //error checking
         int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (status != GL_FRAMEBUFFER_COMPLETE)
         {
         	System.out.println("Error " + status + " in frame buffer object generation");
         }
-/*        int err = glGetError();
-        if( err != GL_NO_ERROR )
+        if( glGetError() != GL_NO_ERROR )
 		{
-			System.out.println("ERROR IN RT " + err + " is not " + GL_NO_ERROR);
-
-			System.out.println("org.lwjgl.util.glu.GLU.gluErrorString(glGetError())");
-		}*/
+			throw new RuntimeException("OpenGL error: "+org.lwjgl.util.glu.GLU.gluErrorString(glGetError()));
+		} 
+		
      
         
 		//unbind fbo

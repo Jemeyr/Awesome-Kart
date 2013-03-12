@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
+import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
 
 public class NormalShader extends Shader{
@@ -63,8 +64,8 @@ public class NormalShader extends Shader{
 		position_attr = glGetAttribLocation( shaderProgram, "position");
         normal_attr = glGetAttribLocation( shaderProgram, "normal");
         texCoord_attr = glGetAttribLocation( shaderProgram, "texCoord");
-        System.out.println("texcoord is " + texCoord_attr);
-
+        
+       
 
         viewProjection = new Matrix4f();
         
