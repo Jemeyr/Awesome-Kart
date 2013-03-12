@@ -71,23 +71,31 @@ public class ViewShader extends Shader{
         glAttachShader(shaderProgram, vert_id);
         glAttachShader(shaderProgram, frag_id);
         
-        glBindFragDataLocation( shaderProgram, 0, "outColor");
-        
         glLinkProgram(shaderProgram);
         
+        glUseProgram(shaderProgram);
         
 		position_attr = glGetAttribLocation( shaderProgram, "position");
 
-		tex0 = glGetUniformLocation(shaderProgram, "tex0");
-		tex1 = glGetUniformLocation(shaderProgram, "tex1");
+        glBindFragDataLocation( shaderProgram, 0, "outColor");
 
-		//bind these to active textures
-		glUniform1i(tex0, 0);
-		glUniform1i(tex1, 1);
 
+        //MRT
+		tex0 = glGetUniformLocation(shaderProgram, "tex0");//returns 2
+		tex1 = glGetUniformLocation(shaderProgram, "tex1");//returns 3
+
+//no effect?
+//		glUseProgram(shaderProgram);
+//		glUniform1i(tex0, 0);
+//		glUniform1i(tex1, 1);
+//		glUseProgram(0);
+		
+		
 		posUniform = glGetUniformLocation(shaderProgram, "pos");
 		sizeUniform = glGetUniformLocation(shaderProgram, "size");
+
 		
+		//make a rectangle
         vao = glGenVertexArrays();
         glBindVertexArray(vao);
         
@@ -134,19 +142,17 @@ public class ViewShader extends Shader{
 		glUniform2f(sizeUniform, v.screenSize[0], v.screenSize[1]);
 
 		
-		glBindVertexArray(vao);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, v.getColorTexture());
+		glBindTexture(GL_TEXTURE_2D, v.getColorTexture());//it's like this is used twice?
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, v.getNormalTexture());
-		
 
-		
-        glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
+		//bind vao for the rect
+		glBindVertexArray(vao);
+				
+		glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
 
-        glBindTexture(GL_TEXTURE_2D, 0);
-		glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(0);
 
 	}

@@ -9,6 +9,7 @@ in vec2 texCoord;
 
 smooth out vec3 norm;
 
+
 void main() {
 
 	vec4 pos = vec4(position.xyz, 1.0);

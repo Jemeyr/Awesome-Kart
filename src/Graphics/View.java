@@ -3,6 +3,7 @@ package Graphics;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
@@ -10,6 +11,7 @@ import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glGetError;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
@@ -43,18 +45,13 @@ public class View {
 	private RenderTarget renderTarget;
 	
 	protected float screenPos[];
-	protected float screenSize[];
-
-//	protected float screenPos[] = {-1.0f, -1.0f};
-//	protected float screenSize[] = {1.0f, 1.0f};
-	
-	
+	protected float screenSize[];	
 	
 	protected View(Rectangle r, Camera c)
 	{
 		this.rect = r; //this assumes windowsize of 800,600
 		this.cam = c;
-		
+
 		this.renderTarget = new RenderTarget();
 		
 		screenPos = new float[2];

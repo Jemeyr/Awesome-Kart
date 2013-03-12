@@ -49,12 +49,12 @@ public class NormalShader extends Shader{
         glAttachShader(shaderProgram, vert_id);
         glAttachShader(shaderProgram, frag_id);
         
+        glLinkProgram(shaderProgram);
+       
+
         glBindFragDataLocation( shaderProgram, 0, "outColor");
         glBindFragDataLocation( shaderProgram, 1, "outNormal");
         
-        
-        glLinkProgram(shaderProgram);
-       
         wMatIndex = glGetUniformLocation(shaderProgram, "worldMatrix");
         vpMatIndex = glGetUniformLocation(shaderProgram, "vpMatrix");
 		
@@ -63,8 +63,9 @@ public class NormalShader extends Shader{
 		position_attr = glGetAttribLocation( shaderProgram, "position");
         normal_attr = glGetAttribLocation( shaderProgram, "normal");
         texCoord_attr = glGetAttribLocation( shaderProgram, "texCoord");
+        System.out.println("texcoord is " + texCoord_attr);
 
-        
+
         viewProjection = new Matrix4f();
         
 	}
@@ -99,8 +100,6 @@ public class NormalShader extends Shader{
 			System.out.println("Shader has not begun");
 			return;
 		}
-		
-		//Matrix4f.mul(viewProjection, gc.getModelMat(), transform);
 	
 		bindDraw(gc);
 		for(DebugGraphicsComponent sgc : gc.subComponents)

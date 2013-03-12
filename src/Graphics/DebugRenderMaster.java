@@ -4,8 +4,10 @@ import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.glGetError;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -107,7 +109,7 @@ public class DebugRenderMaster implements RenderMaster {
 		//this should draw each object for each view, then draw the view to screen on a quad with a simple shader
     	for(View v : views)
     	{
-    		v.setRenderTarget();
+    		v.setRenderTarget();//clears render target too
 			
 			//how to draw, iterate over all the graphics components and draw their parts
 			normalShader.begin();
@@ -124,6 +126,7 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			
 			v.unsetRenderTarget();
+			
 			
 			viewShader.begin();
 			viewShader.draw(v);
@@ -147,6 +150,7 @@ public class DebugRenderMaster implements RenderMaster {
 				return;
 			}
 		}
+
 		loadedModels.add(new DebugMesh(s,normalShader));
 		
 	}

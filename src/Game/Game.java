@@ -1,5 +1,8 @@
 package Game;
 
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
+import static org.lwjgl.opengl.GL11.glGetError;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,6 +57,8 @@ public class Game {
 		renderMaster.loadModel("hat");
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
+		System.out.println("Loading Complete");
+
 		
 		renderMaster.addModel("testTer");
 		GraphicsComponent text = renderMaster.addModel("aktext");
@@ -95,7 +100,7 @@ public class Game {
 		
 		//this.soundMaster.play();
 		cam.setPosition(new Vector3f(-50,40,-30));
-		while(Conti && elec360power <= 9000){
+		while(Conti && elec360power <= 900000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
 
 			controllerManager.poll();
@@ -155,7 +160,7 @@ public class Game {
 			if(Display.isCloseRequested())
 			{
 				
-				elec360power = 9001;
+				elec360power = 900001;
 			}
 
 		}

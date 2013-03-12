@@ -45,17 +45,16 @@ import org.lwjgl.BufferUtils;
 public class RenderTarget {
 	
 
-	private int fboId, colorId, normalId, positionId, depthId;
+	private int fboId, colorId, normalId, depthId;// positionId;
 	
 	public RenderTarget()
 	{
-
 
 		//init and bind
 		this.fboId = glGenFramebuffers();
 		this.colorId = glGenTextures();
 		this.normalId = glGenTextures();
-		this.positionId = glGenTextures();
+		//this.positionId = glGenTextures();
 		
 		this.depthId = glGenRenderbuffers();
 		
@@ -96,7 +95,14 @@ public class RenderTarget {
         {
         	System.out.println("Error " + status + " in frame buffer object generation");
         }
-        
+/*        int err = glGetError();
+        if( err != GL_NO_ERROR )
+		{
+			System.out.println("ERROR IN RT " + err + " is not " + GL_NO_ERROR);
+
+			System.out.println("org.lwjgl.util.glu.GLU.gluErrorString(glGetError())");
+		}*/
+     
         
 		//unbind fbo
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -108,6 +114,10 @@ public class RenderTarget {
 		glBindTexture(GL_TEXTURE_2D, id);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
 		
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
@@ -125,7 +135,7 @@ public class RenderTarget {
 		
 		//clear fbo
 
-		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.4f, 0.8f, 0.9f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	}
