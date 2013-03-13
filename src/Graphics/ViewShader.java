@@ -79,7 +79,9 @@ public class ViewShader extends Shader{
 
         glBindFragDataLocation( shaderProgram, 0, "outColor");
 
-
+        
+        
+        
         //Get the input texture positions
 		colTex = glGetUniformLocation(shaderProgram, "colTex");
 		normTex = glGetUniformLocation(shaderProgram, "normTex");
@@ -89,7 +91,8 @@ public class ViewShader extends Shader{
 		glUniform1i(normTex, 1);
 		glUniform1i(posTex, 2);
 		
-		
+
+        
 		//uniforms for size
 		posUniform = glGetUniformLocation(shaderProgram, "pos");
 		sizeUniform = glGetUniformLocation(shaderProgram, "size");

@@ -58,9 +58,9 @@ public class DebugMesh {
 	protected int diffTexId;
 	protected int normTexId;
 	
-	private NormalShader shader;
+	private GeometryShader shader;
 	
-	protected DebugMesh(String s, NormalShader shader)
+	protected DebugMesh(String s, GeometryShader shader)
 	{
 
 		this.shader = shader;
@@ -292,35 +292,31 @@ public class DebugMesh {
         IntBuffer ebuff = BufferUtils.createIntBuffer(elements.length);
         ebuff.put(elements);
         ebuff.rewind();
-        
+             
         vbo_v = glGenBuffers();
         vbo_t = glGenBuffers();
         vbo_n = glGenBuffers();
         elem = glGenBuffers();
-
+        
         
         glBindBuffer(GL_ARRAY_BUFFER, vbo_v);
         glBufferData(GL_ARRAY_BUFFER, vbuff , GL_STATIC_DRAW);
+
         
         glBindBuffer(GL_ARRAY_BUFFER, vbo_t);
         glBufferData(GL_ARRAY_BUFFER, tcbuff, GL_STATIC_DRAW);
-        
+
         glBindBuffer(GL_ARRAY_BUFFER, vbo_n);
         glBufferData(GL_ARRAY_BUFFER, nbuff , GL_STATIC_DRAW);
 
 
-        
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, ebuff, GL_STATIC_DRAW);
         
         
-        
-        //elementCount = ebuff.array().length;	
         ebuff.flip();
         elementCount = ebuff.capacity();
 
-        
-        //System.out.println("Mesh: buffering some data. count is " + elementCount);
 
 
         int position_attr = shader.position_attr;
@@ -328,11 +324,12 @@ public class DebugMesh {
         int texCoord_attr = shader.texCoord_attr;
         
 
-		//
-        glBindBuffer(GL_ARRAY_BUFFER, 	vbo_v);								//These three and their order
-        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);		//
-        glEnableVertexAttribArray(position_attr);								//
-		
+		if(position_attr != -1)
+		{
+	        glBindBuffer(GL_ARRAY_BUFFER, 	vbo_v);								//These three and their order
+	        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);		//
+	        glEnableVertexAttribArray(position_attr);								//
+		}
         
         if(texCoord_attr != -1)//some things aren't textured
         {
@@ -341,10 +338,14 @@ public class DebugMesh {
 	        glEnableVertexAttribArray(texCoord_attr);
         }
         
-        glBindBuffer(GL_ARRAY_BUFFER, vbo_n);
-        glVertexAttribPointer( normal_attr, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(normal_attr);
-		
+        if(normal_attr != -1)
+        {
+	        glBindBuffer(GL_ARRAY_BUFFER, vbo_n);
+	        glVertexAttribPointer( normal_attr, 3, GL_FLOAT, false, 0, 0);
+	        glEnableVertexAttribArray(normal_attr);
+        }
+        
+        
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
         

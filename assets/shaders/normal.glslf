@@ -6,14 +6,19 @@ out vec4 outPos;
 
 
 
-smooth in vec3 norm;
+in vec2 texCoordPS;
+in vec3 norm;
+
+uniform sampler2D modelTexture;
 
 void main()
 {
+	vec4 col = texture(modelTexture, texCoordPS);
+
 	//MRT
-	outColor = 	vec4(norm.x,	0.0, 	0.0, 	1.0);
-	outNormal = vec4(0.0, 		norm.y, 0.0, 	1.0);
-	outPos = 	vec4(0.0, 		0.0, 	norm.z, 1.0);
+	outColor = 	vec4(col);
+	outNormal = vec4(0.0, 0.0, 0.0, 1.0);
+	outPos = 	vec4(0.0, 0.0, 0.0, 1.0);
 	
 }
 

@@ -15,7 +15,6 @@ void main() {
 	
 	vec4 normF = wvpMatrix * vec4(normal.xyz, 0.0);
 	
-	
 	norm = normF.xyz;
 	
 	texCoordPS = texCoord;

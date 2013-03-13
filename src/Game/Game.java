@@ -52,7 +52,7 @@ public class Game {
 		Conti = true;
 		elec360power = 0;
 
-		renderMaster.loadModel("test");
+		renderMaster.loadModel("test");		
 		renderMaster.loadModel("testTer");
 		renderMaster.loadModel("kart");
 		renderMaster.loadModel("hat");

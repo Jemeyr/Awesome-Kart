@@ -99,9 +99,10 @@ public class RenderTarget {
         {
         	System.out.println("Error " + status + " in frame buffer object generation");
         }
-        if( glGetError() != GL_NO_ERROR )
+        int lkj = glGetError();
+        if( lkj != GL_NO_ERROR )
 		{
-			throw new RuntimeException("OpenGL error: "+org.lwjgl.util.glu.GLU.gluErrorString(glGetError()));
+			throw new RuntimeException("OpenGL error: "+org.lwjgl.util.glu.GLU.gluErrorString(lkj));
 		} 
 		
      

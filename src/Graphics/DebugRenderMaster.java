@@ -3,11 +3,13 @@ package Graphics;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glGetError;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	private float aspect;
 	
-	private NormalShader normalShader;
+	private GeometryShader normalShader;
 	private ViewShader viewShader;
 	
 	
@@ -40,8 +42,9 @@ public class DebugRenderMaster implements RenderMaster {
         glEnable(GL_DEPTH_TEST);
         glClearColor(0f, 0f, 0f, 1f);
         
-        this.normalShader = new NormalShader();
-		this.viewShader = new ViewShader();
+        this.normalShader = new GeometryShader();
+		
+        this.viewShader = new ViewShader();
         
         this.aspect = aspect;
 		
@@ -52,8 +55,6 @@ public class DebugRenderMaster implements RenderMaster {
 		
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
-		
-		
 
 	}
 	
@@ -110,21 +111,6 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			normalShader.end();
 			
-			/*
-			//DEBUG OUTPUT
-			int size = 800*600*16;
-			
-			glBindTexture(GL_TEXTURE_2D, v.getColorTexture());
-			ByteBuffer m_bbPixels = ByteBuffer.allocateDirect(size);
-			GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, m_bbPixels);   
-			int j = -1;
-			for(int i = 0; i < 1000; i++)
-			{
-				j = m_bbPixels.asIntBuffer().get(i);
-				System.out.println(j);
-			}
-			System.exit(0);
-			// END DEBUG*/
 			
 			v.unsetRenderTarget();
 			
