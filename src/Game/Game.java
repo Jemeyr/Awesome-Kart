@@ -104,9 +104,10 @@ public class Game {
 		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 900000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
-			if(!drm.isValid()){
+			
+			/*if(!drm.isValid()){
 				System.exit(7);
-			}
+			}*/
 			
 			controllerManager.poll();
 			eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);

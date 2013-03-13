@@ -86,8 +86,8 @@ public class ViewShader extends Shader{
 
 //no effect?
 //		glUseProgram(shaderProgram);
-//		glUniform1i(tex0, 0);
-//		glUniform1i(tex1, 1);
+		glUniform1i(tex0, 0);
+		glUniform1i(tex1, 1);
 //		glUseProgram(0);
 		
 		

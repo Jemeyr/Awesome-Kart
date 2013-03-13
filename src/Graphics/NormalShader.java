@@ -51,8 +51,8 @@ public class NormalShader extends Shader{
         glAttachShader(shaderProgram, frag_id);
 
 
-//      glBindFragDataLocation( shaderProgram, 0, "outColor");
-//      glBindFragDataLocation( shaderProgram, 1, "outNormal");
+        glBindFragDataLocation( shaderProgram, 0, "outColor");
+        glBindFragDataLocation( shaderProgram, 1, "outNormal");
         
         glLinkProgram(shaderProgram);
        

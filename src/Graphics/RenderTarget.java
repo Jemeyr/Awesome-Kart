@@ -122,7 +122,7 @@ public class RenderTarget {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
-		
+		glEnable(GL_TEXTURE_2D);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
 		
 
@@ -138,6 +138,14 @@ public class RenderTarget {
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, fboId);//bind fbo
 		
+		IntBuffer drawBuf = BufferUtils.createIntBuffer(2);
+        drawBuf.put(GL_COLOR_ATTACHMENT0);
+        drawBuf.put(GL_COLOR_ATTACHMENT1);
+        //drawBuf.put(GL_COLOR_ATTACHMENT2);
+        drawBuf.flip();
+        glDrawBuffers(drawBuf);
+		
+		
 		glViewport(0,0,800,600);//set to our texture size. adjust this later depending on the resolution and view size
 		
 		//clear fbo
@@ -149,6 +157,11 @@ public class RenderTarget {
 	
 	protected void unset()
 	{
+		IntBuffer drawBuf = BufferUtils.createIntBuffer(2);
+        drawBuf.clear();
+        drawBuf.flip();
+		glDrawBuffers(drawBuf);
+		
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);	
 	}
 
