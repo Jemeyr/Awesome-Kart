@@ -17,7 +17,7 @@ void main()
 
 	//MRT
 	outColor = 	vec4(col);
-	outNormal = vec4(0.0, 0.0, 0.0, 1.0);
+	outNormal = vec4(norm, 1.0);
 	outPos = 	vec4(0.0, 0.0, 0.0, 1.0);
 	
 }

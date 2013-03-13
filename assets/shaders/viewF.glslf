@@ -21,6 +21,6 @@ void main()
 		edge = 0.05;
 	}
 	
-	outColor = (color1 + color2 + color3) * edge;
+	outColor = (color1 + color2 + color3) * 0.5 * edge;
 }
 
