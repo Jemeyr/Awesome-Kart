@@ -3,14 +3,19 @@ package Game;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.Rectangle;
+import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
+
 import Controller.ControllerManager;
 import Controller.EventManager;
+import Controller.KeyboardController;
 import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
@@ -62,6 +67,7 @@ public class Game {
 		
 		List<Kart> karts = new LinkedList<Kart>();
 		Kart pk = null;
+		Vector4f playerDelta = new Vector4f();
 		
 		for(int i = 0; i < 16; i++)
 		{
@@ -71,9 +77,11 @@ public class Game {
 			if(pk == null && i == 10)
 			{
 				pk = k;
+
+				Vector3f.add(pk.position, new Vector3f(0f,-22.5f, 0f), pk.position);
 			}
 			
-			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, 0, -300f + (i%4) * 150.0f);
+			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, -22.5f, -300f + (i%4) * 150.0f);
 			karts.add(k);
 			k.killme = i*1234f;
 		}
@@ -99,9 +107,9 @@ public class Game {
 		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 9000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
-			if(!drm.isValid()){
+			/*if(!drm.isValid()){
 				System.exit(7);
-			}
+			}*/
 			
 			controllerManager.poll();
 			eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);
@@ -114,11 +122,37 @@ public class Game {
 			//runs the do donuts on each kart
 			for(Kart k : karts)
 			{ 
-				k.killmenow(elec360power);
+				if(k != pk)
+				{
+					k.killmenow(elec360power);
+				}
 			}
 
-
 			
+			if(Keyboard.isKeyDown(Keyboard.KEY_UP))
+            {
+				Vector4f.add(playerDelta, new Vector4f(0,0,2,0), playerDelta);
+            }
+			else if(Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+            {
+				Vector4f.add(playerDelta, new Vector4f(0,0,-2,0), playerDelta);	
+            }
+
+			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+			{
+				Vector3f.add(pk.rotation, new Vector3f(0, 0.025f, 0), pk.rotation);
+			}
+			else if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+			{
+				Vector3f.add(pk.rotation, new Vector3f(0, -0.025f, 0), pk.rotation);
+			}
+			
+			Matrix4f.transform(((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat(), playerDelta, playerDelta);	
+			Vector3f.add(pk.position, new Vector3f(playerDelta), pk.position);
+			pk.update();
+			
+			playerDelta.set(0, 0, 0, 0);
+
 			
 			//update the objects
 			//triforce that rotates and flies away

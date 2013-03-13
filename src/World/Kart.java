@@ -76,17 +76,18 @@ public class Kart {
 		float elec360power = e/90f + killme;
 		Vector3f pos = new Vector3f(killmeVec.x + 10f * (float)Math.cos(elec360power), -22.5f,killmeVec.z +  10f * (float)Math.sin(elec360power));
 		Vector3f rot = new Vector3f(0,-(elec360power),0);
-		graphicsComponent.setPosition(pos);
-		graphicsComponent.setRotation(rot);
 		
 		this.position = pos;
 		this.rotation = rot;
-		
+		update();
 	}
 	
 	public void update()
 	{
 		//get input
+		graphicsComponent.setPosition(this.position);
+		graphicsComponent.setRotation(this.rotation);
+		
 		
 		
 		
