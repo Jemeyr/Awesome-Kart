@@ -89,6 +89,8 @@ public class RenderTarget {
         drawBuf.put(GL_COLOR_ATTACHMENT1);
         //drawBuf.put(GL_COLOR_ATTACHMENT2);
         
+        
+        //MRT
         //this breaks things for now
         glDrawBuffers(drawBuf);
         
@@ -122,6 +124,10 @@ public class RenderTarget {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
 		
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
+		
+
+		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 		
 		
 	}

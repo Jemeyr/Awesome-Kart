@@ -3,28 +3,13 @@ package Graphics;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.glGetError;
-import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.GL_RENDERBUFFER;
-import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
-import static org.lwjgl.opengl.GL30.glBindFramebuffer;
-import static org.lwjgl.opengl.GL30.glBindRenderbuffer;
-import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
-import static org.lwjgl.opengl.GL30.glGenFramebuffers;
-import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
-import static org.lwjgl.opengl.GL32.glFramebufferTexture;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -32,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -124,6 +110,21 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			normalShader.end();
 			
+			/*
+			//DEBUG OUTPUT
+			int size = 800*600*16;
+			
+			glBindTexture(GL_TEXTURE_2D, v.getColorTexture());
+			ByteBuffer m_bbPixels = ByteBuffer.allocateDirect(size);
+			GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, m_bbPixels);   
+			int j = -1;
+			for(int i = 0; i < 1000; i++)
+			{
+				j = m_bbPixels.asIntBuffer().get(i);
+				System.out.println(j);
+			}
+			System.exit(0);
+			// END DEBUG*/
 			
 			v.unsetRenderTarget();
 			

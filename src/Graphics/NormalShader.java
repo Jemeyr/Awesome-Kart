@@ -36,7 +36,7 @@ public class NormalShader extends Shader{
 	protected int normal_attr;
 	protected int texCoord_attr;
 	
-	
+	protected int outNorm, outCol;
 	
 	public NormalShader()
 	{
@@ -49,12 +49,14 @@ public class NormalShader extends Shader{
         
         glAttachShader(shaderProgram, vert_id);
         glAttachShader(shaderProgram, frag_id);
+
+
+//      glBindFragDataLocation( shaderProgram, 0, "outColor");
+//      glBindFragDataLocation( shaderProgram, 1, "outNormal");
         
         glLinkProgram(shaderProgram);
        
 
-        glBindFragDataLocation( shaderProgram, 0, "outColor");
-        glBindFragDataLocation( shaderProgram, 1, "outNormal");
         
         wMatIndex = glGetUniformLocation(shaderProgram, "worldMatrix");
         vpMatIndex = glGetUniformLocation(shaderProgram, "vpMatrix");
@@ -65,7 +67,10 @@ public class NormalShader extends Shader{
         normal_attr = glGetAttribLocation( shaderProgram, "normal");
         texCoord_attr = glGetAttribLocation( shaderProgram, "texCoord");
         
-       
+        //MRT
+        outCol = glGetAttribLocation( shaderProgram, "outColor");
+        outNorm = glGetAttribLocation( shaderProgram, "outNormal");
+        
 
         viewProjection = new Matrix4f();
         
@@ -119,6 +124,13 @@ public class NormalShader extends Shader{
 
         glBindTexture(GL_TEXTURE_2D, gc.mesh.texId);
 
+        //MRT
+        //Do I have to bind the outputs?
+
+//        outCol = glGetAttribLocation( shaderProgram, "outColor");
+  //      outNorm = glGetAttribLocation( shaderProgram, "outNormal");
+    //	
+    //
         glDrawElements(GL_TRIANGLES, gc.mesh.elementCount, GL_UNSIGNED_INT, 0);
 
         glBindTexture(GL_TEXTURE_2D, 0);

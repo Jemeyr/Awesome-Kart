@@ -143,8 +143,8 @@ public class ViewShader extends Shader{
 
 		
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, v.getColorTexture());//it's like this is used twice?
-
+		glBindTexture(GL_TEXTURE_2D, v.getColorTexture());
+		
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, v.getNormalTexture());
 
