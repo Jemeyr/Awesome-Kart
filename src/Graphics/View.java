@@ -88,4 +88,9 @@ public class View {
 		return this.renderTarget.getNormId();
 	}
 	
+	protected int getPosTexture()
+	{
+		return this.renderTarget.getPosId();
+	}
+	
 }

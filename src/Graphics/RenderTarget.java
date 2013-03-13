@@ -47,7 +47,7 @@ import org.lwjgl.BufferUtils;
 public class RenderTarget {
 	
 
-	private int fboId, colorId, normalId, depthId;// positionId;
+	private int fboId, colorId, normalId, positionId, depthId;
 	
 	public RenderTarget()
 	{
@@ -56,7 +56,7 @@ public class RenderTarget {
 		this.fboId = glGenFramebuffers();
 		this.colorId = glGenTextures();
 		this.normalId = glGenTextures();
-		//this.positionId = glGenTextures();
+		this.positionId = glGenTextures();
 		
 		this.depthId = glGenRenderbuffers();
 		
@@ -65,7 +65,7 @@ public class RenderTarget {
 		//set up texture
 		addAttachment(colorId, 0);
 		addAttachment(normalId, 1);
-		//addAttachment(positionId, 2);
+		addAttachment(positionId, 2);
 		
 		
 		//set up depth buffer
@@ -84,14 +84,13 @@ public class RenderTarget {
 		}
 		   
 		
-		IntBuffer drawBuf = BufferUtils.createIntBuffer(2);
+		IntBuffer drawBuf = BufferUtils.createIntBuffer(3);
         drawBuf.put(GL_COLOR_ATTACHMENT0);
         drawBuf.put(GL_COLOR_ATTACHMENT1);
-        //drawBuf.put(GL_COLOR_ATTACHMENT2);
+        drawBuf.put(GL_COLOR_ATTACHMENT2);
         
-        
-        //MRT
-        //this breaks things for now
+        //FLIP IT OR YOU DIE
+        drawBuf.flip();
         glDrawBuffers(drawBuf);
         
         //error checking
@@ -106,7 +105,6 @@ public class RenderTarget {
 		} 
 		
      
-        
 		//unbind fbo
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -115,21 +113,24 @@ public class RenderTarget {
 	private void addAttachment(int id, int attachmentNo)
 	{
 		glBindTexture(GL_TEXTURE_2D, id);
+		
+		//set params
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		
+		//initialize size
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
-		glEnable(GL_TEXTURE_2D);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
 		
+		//attach to fbo
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
 
+		//clear
 		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		
+		//unbind here?
 	}
 	
 	protected void set()
@@ -138,18 +139,9 @@ public class RenderTarget {
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, fboId);//bind fbo
 		
-		IntBuffer drawBuf = BufferUtils.createIntBuffer(2);
-        drawBuf.put(GL_COLOR_ATTACHMENT0);
-        drawBuf.put(GL_COLOR_ATTACHMENT1);
-        //drawBuf.put(GL_COLOR_ATTACHMENT2);
-        drawBuf.flip();
-        glDrawBuffers(drawBuf);
-		
-		
 		glViewport(0,0,800,600);//set to our texture size. adjust this later depending on the resolution and view size
 		
 		//clear fbo
-
 		glClearColor(0.4f, 0.8f, 0.9f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -157,11 +149,6 @@ public class RenderTarget {
 	
 	protected void unset()
 	{
-		IntBuffer drawBuf = BufferUtils.createIntBuffer(2);
-        drawBuf.clear();
-        drawBuf.flip();
-		glDrawBuffers(drawBuf);
-		
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);	
 	}
 
@@ -173,7 +160,10 @@ public class RenderTarget {
 	{
 		return normalId;
 	}
-	
+	protected int getPosId()
+	{
+		return positionId;
+	}
 	
 
 	protected FloatBuffer genFloatBuffer(float[] input)

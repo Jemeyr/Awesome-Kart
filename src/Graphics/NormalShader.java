@@ -36,7 +36,7 @@ public class NormalShader extends Shader{
 	protected int normal_attr;
 	protected int texCoord_attr;
 	
-	protected int outNorm, outCol;
+	protected int outNorm, outCol, outPos;
 	
 	public NormalShader()
 	{
@@ -50,12 +50,12 @@ public class NormalShader extends Shader{
         glAttachShader(shaderProgram, vert_id);
         glAttachShader(shaderProgram, frag_id);
 
-
+        //set render target frag locations
         glBindFragDataLocation( shaderProgram, 0, "outColor");
         glBindFragDataLocation( shaderProgram, 1, "outNormal");
+        glBindFragDataLocation( shaderProgram, 2, "outPos");
         
         glLinkProgram(shaderProgram);
-       
 
         
         wMatIndex = glGetUniformLocation(shaderProgram, "worldMatrix");
@@ -70,6 +70,8 @@ public class NormalShader extends Shader{
         //MRT
         outCol = glGetAttribLocation( shaderProgram, "outColor");
         outNorm = glGetAttribLocation( shaderProgram, "outNormal");
+        outPos = glGetAttribLocation( shaderProgram, "outPos");
+        
         
 
         viewProjection = new Matrix4f();

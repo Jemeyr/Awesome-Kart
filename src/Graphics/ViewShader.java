@@ -56,7 +56,7 @@ public class ViewShader extends Shader{
 
 	private int posUniform, sizeUniform;
 
-	private int tex0, tex1;
+	private int colTex, normTex, posTex;
 	
 	public ViewShader()
 	{
@@ -80,17 +80,17 @@ public class ViewShader extends Shader{
         glBindFragDataLocation( shaderProgram, 0, "outColor");
 
 
-        //MRT
-		tex0 = glGetUniformLocation(shaderProgram, "tex0");//returns 2
-		tex1 = glGetUniformLocation(shaderProgram, "tex1");//returns 3
-
-//no effect?
-//		glUseProgram(shaderProgram);
-		glUniform1i(tex0, 0);
-		glUniform1i(tex1, 1);
-//		glUseProgram(0);
+        //Get the input texture positions
+		colTex = glGetUniformLocation(shaderProgram, "colTex");
+		normTex = glGetUniformLocation(shaderProgram, "normTex");
+		posTex = glGetUniformLocation(shaderProgram, "posTex");
+		
+		glUniform1i(colTex, 0);//bind fbo color indices to them
+		glUniform1i(normTex, 1);
+		glUniform1i(posTex, 2);
 		
 		
+		//uniforms for size
 		posUniform = glGetUniformLocation(shaderProgram, "pos");
 		sizeUniform = glGetUniformLocation(shaderProgram, "size");
 
@@ -144,9 +144,12 @@ public class ViewShader extends Shader{
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, v.getColorTexture());
-		
+
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, v.getNormalTexture());
+		
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, v.getPosTexture());
 
 		//bind vao for the rect
 		glBindVertexArray(vao);
