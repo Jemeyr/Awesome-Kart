@@ -11,46 +11,47 @@ import Graphics.RenderMaster;
 public class RacingState implements GameState {
 
 	@Override
-	public void useActionButton(StateContext stateContext, GameState currentState, RenderMaster randerMaster) {
+	public void useActionButton(StateContext stateContext, GameState currentState, RenderMaster randerMaster, int invokingId) {
 		// Delegate to Player/Kart, call some accelerate function on it
 		System.out.println("Accelerating in this direction.");
 	}
 
 	@Override
-	public void useBackButton(StateContext stateContext, GameState currentState, RenderMaster renderMaster) {
+	public void useBackButton(StateContext stateContext, GameState currentState, RenderMaster renderMaster, int invokingId) {
 		// Delegate to player/kart, call a brake function.
 		System.out.println("Braking!!!");
 	}
 
 	@Override
-	public void useWeapon(StateContext stateContext, GameState currentState, RenderMaster renderMaster) {
+	public void useWeapon(StateContext stateContext, GameState currentState, RenderMaster renderMaster, int invokingId) {
 		// Delegate to player/kart, call use weapon.
 		System.out.println("Fire Homing Torpedoes!");
 	}
 
 	@Override
-	public void pause(StateContext stateContext, GameState currentState, RenderMaster renderMaster) {
+	public void pause(StateContext stateContext, GameState currentState, RenderMaster renderMaster, int invokingId) {
 		System.out.println("About to pause the race.");
 		stateContext.setState(StateContext.PAUSE_MENU_STATE);
+		stateContext.setLockedControllerId(invokingId);
 	}
 
 	@Override
-	public void moveUp(StateContext stateContext, GameState currentState, RenderMaster renderMaster) {
+	public void moveUp(StateContext stateContext, GameState currentState, RenderMaster renderMaster, int invokingId) {
 		System.out.println("Moving up");
 	}
 
 	@Override
-	public void moveDown(StateContext stateContext, GameState currentState, RenderMaster renderMaster) {
+	public void moveDown(StateContext stateContext, GameState currentState, RenderMaster renderMaster, int invokingId) {
 		System.out.println("Moving down");
 	}
 
 	@Override
-	public void moveLeft(StateContext stateContext, GameState currentState, RenderMaster renderMaster) {
+	public void moveLeft(StateContext stateContext, GameState currentState, RenderMaster renderMaster, int invokingId) {
 		System.out.println("Turning left!");
 	}
 
 	@Override
-	public void moveRight(StateContext stateContext, GameState currentState, RenderMaster renderMaster) {
+	public void moveRight(StateContext stateContext, GameState currentState, RenderMaster renderMaster, int invokingId) {
 		System.out.println("Turning Right!");
 	}
 	
