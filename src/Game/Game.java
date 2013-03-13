@@ -31,7 +31,7 @@ public class Game {
 	private ControllerManager 	controllerManager;	
 	private EventManager eventManager;
 	private StateContext stateContext;
-	//a state machine belongs here
+	private DigitalRightsManagement drm;
 	
 	public Game(){
 		this.renderMaster = RenderMasterFactory.getRenderMaster();
@@ -39,6 +39,7 @@ public class Game {
 		this.controllerManager = new ControllerManager();
 		this.eventManager = new EventManager();
 		this.stateContext = new StateContext();
+		this.drm = new DigitalRightsManagement();
 	}
 
 	
@@ -90,8 +91,9 @@ public class Game {
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
 		this.soundMaster.execute();
-		int musicCode = this.soundMaster.addSound("assets/sound/ACiv Battle 2.wav", false);
-		
+		int musicCode = this.soundMaster.addSound("Music",0, false);
+		int accCode = this.soundMaster.addSound("Acc",0, false);
+		int pewCode = this.soundMaster.addSound("Pew",0, true);
 		long startTime = System.currentTimeMillis();
 
 		int frames = 0;
@@ -102,7 +104,10 @@ public class Game {
 		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 900000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
-
+			if(!drm.isValid()){
+				System.exit(7);
+			}
+			
 			controllerManager.poll();
 			eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);
 			

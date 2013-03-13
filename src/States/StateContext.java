@@ -30,36 +30,40 @@ public class StateContext {
 	public void setLockedControllerId(int newLockedControllerId){
 		lockedControllerId = newLockedControllerId;
 	}
-
-	public void useActionButton(StateContext stateContext, RenderMaster renderMaster) {
-		gameState.useActionButton(stateContext, gameState, renderMaster);
+	
+	public void resetLock() {
+		setLockedControllerId(0);
 	}
 
-	public void useBackButton(StateContext stateContext, RenderMaster renderMaster) {
-		gameState.useBackButton(stateContext, gameState, renderMaster);
+	public void useActionButton(StateContext stateContext, RenderMaster renderMaster, int invokingId) {
+		gameState.useActionButton(stateContext, gameState, renderMaster, invokingId);
 	}
 
-	public void useWeapon(StateContext stateContext, RenderMaster renderMaster) {
-		gameState.useWeapon(stateContext, gameState, renderMaster);
+	public void useBackButton(StateContext stateContext, RenderMaster renderMaster, int invokingId) {
+		gameState.useBackButton(stateContext, gameState, renderMaster, invokingId);
 	}
 
-	public void pause(StateContext stateContext, RenderMaster renderMaster) {
-		gameState.pause(stateContext, gameState, renderMaster);
+	public void useWeapon(StateContext stateContext, RenderMaster renderMaster, int invokingId) {
+		gameState.useWeapon(stateContext, gameState, renderMaster, invokingId);
 	}
 
-	public void moveUp(StateContext stateContext, RenderMaster renderMaster) {
-		gameState.moveUp(stateContext, gameState, renderMaster);
+	public void pause(StateContext stateContext, RenderMaster renderMaster, int invokingId) {
+		gameState.pause(stateContext, gameState, renderMaster, invokingId);
 	}
 
-	public void moveDown(StateContext stateContext, RenderMaster renderMaster) {
-		gameState.moveDown(stateContext, gameState, renderMaster);
+	public void moveUp(StateContext stateContext, RenderMaster renderMaster, int invokingId) {
+		gameState.moveUp(stateContext, gameState, renderMaster, invokingId);
 	}
 
-	public void moveLeft(StateContext stateContext, RenderMaster renderMaster) {
-		gameState.moveLeft(stateContext, gameState, renderMaster);
+	public void moveDown(StateContext stateContext, RenderMaster renderMaster, int invokingId) {
+		gameState.moveDown(stateContext, gameState, renderMaster, invokingId);
 	}
 
-	public void moveRight(StateContext stateContext, RenderMaster renderMaster) {
-		gameState.moveRight(stateContext, gameState, renderMaster);
+	public void moveLeft(StateContext stateContext, RenderMaster renderMaster, int invokingId) {
+		gameState.moveLeft(stateContext, gameState, renderMaster, invokingId);
+	}
+
+	public void moveRight(StateContext stateContext, RenderMaster renderMaster, int invokingId) {
+		gameState.moveRight(stateContext, gameState, renderMaster, invokingId);
 	}
 }
