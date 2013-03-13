@@ -40,45 +40,45 @@ public class XboxController implements GameController {
 		String eventComponentString = event.getComponent().toString();
 		if(A_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.useActionButton(stateContext, renderMaster);
+				stateContext.useActionButton(stateContext, renderMaster, getId());
 			}
 			aButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(B_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.useBackButton(stateContext, renderMaster);
+				stateContext.useBackButton(stateContext, renderMaster, getId());
 			}
 			bButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.useWeapon(stateContext, renderMaster);
+				stateContext.useWeapon(stateContext, renderMaster, getId());
 			}
 			weaponButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(START_BUTTON.equals(eventComponentString)){
 			if(intEventValue > 0){
-				stateContext.pause(stateContext, renderMaster);
-			}
+				stateContext.pause(stateContext, renderMaster, getId());
+			} 
 			pauseButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(JOYSTICK_X_DIR.equals(eventComponentString)){
 			int multiplier = MULTIPLIER;
 			if(eventValue < 0){
-				stateContext.moveLeft(stateContext, renderMaster);
+				stateContext.moveLeft(stateContext, renderMaster, getId());
 				multiplier *= -1;
 			} else if (eventValue > 0){
-				stateContext.moveRight(stateContext, renderMaster);
+				stateContext.moveRight(stateContext, renderMaster, getId());
 			}
 			leftRightValue = eventValue * multiplier;
 		}
 		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
 			int multiplier = MULTIPLIER;
 			if(eventValue < 0){
-				stateContext.moveDown(stateContext, renderMaster);
+				stateContext.moveDown(stateContext, renderMaster, getId());
 				multiplier *= -1;
 			} else if(eventValue > 0){
-				stateContext.moveUp(stateContext, renderMaster);
+				stateContext.moveUp(stateContext, renderMaster, getId());
 			}
 			upDownValue = eventValue * multiplier;
 		}
