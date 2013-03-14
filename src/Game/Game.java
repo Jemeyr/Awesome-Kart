@@ -14,8 +14,9 @@ import org.lwjgl.util.vector.Vector4f;
 import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
 
 import Controller.ControllerManager;
+import Controller.ControllerType;
 import Controller.EventManager;
-import Controller.KeyboardController;
+import Controller.GameController;
 import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
@@ -25,6 +26,7 @@ import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
 import States.StateContext;
 import World.Kart;
+import World.Player;
 
 public class Game {
 	
@@ -67,20 +69,27 @@ public class Game {
 		
 		List<Kart> karts = new LinkedList<Kart>();
 		Kart pk = null;
+		Player player = null;
 		Vector4f playerDelta = new Vector4f();
 		
 		for(int i = 0; i < 16; i++)
 		{
 			
-			Kart k = new Kart(null, renderMaster);
+			Kart k;
 			
 			if(pk == null && i == 10)
 			{
+				GameController gc = controllerManager.addController(ControllerType.KEYBOARD);
+				k = new Kart(renderMaster);
 				pk = k;
+				
+				player = new Player(gc, pk, playerDelta);
 
 				Vector3f.add(pk.position, new Vector3f(0f,-22.5f, 0f), pk.position);
 			}
 			
+			
+			k  = new Kart(renderMaster);
 			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, -22.5f, -300f + (i%4) * 150.0f);
 			karts.add(k);
 			k.killme = i*1234f;
@@ -129,29 +138,7 @@ public class Game {
 			}
 
 			
-			if(Keyboard.isKeyDown(Keyboard.KEY_UP))
-            {
-				Vector4f.add(playerDelta, new Vector4f(0,0,2,0), playerDelta);
-            }
-			else if(Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-            {
-				Vector4f.add(playerDelta, new Vector4f(0,0,-2,0), playerDelta);	
-            }
-
-			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-			{
-				Vector3f.add(pk.rotation, new Vector3f(0, 0.025f, 0), pk.rotation);
-			}
-			else if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-			{
-				Vector3f.add(pk.rotation, new Vector3f(0, -0.025f, 0), pk.rotation);
-			}
-			
-			Matrix4f.transform(((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat(), playerDelta, playerDelta);	
-			Vector3f.add(pk.position, new Vector3f(playerDelta), pk.position);
-			pk.update();
-			
-			playerDelta.set(0, 0, 0, 0);
+			player.update();
 
 			
 			//update the objects

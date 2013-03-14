@@ -18,9 +18,6 @@ public class Kart {
 	public float killme;
 	public Vector3f killmeVec;
 	
-	
-	public GameController controller;
-	
 	public GraphicsComponent graphicsComponent;
 	//refs for the wheels, rider, and hat
 	private GraphicsComponent wheelFL,wheelFR, wheelBL, wheelBR;
@@ -36,10 +33,8 @@ public class Kart {
 	
 	//public heldweapon
 	
-	public Kart(GameController controller, RenderMaster renderer)
-	{
-		this.controller = controller;
-		
+	public Kart(RenderMaster renderer)
+	{	
 		this.graphicsComponent = renderer.addModel("kart");
 		
 		wheelFL = graphicsComponent.addSubComponent("wheel", renderer);
@@ -92,6 +87,14 @@ public class Kart {
 		
 		
 		
+	}
+	
+	public Vector3f getRotation() {
+		return rotation;
+	}
+	
+	public Vector3f getPosition() {
+		return position;
 	}
 	
 	
