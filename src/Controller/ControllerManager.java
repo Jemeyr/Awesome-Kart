@@ -56,10 +56,14 @@ public class ControllerManager {
 				gameEvents.add(new GameEvent(event, entry.getValue()));
 			}
 		}
+		/*System.out.println("LIST----------------------------------");
+		for(GameEvent ge : gameEvents){
+			System.out.println("Name is and value is " + (int)ge.getEvent().getValue());
+		}*/
 	}
 	
 	public HashSet<GameEvent> getEvents(){
-		return gameEvents;
+		return new HashSet<GameEvent>(gameEvents);
 	}
 	
 	public HashMap<Controller, GameController> getControllersMap(){
