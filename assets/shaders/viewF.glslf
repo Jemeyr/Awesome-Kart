@@ -21,6 +21,27 @@ void main()
 		edge = 0.05;
 	}
 	
-	outColor = (color1 + color2 + color3) * 0.5 * edge;
+	/*
+	if(vTexCoord.x < .33)
+	{
+		outColor = color1 * edge;
+	}
+	else if(vTexCoord.x > .66)
+	{
+		outColor = color2 * edge;
+	}
+	else
+	{
+		outColor =  color3 * edge;
+	}*/
+	
+	/*
+	vec3 lightDir = normalize(vec3(0,2,1));
+	vec3 norm = color2.xyz * 2 - vec3(1,1,1);
+	norm = normalize(norm);
+	*/
+	
+	outColor = color1 * dot(color2.xyz, vec3(1,0,1)) * edge;
+	
 }
 

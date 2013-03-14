@@ -44,7 +44,7 @@ public class GeometryShader extends Shader{
 	protected int normal_attr;
 	protected int texCoord_attr;
 	
-	protected int outNorm, outCol, outPos;
+	protected int outNorm, outCol, outDepth;
 	
 	public GeometryShader()
 	{
@@ -61,7 +61,7 @@ public class GeometryShader extends Shader{
         //set render target frag locations
         glBindFragDataLocation( shaderProgram, 0, "outColor");
         glBindFragDataLocation( shaderProgram, 1, "outNormal");
-        glBindFragDataLocation( shaderProgram, 2, "outPos");
+        glBindFragDataLocation( shaderProgram, 2, "outDepth");
         
         glLinkProgram(shaderProgram);
 
@@ -78,11 +78,10 @@ public class GeometryShader extends Shader{
         //MRT
         outCol = glGetAttribLocation( shaderProgram, "outColor");
         outNorm = glGetAttribLocation( shaderProgram, "outNormal");
-        outPos = glGetAttribLocation( shaderProgram, "outPos");
+        outDepth = glGetAttribLocation( shaderProgram, "outDepth");
         
-        texId = glGetUniformLocation(shaderProgram, "modelTexture");
-		System.out.println("CHERIH IHER IH  " + texId);
-
+        //would be a nice idea, but it causes an error
+        //texId = glGetUniformLocation(shaderProgram, "modelTexture");
 		//glUniform1i(texId, 0);//bind fbo color indices to them
 		
         viewProjection = new Matrix4f();
