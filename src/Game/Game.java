@@ -60,6 +60,7 @@ public class Game {
 		renderMaster.loadModel("aktext");
 		System.out.println("Loading Complete");
 
+		renderMaster.addLight();
 		
 		renderMaster.addModel("testTer");
 		GraphicsComponent text = renderMaster.addModel("aktext");

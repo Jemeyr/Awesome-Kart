@@ -86,6 +86,14 @@ public class DebugRenderMaster implements RenderMaster {
 		return l;
 	}
 	
+	public Light addLight() {
+		Light l = new Light();
+		lights.add(l);
+		
+		return l;
+	}
+
+	
 	public void removeLight(Light l)
 	{
 		lights.remove(l);
@@ -125,13 +133,13 @@ public class DebugRenderMaster implements RenderMaster {
 				geoShader.draw(gc);
 			}
 			
-			
 			geoShader.end();
 			
 			
 			//render the lights here
 			v.setRenderTarget(RenderBufferEnum.lightAccumulation);
 			labShader.begin();
+			labShader.useCam(v.cam);
 			
 			for(Light light : lights)
 			{
@@ -209,6 +217,7 @@ public class DebugRenderMaster implements RenderMaster {
 		//you haven't loaded the model
 		return null;
 	}
+
 
 
 }

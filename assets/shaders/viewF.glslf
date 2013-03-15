@@ -7,6 +7,7 @@ in vec2 vTexCoord;
 uniform sampler2D colTex;
 uniform sampler2D normTex;
 uniform sampler2D posTex;
+uniform sampler2D labTex;
 
 
 void main()
@@ -41,7 +42,7 @@ void main()
 	norm = normalize(norm);
 	*/
 	
-	outColor = color1 * dot(color2.xyz, vec3(1,0,1)) * edge;
+	outColor = vec4(texture(labTex, vTexCoord).xyz, 1);//color1 * dot(color2.xyz, vec3(1,0,1)) * edge;
 	
 }
 

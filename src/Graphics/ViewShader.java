@@ -56,7 +56,7 @@ public class ViewShader extends Shader{
 
 	private int posUniform, sizeUniform;
 
-	private int colTex, normTex, posTex;
+	private int colTex, normTex, posTex, labTex;
 	
 	public ViewShader()
 	{
@@ -86,10 +86,12 @@ public class ViewShader extends Shader{
 		colTex = glGetUniformLocation(shaderProgram, "colTex");
 		normTex = glGetUniformLocation(shaderProgram, "normTex");
 		posTex = glGetUniformLocation(shaderProgram, "posTex");
+		labTex = glGetUniformLocation(shaderProgram, "labTex");
 		
 		glUniform1i(colTex, 0);//bind fbo color indices to them
 		glUniform1i(normTex, 1);
 		glUniform1i(posTex, 2);
+		glUniform1i(labTex, 3);
 		
 
         
@@ -153,6 +155,9 @@ public class ViewShader extends Shader{
 		
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, v.getPosTexture());
+		
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, v.getLightTexture());
 
 		//bind vao for the rect
 		glBindVertexArray(vao);

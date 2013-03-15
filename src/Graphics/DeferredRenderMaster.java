@@ -42,4 +42,16 @@ public class DeferredRenderMaster implements RenderMaster {
 		return null;
 	}
 
+	@Override
+	public Light addLight() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void removeLight(Light l) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
