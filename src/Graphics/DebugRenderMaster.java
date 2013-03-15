@@ -32,7 +32,7 @@ public class DebugRenderMaster implements RenderMaster {
 	
 	private float aspect;
 	
-	private GeometryShader normalShader;
+	private GeometryShader geoShader;
 	private ViewShader viewShader;
 	
 	
@@ -42,7 +42,7 @@ public class DebugRenderMaster implements RenderMaster {
         glEnable(GL_DEPTH_TEST);
         glClearColor(0f, 0f, 0f, 1f);
         
-        this.normalShader = new GeometryShader();
+        this.geoShader = new GeometryShader();
 		
         this.viewShader = new ViewShader();
         
@@ -96,24 +96,23 @@ public class DebugRenderMaster implements RenderMaster {
 		//this should draw each object for each view, then draw the view to screen on a quad with a simple shader
     	for(View v : views)
     	{
-    		v.setRenderTarget();//clears render target too
-			
+    		v.setRenderTarget();//TODO make this choose the target
+    		
 			//how to draw, iterate over all the graphics components and draw their parts
-			normalShader.begin();
+			geoShader.begin();
 			
-			normalShader.useCam(v.cam);
+			geoShader.useCam(v.cam);
 			
 			for(DebugGraphicsComponent gc : graphicsComponents)
 			{
-				normalShader.draw(gc);
+				geoShader.draw(gc);
 			}
 			
-			
-			normalShader.end();
-			
+			geoShader.end();
 			
 			v.unsetRenderTarget();
 			
+			//render the lights here
 			
 			viewShader.begin();
 			viewShader.draw(v);
@@ -138,7 +137,7 @@ public class DebugRenderMaster implements RenderMaster {
 			}
 		}
 
-		loadedModels.add(new DebugMesh(s,normalShader));
+		loadedModels.add(new DebugMesh(s,geoShader));
 		
 	}
 

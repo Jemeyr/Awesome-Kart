@@ -62,27 +62,22 @@ public class DebugMesh {
 	
 	protected DebugMesh(String s, GeometryShader shader)
 	{
-
 		this.shader = shader;
-		
+
 		//set id
 		id = s;
-		
-		
-		//generate a new vertex array (note, this is the mesh, not a component, so this should be instantiated once per load, not per instance
+				
+		//generate a new vertex array 
         vao = glGenVertexArrays();
 
+        //bind the vao
         glBindVertexArray(vao);
 
 		
         //create vbos here when loading model
         load("assets/graphics/" + s + "/object.obj");
 
-
-        
-
-        //diffTexId= glGenTextures();
-        //loadTex(s,"diffuse",diffTexId);
+        //generate a texture and load to it
         texId = glGenTextures();
         loadTex(s,"debug",texId);
 	}

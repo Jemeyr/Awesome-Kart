@@ -42,7 +42,7 @@ public class View {
 	protected Rectangle rect;
 	protected Camera cam;
 	
-	private RenderTarget renderTarget;
+	private RenderTarget geometryRenderTarget, lightAccumulationRenderTarget;
 	
 	protected float screenPos[];
 	protected float screenSize[];	
@@ -52,7 +52,9 @@ public class View {
 		this.rect = r; //this assumes windowsize of 800,600
 		this.cam = c;
 
-		this.renderTarget = new RenderTarget();
+		this.geometryRenderTarget = new RenderTarget(true);//we want a multichannel (multiple rgb)
+		this.lightAccumulationRenderTarget = new RenderTarget(false);//we want this single channel 
+		
 		
 		screenPos = new float[2];
 		screenPos[0] = r.getX() / 400.0f - 1.0f;
@@ -70,27 +72,33 @@ public class View {
 	
 	protected void setRenderTarget()
 	{
-		renderTarget.set();
+		geometryRenderTarget.set();
 	}
 	
 	protected void unsetRenderTarget()
 	{
-		renderTarget.unset();
+		geometryRenderTarget.unset();
 	}
 	
 	protected int getColorTexture()
 	{
-		return this.renderTarget.getColId();
+		return this.geometryRenderTarget.getColId();
 	}
 	
 	protected int getNormalTexture()
 	{
-		return this.renderTarget.getNormId();
+		return this.geometryRenderTarget.getNormId();
 	}
 	
 	protected int getPosTexture()
 	{
-		return this.renderTarget.getPosId();
+		return this.geometryRenderTarget.getPosId();
 	}
+	
+	protected int getLightTexture()
+	{
+		return this.lightAccumulationRenderTarget.getColId();
+	}
+	
 	
 }

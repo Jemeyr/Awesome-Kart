@@ -49,14 +49,18 @@ public class RenderTarget {
 
 	private int fboId, colorId, normalId, positionId, depthId;
 	
-	public RenderTarget()
+	public RenderTarget(boolean multiChannel)
 	{
 
 		//init and bind
 		this.fboId = glGenFramebuffers();
 		this.colorId = glGenTextures();
-		this.normalId = glGenTextures();
-		this.positionId = glGenTextures();
+		
+		if(multiChannel)
+		{
+			this.normalId = glGenTextures();
+			this.positionId = glGenTextures();
+		}
 		
 		this.depthId = glGenRenderbuffers();
 		
@@ -64,9 +68,11 @@ public class RenderTarget {
 
 		//set up texture
 		addAttachment(colorId, 0);
-		addAttachment(normalId, 1);
-		addAttachment(positionId, 2);
-		
+		if(multiChannel)
+		{
+			addAttachment(normalId, 1);
+			addAttachment(positionId, 2);
+		}
 		
 		//set up depth buffer
 		glBindRenderbuffer(GL_RENDERBUFFER, depthId);
@@ -86,8 +92,11 @@ public class RenderTarget {
 		
 		IntBuffer drawBuf = BufferUtils.createIntBuffer(3);
         drawBuf.put(GL_COLOR_ATTACHMENT0);
-        drawBuf.put(GL_COLOR_ATTACHMENT1);
-        drawBuf.put(GL_COLOR_ATTACHMENT2);
+        if(multiChannel)
+        {
+	        drawBuf.put(GL_COLOR_ATTACHMENT1);
+	        drawBuf.put(GL_COLOR_ATTACHMENT2);
+        }
         
         //FLIP IT OR YOU DIE
         drawBuf.flip();

@@ -1,12 +1,10 @@
 package Graphics;
 
-import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL11.glGetError;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
@@ -16,17 +14,14 @@ import static org.lwjgl.opengl.GL20.glCreateProgram;
 import static org.lwjgl.opengl.GL20.glGetAttribLocation;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
-import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
 
-public class GeometryShader extends Shader{
-
+public class LightAccumulationBufferShader extends Shader{
 	
 	private int vert_id;
 	private int frag_id;
@@ -42,22 +37,22 @@ public class GeometryShader extends Shader{
 	protected int normal_attr;
 	protected int texCoord_attr;
 	
-	public GeometryShader()
+	protected int outNorm, outCol, outDepth;
+	
+	public LightAccumulationBufferShader()
 	{
 		active = false;
 				
-    	vert_id = loadShader("geometry.glslv", GL_VERTEX_SHADER);
-    	frag_id = loadShader("geometry.glslf", GL_FRAGMENT_SHADER);
+    	vert_id = loadShader("light.glslv", GL_VERTEX_SHADER);
+    	frag_id = loadShader("light.glslf", GL_FRAGMENT_SHADER);
     	
         shaderProgram = glCreateProgram();
 
         glAttachShader(shaderProgram, vert_id);
         glAttachShader(shaderProgram, frag_id);
 
-        //set render target frag locations MRT
-        glBindFragDataLocation( shaderProgram, 0, "outColor");
-        glBindFragDataLocation( shaderProgram, 1, "outNormal");
-        glBindFragDataLocation( shaderProgram, 2, "outDepth");
+        //set render target frag locations
+        glBindFragDataLocation( shaderProgram, 0, "outColor");//TODO make the shader do this
         
         glLinkProgram(shaderProgram);
 
@@ -71,10 +66,9 @@ public class GeometryShader extends Shader{
         normal_attr = glGetAttribLocation( shaderProgram, "normal");
         texCoord_attr = glGetAttribLocation( shaderProgram, "texCoord");
 
+        //MRT
+        outCol = glGetAttribLocation( shaderProgram, "outColor");
         
-        //would be a nice idea, but it causes an error
-        //texId = glGetUniformLocation(shaderProgram, "modelTexture");
-		//glUniform1i(texId, 0);//bind fbo color indices to them
 		
         viewProjection = new Matrix4f();
         
