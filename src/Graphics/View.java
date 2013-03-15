@@ -64,15 +64,22 @@ public class View {
 		screenSize[0] = r.getWidth() / 400.0f;
 		screenSize[1] = r.getHeight() / 300.0f;
 		
-		c.setAspectRatio((float)r.getWidth() / (float)r.getHeight());
+		c.setAspectRatio(30f * 0.011111f * 3.14159f * (float)r.getWidth() / (float)r.getHeight());
 		
 		
 		
 	}
 	
-	protected void setRenderTarget()
+	protected void setRenderTarget(RenderBufferEnum e)
 	{
-		geometryRenderTarget.set();
+		if(e == RenderBufferEnum.geometry)
+		{
+			geometryRenderTarget.set();
+		}
+		else if(e == RenderBufferEnum.lightAccumulation)
+		{
+			lightAccumulationRenderTarget.set();
+		}
 	}
 	
 	protected void unsetRenderTarget()

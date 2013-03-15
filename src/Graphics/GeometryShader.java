@@ -137,6 +137,22 @@ public class GeometryShader extends Shader{
 	}
 	
 	
+	public int getPositionAttr()
+	{
+		return position_attr;
+	}
+	
+	public int getNormalAttr()
+	{
+		return normal_attr;
+	}
+	
+	public int getTexCoordAttr()
+	{
+		return texCoord_attr;
+	}
+	
+	
 
 
 	

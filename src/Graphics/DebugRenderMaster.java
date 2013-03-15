@@ -28,11 +28,14 @@ public class DebugRenderMaster implements RenderMaster {
 	private List<DebugGraphicsComponent> graphicsComponents;
 	private List<DebugMesh >loadedModels;
 	
+	private List<Light> lights;
+	
 	private List<View> views;
 	
 	private float aspect;
 	
 	private GeometryShader geoShader;
+	private LightAccumulationBufferShader labShader;
 	private ViewShader viewShader;
 	
 	
@@ -43,19 +46,21 @@ public class DebugRenderMaster implements RenderMaster {
         glClearColor(0f, 0f, 0f, 1f);
         
         this.geoShader = new GeometryShader();
-		
+		this.labShader = new LightAccumulationBufferShader();
+        
         this.viewShader = new ViewShader();
         
         this.aspect = aspect;
 		
         
         this.views = new LinkedList<View>();
-
-        //System.out.println("DebugRenderMaster: created shader and camera");
 		
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
 
+		this.lights = new ArrayList<Light>();
+		Light.init(new DebugMesh("lightSphere", labShader));
+		
 	}
 	
 	public void removeModel(GraphicsComponent g)
@@ -71,6 +76,19 @@ public class DebugRenderMaster implements RenderMaster {
 		this.views.add(new View(r,c));
 		
 		return c;
+	}
+	
+	public Light addLight(float rad)
+	{
+		Light l = new Light(rad);
+		lights.add(l);
+		
+		return l;
+	}
+	
+	public void removeLight(Light l)
+	{
+		lights.remove(l);
 	}
 	
 	public GraphicsComponent addModel(String id)
@@ -96,11 +114,10 @@ public class DebugRenderMaster implements RenderMaster {
 		//this should draw each object for each view, then draw the view to screen on a quad with a simple shader
     	for(View v : views)
     	{
-    		v.setRenderTarget();//TODO make this choose the target
-    		
+    		v.setRenderTarget(RenderBufferEnum.geometry);
+
 			//how to draw, iterate over all the graphics components and draw their parts
-			geoShader.begin();
-			
+			geoShader.begin();			
 			geoShader.useCam(v.cam);
 			
 			for(DebugGraphicsComponent gc : graphicsComponents)
@@ -108,11 +125,23 @@ public class DebugRenderMaster implements RenderMaster {
 				geoShader.draw(gc);
 			}
 			
+			
 			geoShader.end();
 			
-			v.unsetRenderTarget();
 			
 			//render the lights here
+			v.setRenderTarget(RenderBufferEnum.lightAccumulation);
+			labShader.begin();
+			
+			for(Light light : lights)
+			{
+				labShader.draw(light);
+			}
+			
+			labShader.end();
+			v.unsetRenderTarget();
+			
+			
 			
 			viewShader.begin();
 			viewShader.draw(v);

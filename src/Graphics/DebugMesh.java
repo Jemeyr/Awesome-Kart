@@ -58,15 +58,16 @@ public class DebugMesh {
 	protected int diffTexId;
 	protected int normTexId;
 	
-	private GeometryShader shader;
+	private Shader shader;
 	
-	protected DebugMesh(String s, GeometryShader shader)
+	protected DebugMesh(String s, Shader shader)
 	{
 		this.shader = shader;
 
 		//set id
 		id = s;
-				
+		
+		
 		//generate a new vertex array 
         vao = glGenVertexArrays();
 
@@ -99,7 +100,11 @@ public class DebugMesh {
         	
         }catch (Exception e)
         {
-        	System.out.println("error " + e);
+        	if(!s.equals("lightSphere"))//lightSphere doesn't need a texture
+        	{
+        		System.out.println("error " + e);
+        	}
+        	return;
         }
         
         
@@ -314,9 +319,9 @@ public class DebugMesh {
 
 
 
-        int position_attr = shader.position_attr;
-        int normal_attr = shader.normal_attr;
-        int texCoord_attr = shader.texCoord_attr;
+        int position_attr = shader.getPositionAttr();
+        int normal_attr = shader.getNormalAttr();
+        int texCoord_attr = shader.getTexCoordAttr();
         
 
 		if(position_attr != -1)

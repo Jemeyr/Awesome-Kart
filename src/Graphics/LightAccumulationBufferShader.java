@@ -95,36 +95,26 @@ public class LightAccumulationBufferShader extends Shader{
 		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
 	}
 
-	
-	protected void draw(DebugGraphicsComponent gc)
+	protected void draw(Light l)
 	{
 		if(!active)
 		{
 			System.out.println("Shader has not begun");
 			return;
 		}
-	
-		bindDraw(gc);
-		for(DebugGraphicsComponent sgc : gc.subComponents)
-		{
-			draw(sgc);
-		}
 		
 		
+		//bindDraw
 	}
+	
 
 	private void bindDraw(DebugGraphicsComponent gc)
 	{
-		setTransform(gc.getModelMat(), viewProjection);
+		setTransform(gc.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
 		
-		glBindVertexArray(gc.mesh.vao);
+		glBindVertexArray(gc.mesh.vao);//TODO bind to a static sphere for the light
 		
-		glActiveTexture(GL_TEXTURE0);//to texture 0
-        glBindTexture(GL_TEXTURE_2D, gc.mesh.texId);
-
         glDrawElements(GL_TRIANGLES, gc.mesh.elementCount, GL_UNSIGNED_INT, 0);
-
-        glBindTexture(GL_TEXTURE_2D, 0);
 
 		glBindVertexArray(0);
 

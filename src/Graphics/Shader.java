@@ -135,4 +135,20 @@ public abstract class Shader {
 	{
 		return this.shaderProgram;
 	}
+	
+	public int getPositionAttr()
+	{
+		return -1;
+	}
+	
+	public int getNormalAttr()
+	{
+		return -1;
+	}
+	
+	public int getTexCoordAttr()
+	{
+		return -1;
+	}
+	
 }
