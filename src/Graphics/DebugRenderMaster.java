@@ -138,15 +138,22 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			//render the lights here
 			v.setRenderTarget(RenderBufferEnum.lightAccumulation);
-			labShader.begin();
+			geoShader.begin();
+			for(DebugGraphicsComponent gc : graphicsComponents)
+			{
+				geoShader.draw(gc);
+			}
+			geoShader.end();
+			/*labShader.begin();
 			labShader.useCam(v.cam);
 			
 			for(Light light : lights)
 			{
 				labShader.draw(light);
 			}
-			
+
 			labShader.end();
+			*/
 			v.unsetRenderTarget();
 			
 			

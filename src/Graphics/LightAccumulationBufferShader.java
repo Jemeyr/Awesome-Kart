@@ -86,7 +86,6 @@ public class LightAccumulationBufferShader extends Shader{
 		Matrix4f camView = new Matrix4f(cam.viewMat);
 		Matrix4f camVP = new Matrix4f();
 		
-		
 		camVP = Matrix4f.mul(camView, camProj, null);
 		
 		this.viewProjection = camVP;
@@ -103,25 +102,14 @@ public class LightAccumulationBufferShader extends Shader{
 			return;
 		}
 		
+		setTransform(l.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
 		
-		//bindDraw
-	}
-	
-
-	private void bindDraw(DebugGraphicsComponent gc)
-	{
-		setTransform(gc.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
+		glBindVertexArray(Light.mesh.vao);
 		
-		glBindVertexArray(gc.mesh.vao);//TODO bind to a static sphere for the light
-		
-        glDrawElements(GL_TRIANGLES, gc.mesh.elementCount, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, Light.mesh.elementCount, GL_UNSIGNED_INT, 0);
 
 		glBindVertexArray(0);
-
 	}
 	
-	
-
-
 	
 }

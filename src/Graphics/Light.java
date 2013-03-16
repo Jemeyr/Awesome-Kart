@@ -52,4 +52,9 @@ public class Light {
 		Matrix4f.translate(pos, world, world);
 	}
 	
+	protected Matrix4f getModelMat()
+	{
+		return this.world;
+	}
+	
 }

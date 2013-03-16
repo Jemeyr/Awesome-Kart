@@ -1,8 +1,5 @@
 package Game;
 
-import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
-import static org.lwjgl.opengl.GL11.glGetError;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +15,7 @@ import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
 import Graphics.GraphicsComponent;
+import Graphics.Light;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
@@ -58,9 +56,25 @@ public class Game {
 		renderMaster.loadModel("hat");
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
+		
+		renderMaster.loadModel("aktext");
+		
+		renderMaster.loadModel("lightSphere");
+		
 		System.out.println("Loading Complete");
 
-		renderMaster.addLight();
+		Light le = null;
+		GraphicsComponent gccss = null;
+		for(int h = 0; h < 400; h++)
+		{
+			gccss = renderMaster.addModel("lightSphere");
+			
+			gccss.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
+				
+			
+			le = renderMaster.addLight();
+			le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
+		}
 		
 		renderMaster.addModel("testTer");
 		GraphicsComponent text = renderMaster.addModel("aktext");
