@@ -13,7 +13,7 @@ public class PauseMenuState implements GameState {
 		// Select the specific item, go to state based on where it is selected
 		if(DEBUG) System.out.println(invokingId + ": The paused A button. Back to race");
 		stateContext.setState(StateContext.RACING_STATE);
-		stateContext.resetLock();
+		stateContext.resetControllerLock();
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class PauseMenuState implements GameState {
 		// Back out of pause menu
 		if(DEBUG) System.out.println(invokingId + ": Returning to Game");
 		stateContext.setState(StateContext.RACING_STATE);
-		stateContext.resetLock();
+		stateContext.resetControllerLock();
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class PauseMenuState implements GameState {
 		// Effectively unpauses the game
 		if(DEBUG) System.out.println(invokingId + ": In the Pause Menu, going back to Race");
 		stateContext.setState(StateContext.RACING_STATE);
-		stateContext.resetLock();
+		stateContext.resetControllerLock();
 	}
 
 	@Override

@@ -8,6 +8,7 @@ public class StateContext {
 	
 	protected static final GameState RACING_STATE 		= new RacingState();
 	protected static final GameState PAUSE_MENU_STATE 	= new PauseMenuState();
+	private static final int DEFAULT_CONTROLLER_LOCK 	= 0;			
 	
 	private RenderMaster renderMaster;
 	private SoundMaster soundMaster;
@@ -18,7 +19,7 @@ public class StateContext {
 		renderMaster = RenderMasterFactory.getRenderMaster();
 		soundMaster = new SoundMaster();
 		setState(new RacingState());
-		setLockedControllerId(0);
+		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
 	}
 	
 	public GameState getState(){
@@ -37,8 +38,8 @@ public class StateContext {
 		lockedControllerId = newLockedControllerId;
 	}
 	
-	public void resetLock() {
-		setLockedControllerId(0);
+	public void resetControllerLock() {
+		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
 	}
 
 	public void useActionButton(StateContext stateContext, int invokingId) {
