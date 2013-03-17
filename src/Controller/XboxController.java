@@ -43,45 +43,45 @@ public class XboxController implements GameController {
 		if(A_BUTTON.equals(eventComponentString)){
 			System.out.println(eventValue);
 			if(eventValue > 0.01f){
-				stateContext.useActionButton(stateContext, renderMaster, getId());
+				stateContext.useActionButton(stateContext, getId());
 			}
 			aButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(B_BUTTON.equals(eventComponentString)){
 			if(eventValue > 0.01f){
-				stateContext.useBackButton(stateContext, renderMaster, getId());
+				stateContext.useBackButton(stateContext, getId());
 			}
 			bButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
 			if(eventValue > 0.01f){
-				stateContext.useWeapon(stateContext, renderMaster, getId());
+				stateContext.useWeapon(stateContext, getId());
 			}
 			weaponButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(START_BUTTON.equals(eventComponentString)){
 			if(eventValue > 0.01f){
-				stateContext.pause(stateContext, renderMaster, getId());
+				stateContext.pause(stateContext, getId());
 			} 
 			pauseButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(JOYSTICK_X_DIR.equals(eventComponentString)){
 			int multiplier = MULTIPLIER;
 			if(eventValue < -0.25f){
-				stateContext.moveLeft(stateContext, renderMaster, getId());
+				stateContext.moveLeft(stateContext, getId());
 				multiplier *= -1;
 			} else if (eventValue > 0.25f){
-				stateContext.moveRight(stateContext, renderMaster, getId());
+				stateContext.moveRight(stateContext, getId());
 			}
 			leftRightValue = eventValue * multiplier;
 		}
 		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
 			int multiplier = MULTIPLIER;
 			if(eventValue > 0.25f){
-				stateContext.moveDown(stateContext, renderMaster, getId());
+				stateContext.moveDown(stateContext, getId());
 				multiplier *= -1;
 			} else if(eventValue < -0.25f){
-				stateContext.moveUp(stateContext, renderMaster, getId());
+				stateContext.moveUp(stateContext, getId());
 			}
 			upDownValue = eventValue * multiplier;
 		}

@@ -46,42 +46,42 @@ public class KeyboardController implements GameController {
 		String eventComponentString = event.getComponent().toString();
 		if(ACTION_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.useActionButton(stateContext, renderMaster, getId());
+				stateContext.useActionButton(stateContext, getId());
 			}
 			actionValue = intEventValue;
 		} else if(BACK_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.useBackButton(stateContext, renderMaster, getId());
+				stateContext.useBackButton(stateContext, getId());
 			}
 			backValue = intEventValue;
 		} else if(WEAPON_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.useWeapon(stateContext, renderMaster, getId());
+				stateContext.useWeapon(stateContext, getId());
 			}
 			weaponValue = intEventValue;
 		} else if(PAUSE_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.pause(stateContext, renderMaster, getId());
+				stateContext.pause(stateContext, getId());
 			}
 			pauseValue = intEventValue;
 		} else if(UP_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.moveUp(stateContext, renderMaster, getId());
+				stateContext.moveUp(stateContext, getId());
 			}
 			upValue = intEventValue;
 		} else if(DOWN_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.moveDown(stateContext, renderMaster, getId());
+				stateContext.moveDown(stateContext, getId());
 			}
 			downValue = intEventValue;
 		} else if(LEFT_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.moveLeft(stateContext, renderMaster, getId());
+				stateContext.moveLeft(stateContext, getId());
 			}
 			leftValue = intEventValue;
 		} else if(RIGHT_KEY.equals(eventComponentString)){
 			if (intEventValue == 1) {
-				stateContext.moveRight(stateContext, renderMaster, getId());
+				stateContext.moveRight(stateContext, getId());
 			}
 			rightValue = intEventValue;
 		}
