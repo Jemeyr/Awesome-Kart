@@ -18,7 +18,8 @@ public class StateContext {
 	public StateContext() {
 		renderMaster = RenderMasterFactory.getRenderMaster();
 		soundMaster = new SoundMaster();
-		setState(new RacingState());
+		
+		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
 	}
 	
@@ -43,34 +44,34 @@ public class StateContext {
 	}
 
 	public void useActionButton(StateContext stateContext, int invokingId) {
-		gameState.useActionButton(stateContext, gameState, renderMaster, soundMaster, invokingId);
+		gameState.useActionButton(stateContext, renderMaster, soundMaster, invokingId);
 	}
 
 	public void useBackButton(StateContext stateContext, int invokingId) {
-		gameState.useBackButton(stateContext, gameState, renderMaster, soundMaster, invokingId);
+		gameState.useBackButton(stateContext, renderMaster, soundMaster, invokingId);
 	}
 
 	public void useWeapon(StateContext stateContext, int invokingId) {
-		gameState.useWeapon(stateContext, gameState, renderMaster, soundMaster, invokingId);
+		gameState.useWeapon(stateContext, renderMaster, soundMaster, invokingId);
 	}
 
 	public void pause(StateContext stateContext, int invokingId) {
-		gameState.pause(stateContext, gameState, renderMaster, soundMaster, invokingId);
+		gameState.pause(stateContext, renderMaster, soundMaster, invokingId);
 	}
 
 	public void moveUp(StateContext stateContext, int invokingId) {
-		gameState.moveUp(stateContext, gameState, renderMaster, soundMaster, invokingId);
+		gameState.moveUp(stateContext, renderMaster, soundMaster, invokingId);
 	}
 
 	public void moveDown(StateContext stateContext, int invokingId) {
-		gameState.moveDown(stateContext, gameState, renderMaster, soundMaster, invokingId);
+		gameState.moveDown(stateContext, renderMaster, soundMaster, invokingId);
 	}
 
 	public void moveLeft(StateContext stateContext, int invokingId) {
-		gameState.moveLeft(stateContext, gameState, renderMaster, soundMaster, invokingId);
+		gameState.moveLeft(stateContext, renderMaster, soundMaster, invokingId);
 	}
 
 	public void moveRight(StateContext stateContext, int invokingId) {
-		gameState.moveRight(stateContext, gameState, renderMaster, soundMaster, invokingId);
+		gameState.moveRight(stateContext, renderMaster, soundMaster, invokingId);
 	}
 }
