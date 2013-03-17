@@ -1,12 +1,8 @@
 package Graphics;
 
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glAttachShader;
@@ -14,6 +10,7 @@ import static org.lwjgl.opengl.GL20.glCreateProgram;
 import static org.lwjgl.opengl.GL20.glGetAttribLocation;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
@@ -34,8 +31,7 @@ public class LightAccumulationBufferShader extends Shader{
 
 	
 	protected int position_attr;
-	protected int normal_attr;
-	protected int texCoord_attr;
+	protected int rad_attr;
 	
 	protected int outNorm, outCol, outDepth;
 	
@@ -63,12 +59,8 @@ public class LightAccumulationBufferShader extends Shader{
 
         
 		position_attr = glGetAttribLocation( shaderProgram, "position");
-        normal_attr = glGetAttribLocation( shaderProgram, "normal");
-        texCoord_attr = glGetAttribLocation( shaderProgram, "texCoord");
-
-        //MRT
-        outCol = glGetAttribLocation( shaderProgram, "outColor");
-        
+		rad_attr = glGetAttribLocation( shaderProgram, "radius");
+                
 		
         viewProjection = new Matrix4f();
         
@@ -78,6 +70,11 @@ public class LightAccumulationBufferShader extends Shader{
 	{
 		glUniformMatrix4(wMatIndex, true, genFloatBuffer(world));
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
+	}
+	
+	private void setScale(float f)
+	{
+		glUniform1f(rad_attr, f);
 	}
 	
 	protected void useCam(Camera cam)
@@ -102,6 +99,7 @@ public class LightAccumulationBufferShader extends Shader{
 			return;
 		}
 		
+		setScale(l.rad);
 		setTransform(l.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
 		
 		glBindVertexArray(Light.mesh.vao);

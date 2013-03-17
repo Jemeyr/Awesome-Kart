@@ -138,13 +138,7 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			//render the lights here
 			v.setRenderTarget(RenderBufferEnum.lightAccumulation);
-			geoShader.begin();
-			for(DebugGraphicsComponent gc : graphicsComponents)
-			{
-				geoShader.draw(gc);
-			}
-			geoShader.end();
-			/*labShader.begin();
+			labShader.begin();
 			labShader.useCam(v.cam);
 			
 			for(Light light : lights)
@@ -153,7 +147,7 @@ public class DebugRenderMaster implements RenderMaster {
 			}
 
 			labShader.end();
-			*/
+			
 			v.unsetRenderTarget();
 			
 			
@@ -165,7 +159,7 @@ public class DebugRenderMaster implements RenderMaster {
     	}
     	
     	Display.sync(60);
-		Display.update();
+    	Display.update();
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		

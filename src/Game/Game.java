@@ -64,12 +64,12 @@ public class Game {
 		System.out.println("Loading Complete");
 
 		Light le = null;
-		GraphicsComponent gccss = null;
+		//GraphicsComponent gccss = null;
 		for(int h = 0; h < 400; h++)
 		{
-			gccss = renderMaster.addModel("lightSphere");
+			//gccss = renderMaster.addModel("lightSphere");
 			
-			gccss.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
+			//gccss.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
 				
 			
 			le = renderMaster.addLight();
@@ -105,15 +105,15 @@ public class Game {
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
-		this.soundMaster.execute();
-		int musicCode = this.soundMaster.addSound("Music",0, false);
-		int accCode = this.soundMaster.addSound("Acc",0, false);
-		int pewCode = this.soundMaster.addSound("Pew",0, true);
+		//this.soundMaster.execute();
+		//int musicCode = this.soundMaster.addSound("Music",0, false);
+		//int accCode = this.soundMaster.addSound("Acc",0, false);
+		//int pewCode = this.soundMaster.addSound("Pew",0, true);
 		long startTime = System.currentTimeMillis();
 
 		int frames = 0;
 
-		this.soundMaster.playSound(musicCode);
+		//this.soundMaster.playSound(musicCode);
 		
 		//this.soundMaster.play();
 		cam.setPosition(new Vector3f(-50,40,-30));
@@ -150,6 +150,7 @@ public class Game {
 			text.setRotation(new Vector3f(0,elec360power/1500f, 0));
 			
 			//set the camera position
+			
 			Vector4f campos = new Vector4f(0,35,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
 			Vector4f targ = new Vector4f(0,10,0,1);		//divide by 2, I don't know why, height one for overhead.
 			Vector4f campos2 = new Vector4f(0,20, 2 ,1);
