@@ -43,7 +43,7 @@ void main()
 	*/
 	
 	//
-	outColor = vec4(texture(colTex, vTexCoord).xyz, 1);//* edge;
+	outColor = (vec4(texture(colTex, vTexCoord).xyz, 1) * vec4(texture(labTex, vTexCoord).xyz, 0.5));//* edge;
 	
 	//color1 * dot(color2.xyz, vec3(1,0,1)) * edge;
 	
