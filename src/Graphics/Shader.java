@@ -1,5 +1,9 @@
 package Graphics;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
 import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glCreateShader;
@@ -84,6 +88,7 @@ public abstract class Shader {
 		}
 		glUseProgram(shaderProgram);
 		active = true;
+				
 	}
 	
 	protected void end()
@@ -135,6 +140,8 @@ public abstract class Shader {
 	{
 		return this.shaderProgram;
 	}
+	
+
 	
 	public int getPositionAttr()
 	{

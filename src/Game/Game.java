@@ -64,17 +64,15 @@ public class Game {
 		System.out.println("Loading Complete");
 
 		Light le = null;
-		//GraphicsComponent gccss = null;
 		for(int h = 0; h < 400; h++)
 		{
-			//gccss = renderMaster.addModel("lightSphere");
-			
-			//gccss.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
-				
-			
-			le = renderMaster.addLight();
-			le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
+			//le = renderMaster.addLight();
+			//le.setRad(40.0f);
+			//le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
 		}
+		le = renderMaster.addLight();
+		le.setRad(5.0f);
+		le.setPosition(new Vector3f(0,0,0));
 		
 		renderMaster.addModel("testTer");
 		GraphicsComponent text = renderMaster.addModel("aktext");
@@ -165,8 +163,6 @@ public class Game {
 			
 			Matrix4f.transform(modelInv, campos2, campos2);
 			Matrix4f.transform(modelInv, targ2, targ2);
-			
-			
 			
 			
 			cam.setPosition(new Vector3f(campos));

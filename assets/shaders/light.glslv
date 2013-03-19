@@ -5,6 +5,8 @@ uniform mat4 vpMatrix;
 uniform float radius;
 
 in vec3 position;
+in vec3 camDir;
+
 
 void main() {
 

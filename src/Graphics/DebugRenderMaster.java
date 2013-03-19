@@ -43,7 +43,6 @@ public class DebugRenderMaster implements RenderMaster {
 	{
 		//freedee
         glEnable(GL_DEPTH_TEST);
-        glClearColor(0f, 0f, 0f, 1f);
         
         this.geoShader = new GeometryShader();
 		this.labShader = new LightAccumulationBufferShader();
@@ -126,6 +125,7 @@ public class DebugRenderMaster implements RenderMaster {
 
 			//how to draw, iterate over all the graphics components and draw their parts
 			geoShader.begin();			
+
 			geoShader.useCam(v.cam);
 			
 			for(DebugGraphicsComponent gc : graphicsComponents)
@@ -138,6 +138,8 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			//render the lights here
 			v.setRenderTarget(RenderBufferEnum.lightAccumulation);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
 			labShader.begin();
 			labShader.useCam(v.cam);
 			
