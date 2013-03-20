@@ -11,7 +11,7 @@ import Sound.SoundMaster;
  */
 public class RacingState implements GameState {
 	
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	
 	@Override
 	public void useActionButton(StateContext stateContext, RenderMaster randerMaster, SoundMaster soundMaster, int invokingId) {

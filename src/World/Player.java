@@ -9,15 +9,28 @@ import Graphics.DebugGraphicsComponent;
 
 public class Player {
 	
+	private static final float DEFAULT_ACCEL 	= 1.0f;
+	private static final float MAX_ACCEL		= 2.0f;
+	private static final float ACCEL_SCALE_UP	= 1.15f;
+	private static final float ACCEL_SCALE_DOWN	= 0.97f;
+	
 	private GameController 	gameController;
 	private Kart			kart;
 	
 	private Vector4f		playerDelta;
 	
+	private float			speed;
+	private float			acceleration;
+	private int				direction; // 1 for forward, -1 for back, 0 for none
+	
 	public Player(GameController gameController, Kart kart, Vector4f playerDelta){
 		this.gameController = gameController;
 		this.kart 			= kart;
 		this.playerDelta	= playerDelta;
+		
+		acceleration 		= DEFAULT_ACCEL;
+		direction 			= 0;
+		speed 				= 0f;
 	}
 	
 	public GameController getGameController(){
@@ -36,8 +49,35 @@ public class Player {
 		this.playerDelta = playerDelta;
 	}
 	
+	/**
+	 * Scales the speed so that you can speed up or slow down, or drift to
+	 * a stop if you let go of the gas/reverse
+	 * 
+	 * @return
+	 */
+	private float getAcceleration(){
+		float upDownValue = getGameController().getUpDownValue();
+		if(upDownValue != 0 && acceleration <= MAX_ACCEL){
+			if(upDownValue >= direction){
+				acceleration *= ACCEL_SCALE_UP;
+			} else {
+				acceleration = DEFAULT_ACCEL;
+				direction = (upDownValue > 0) ? 1 : -1;
+			}
+			 
+		}
+		
+		if(upDownValue != 0){
+			speed = upDownValue * acceleration;
+		} else {
+			speed *= ACCEL_SCALE_DOWN;
+		}
+		
+		return speed;
+	}
+	
 	public void update(){
-		Vector4f.add(playerDelta, new Vector4f(0, 0, getGameController().getUpDownValue(), 0), playerDelta);
+		Vector4f.add(playerDelta, new Vector4f(0, 0, getAcceleration(), 0), playerDelta);
 		Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-80f, 0), getKart().getRotation());
 		
 		Matrix4f.transform(((DebugGraphicsComponent)getKart().graphicsComponent).getInvModelMat(), playerDelta, playerDelta);	

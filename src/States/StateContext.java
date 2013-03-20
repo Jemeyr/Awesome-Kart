@@ -16,7 +16,7 @@ public class StateContext {
 	private int lockedControllerId; // ID of Controller with "lock" (For Pausing and Such). 0 For Nobody
 	
 	public StateContext() {
-		renderMaster = RenderMasterFactory.getRenderMaster();
+		//renderMaster = RenderMasterFactory.getRenderMaster();
 		soundMaster = new SoundMaster();
 		
 		setState(RACING_STATE);

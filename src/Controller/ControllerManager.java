@@ -26,7 +26,8 @@ public class ControllerManager {
 		GameController gameController = null;
 		if(ControllerEnvironment.getDefaultEnvironment().getControllers().length > gameControllers.size()){
 			for(Controller c : ControllerEnvironment.getDefaultEnvironment().getControllers()){
-					if(gameControllers.get(c) == null && 
+				//System.out.println(c.getName());
+				if(gameControllers.get(c) == null && 
 							c.getName().toLowerCase().contains(controllerType.getName())){
 						switch(controllerType){
 							case XBOX: 		gameController = new XboxController(currentId++); 		break;
@@ -56,10 +57,6 @@ public class ControllerManager {
 				gameEvents.add(new GameEvent(event, entry.getValue()));
 			}
 		}
-		/*System.out.println("LIST----------------------------------");
-		for(GameEvent ge : gameEvents){
-			System.out.println("Name is and value is " + (int)ge.getEvent().getValue());
-		}*/
 	}
 	
 	public HashSet<GameEvent> getEvents(){
