@@ -4,16 +4,18 @@ uniform sampler2D colTex;
 uniform sampler2D normTex;
 uniform sampler2D posTex;
 
-
-in vec3 posFS;
+uniform vec2 screenRect;
 
 out vec4 outColor;
 
+in vec3 posFS;
 
 void main()
 {
 
-	vec3 objNorm = texture(normTex, posFS.xy * 0.001 + vec2(0.5, 0.5) ).xyz;
+	vec3 objNorm = texture(normTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y)).xyz;
+	//vec3 lightDir = posFS - 
+	
 	
 	//MRT
 	outColor = 	vec4(objNorm,1.0);

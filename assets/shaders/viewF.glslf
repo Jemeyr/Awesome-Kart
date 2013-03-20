@@ -42,15 +42,8 @@ void main()
 	norm = normalize(norm);
 	*/
 	
-	//
-	if(vTexCoord.x > 0.5)
-	{
-		outColor = vec4(texture(labTex, vTexCoord).xyz, 1);
-	}
-	else
-	{
-		outColor = vec4(texture(normTex, vTexCoord).xyz, 1);
-	}
+	
+	outColor = vec4(texture(labTex, vTexCoord).xyz, 1);
 	
 	
 	//(vec4(texture(colTex, vTexCoord).xyz, 1) * vec4(texture(labTex, vTexCoord).xyz, 0.5));//* edge;

@@ -49,7 +49,7 @@ public class View {
 	
 	protected View(Rectangle r, Camera c)
 	{
-		this.rect = r; //this assumes windowsize of 800,600
+		this.rect = r; //this assumes windowsize of 800,600, does it?
 		this.cam = c;
 
 		this.geometryRenderTarget = new RenderTarget(true);//we want a multichannel (multiple rgb)

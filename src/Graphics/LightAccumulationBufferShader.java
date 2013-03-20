@@ -24,6 +24,7 @@ import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL20.glUseProgram;
@@ -52,6 +53,7 @@ public class LightAccumulationBufferShader extends Shader{
 	protected int outCol;
 	
 	private int colTex, normTex, posTex;
+	private int screenRect;
 	
 	public LightAccumulationBufferShader()
 	{
@@ -77,6 +79,9 @@ public class LightAccumulationBufferShader extends Shader{
 		normTex = glGetUniformLocation(shaderProgram, "normTex");
 		posTex = glGetUniformLocation(shaderProgram, "posTex");
 		
+
+		screenRect = glGetUniformLocation(shaderProgram, "screenRect");
+		
 		glUniform1i(colTex, 0);//bind fbo color indices to them
 		glUniform1i(normTex, 1);
 		glUniform1i(posTex, 2);
@@ -91,6 +96,8 @@ public class LightAccumulationBufferShader extends Shader{
         
 		position_attr = glGetAttribLocation( shaderProgram, "position");
 		
+
+		setRectSize();//TODO: make this more extensible 600 800
 		
         viewProjection = new Matrix4f();
         
@@ -118,6 +125,13 @@ public class LightAccumulationBufferShader extends Shader{
 		this.viewProjection = camVP;
 		
 		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
+	}
+	
+	protected void setRectSize()
+	{
+		//1/800, 1/600
+		System.out.println("screen rect " + screenRect);
+		glUniform2f(screenRect, 0.00125f, 0.001666f);
 	}
 
 	protected void draw(Light l, View v)
