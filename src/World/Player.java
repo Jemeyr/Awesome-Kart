@@ -11,7 +11,7 @@ public class Player {
 	
 	private static final float DEFAULT_ACCEL 	= 1.0f;
 	private static final float MAX_ACCEL		= 2.0f;
-	private static final float ACCEL_SCALE_UP	= 1.15f;
+	private static final float ACCEL_SCALE_UP	= 1.08f;
 	private static final float ACCEL_SCALE_DOWN	= 0.97f;
 	
 	private GameController 	gameController;
@@ -19,6 +19,7 @@ public class Player {
 	
 	private Vector4f		playerDelta;
 	
+	private float 			jump;
 	private float			speed;
 	private float			acceleration;
 	private int				direction; // 1 for forward, -1 for back, 0 for none
@@ -31,6 +32,7 @@ public class Player {
 		acceleration 		= DEFAULT_ACCEL;
 		direction 			= 0;
 		speed 				= 0f;
+		jump 				= 0f;
 	}
 	
 	public GameController getGameController(){
@@ -76,9 +78,23 @@ public class Player {
 		return speed;
 	}
 	
+	private float getJump(){
+		int jumpValue = getGameController().getActionValue();
+		if(jump > 0f || jumpValue == 1){
+			if (jump < 20f) {
+				return (jump++ < 10f) ? 1f : -1f;
+			} else {
+				jump = 0f; 
+				return jump;
+			} 
+		}
+		
+		return 0f;
+	}
+	
 	public void update(){
-		Vector4f.add(playerDelta, new Vector4f(0, 0, getAcceleration(), 0), playerDelta);
-		Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-80f, 0), getKart().getRotation());
+		Vector4f.add(playerDelta, new Vector4f(0, getJump(), getAcceleration(), 0), playerDelta); // Forward/Backward movement
+		Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-80f, 0), getKart().getRotation()); //Left/Right Movement
 		
 		Matrix4f.transform(((DebugGraphicsComponent)getKart().graphicsComponent).getInvModelMat(), playerDelta, playerDelta);	
 		Vector3f.add(getKart().getPosition(), new Vector3f(playerDelta), getKart().getPosition());
