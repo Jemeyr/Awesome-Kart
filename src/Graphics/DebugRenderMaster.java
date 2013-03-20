@@ -45,6 +45,7 @@ public class DebugRenderMaster implements RenderMaster {
         glEnable(GL_DEPTH_TEST);
         
         this.geoShader = new GeometryShader();
+        
 		this.labShader = new LightAccumulationBufferShader();
         
         this.viewShader = new ViewShader();
@@ -145,7 +146,7 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			for(Light light : lights)
 			{
-				labShader.draw(light);
+				labShader.draw(light, v);
 			}
 
 			labShader.end();

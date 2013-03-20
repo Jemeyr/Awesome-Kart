@@ -2,11 +2,19 @@ package Graphics;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL11.glGetError;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glAttachShader;
@@ -15,6 +23,7 @@ import static org.lwjgl.opengl.GL20.glGetAttribLocation;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL20.glUseProgram;
@@ -28,6 +37,8 @@ public class LightAccumulationBufferShader extends Shader{
 	private int vert_id;
 	private int frag_id;
 	
+	
+	
 	private int wMatIndex;
 	private int vpMatIndex;
 	
@@ -38,7 +49,9 @@ public class LightAccumulationBufferShader extends Shader{
 	protected int position_attr;
 	protected int radUni;
 	
-	protected int outNorm, outCol, outDepth;
+	protected int outCol;
+	
+	private int colTex, normTex, posTex;
 	
 	public LightAccumulationBufferShader()
 	{
@@ -53,10 +66,21 @@ public class LightAccumulationBufferShader extends Shader{
         glAttachShader(shaderProgram, frag_id);
 
         //set render target frag locations
-        glBindFragDataLocation( shaderProgram, 0, "outColor");//TODO make the shader do this
-        
-        glLinkProgram(shaderProgram);
+        glBindFragDataLocation( shaderProgram, 0, "outColor");
 
+        glLinkProgram(shaderProgram);
+        
+        glUseProgram(shaderProgram);
+
+        //Get the input texture positions
+		colTex = glGetUniformLocation(shaderProgram, "colTex");
+		normTex = glGetUniformLocation(shaderProgram, "normTex");
+		posTex = glGetUniformLocation(shaderProgram, "posTex");
+		
+		glUniform1i(colTex, 0);//bind fbo color indices to them
+		glUniform1i(normTex, 1);
+		glUniform1i(posTex, 2);
+        
         wMatIndex = glGetUniformLocation(shaderProgram, "worldMatrix");
         vpMatIndex = glGetUniformLocation(shaderProgram, "vpMatrix");
 		
@@ -66,7 +90,6 @@ public class LightAccumulationBufferShader extends Shader{
         camDirIndex = glGetAttribLocation(shaderProgram, "camDir");
         
 		position_attr = glGetAttribLocation( shaderProgram, "position");
-		
 		
 		
         viewProjection = new Matrix4f();
@@ -97,7 +120,7 @@ public class LightAccumulationBufferShader extends Shader{
 		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
 	}
 
-	protected void draw(Light l)
+	protected void draw(Light l, View v)
 	{
 		if(!active)
 		{
@@ -108,6 +131,16 @@ public class LightAccumulationBufferShader extends Shader{
 		setScale(l.rad);
 		setTransform(l.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
 		glBindVertexArray(Light.mesh.vao);
+
+		//bind all the texture info from the Gbuffer
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, v.getColorTexture());
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, v.getNormalTexture());
+		
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, v.getPosTexture());
 		
         glDrawElements(GL_TRIANGLES, Light.mesh.elementCount, GL_UNSIGNED_INT, 0);
 

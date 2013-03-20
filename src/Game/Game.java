@@ -1,5 +1,8 @@
 package Game;
 
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
+import static org.lwjgl.opengl.GL11.glGetError;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +35,9 @@ public class Game {
 	private DigitalRightsManagement drm;
 	
 	public Game(){
+		
 		this.renderMaster = RenderMasterFactory.getRenderMaster();
+		
 		this.soundMaster = new SoundMaster();
 		this.controllerManager = new ControllerManager();
 		this.eventManager = new EventManager();
@@ -49,7 +54,6 @@ public class Game {
 
 		Conti = true;
 		elec360power = 0;
-
 		renderMaster.loadModel("test");		
 		renderMaster.loadModel("testTer");
 		renderMaster.loadModel("kart");

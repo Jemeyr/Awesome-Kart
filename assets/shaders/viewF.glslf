@@ -43,7 +43,17 @@ void main()
 	*/
 	
 	//
-	outColor = (vec4(texture(colTex, vTexCoord).xyz, 1) * vec4(texture(labTex, vTexCoord).xyz, 0.5));//* edge;
+	if(vTexCoord.x > 0.5)
+	{
+		outColor = vec4(texture(labTex, vTexCoord).xyz, 1);
+	}
+	else
+	{
+		outColor = vec4(texture(normTex, vTexCoord).xyz, 1);
+	}
+	
+	
+	//(vec4(texture(colTex, vTexCoord).xyz, 1) * vec4(texture(labTex, vTexCoord).xyz, 0.5));//* edge;
 	
 	//color1 * dot(color2.xyz, vec3(1,0,1)) * edge;
 	
