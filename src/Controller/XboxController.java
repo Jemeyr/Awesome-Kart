@@ -10,6 +10,7 @@ public class XboxController implements GameController {
 	private static final String RIGHT_THUMB_BUTTON 	= "Right Thumb";
 	private static final String B_BUTTON 			= "B";
 	private static final String A_BUTTON 			= "A";
+	private static final String X_BUTTON			= "X";
 	private static final String JOYSTICK_X_DIR		= "x";
 	private static final String JOYSTICK_Y_DIR		= "y";
 	
@@ -18,6 +19,7 @@ public class XboxController implements GameController {
 	private int id;
 	private int aButtonValue;
 	private int bButtonValue;
+	private int xButtonValue;
 	private int weaponButtonValue;
 	private int pauseButtonValue;
 	private float leftRightValue;
@@ -41,7 +43,6 @@ public class XboxController implements GameController {
 		int intEventValue = (int)eventValue;
 		String eventComponentString = event.getComponent().toString();
 		if(A_BUTTON.equals(eventComponentString)){
-			System.out.println(eventValue);
 			if(eventValue > 0.01f){
 				stateContext.useActionButton(stateContext, getId());
 			}
@@ -52,6 +53,9 @@ public class XboxController implements GameController {
 				stateContext.useBackButton(stateContext, getId());
 			}
 			bButtonValue = intEventValue * MULTIPLIER;
+		}
+		else if(X_BUTTON.equals(eventComponentString)){
+			xButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
 			if(eventValue > 0.01f){
@@ -120,6 +124,17 @@ public class XboxController implements GameController {
 	@Override
 	public float getUpDownValue() {
 		return upDownValue;
+	}
+	
+	@Override
+	public float getForwardBackValue() {
+		if (aButtonValue == bButtonValue) return 0;
+		return (aButtonValue - bButtonValue);
+	}
+	
+	@Override
+	public float getJumpValue(){
+		return xButtonValue;
 	}
 	
 	@Override

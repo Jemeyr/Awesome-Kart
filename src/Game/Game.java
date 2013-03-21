@@ -79,7 +79,7 @@ public class Game {
 			
 			if(pk == null && i == 10)
 			{
-				GameController gc = controllerManager.addController(ControllerType.KEYBOARD);
+				GameController gc = controllerManager.addController(ControllerType.XBOX);
 				k = new Kart(renderMaster);
 				pk = k;
 				

@@ -126,6 +126,16 @@ public class KeyboardController implements GameController {
 	}
 	
 	@Override
+	public float getForwardBackValue() {
+		return getUpDownValue();
+	}
+	
+	@Override
+	public float getJumpValue(){
+		return actionValue;
+	}
+	
+	@Override
 	public boolean equals(Object other) {
 		if (other == null || !(other instanceof KeyboardController)){
 			return false;

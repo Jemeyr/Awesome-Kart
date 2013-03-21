@@ -58,19 +58,19 @@ public class Player {
 	 * @return
 	 */
 	private float getAcceleration(){
-		float upDownValue = getGameController().getUpDownValue();
-		if(upDownValue != 0 && acceleration <= MAX_ACCEL){
-			if(upDownValue >= direction){
+		float forwardBackValue = getGameController().getForwardBackValue();
+		if(forwardBackValue != 0 && acceleration <= MAX_ACCEL){
+			if(forwardBackValue >= direction){
 				acceleration *= ACCEL_SCALE_UP;
 			} else {
 				acceleration = DEFAULT_ACCEL;
-				direction = (upDownValue > 0) ? 1 : -1;
+				direction = (forwardBackValue > 0) ? 1 : -1;
 			}
 			 
 		}
 		
-		if(upDownValue != 0){
-			speed = upDownValue * acceleration;
+		if(forwardBackValue != 0){
+			speed = forwardBackValue * acceleration;
 		} else {
 			speed *= ACCEL_SCALE_DOWN;
 		}
@@ -79,7 +79,7 @@ public class Player {
 	}
 	
 	private float getJump(){
-		int jumpValue = getGameController().getActionValue();
+		float jumpValue = getGameController().getJumpValue();
 		if(jump > 0f || jumpValue == 1){
 			if (jump < 20f) {
 				return (jump++ < 10f) ? 1f : -1f;
