@@ -82,7 +82,7 @@ public class RenderTarget {
 		addAttachment(colorId, 0, true);
 		if(multiChannel)
 		{
-			addAttachment(normalId, 1, true);
+			addAttachment(normalId, 1, false);
 			addAttachment(positionId, 2, false);
 		}
 		
@@ -132,7 +132,7 @@ public class RenderTarget {
 
 	}
 	
-	private void addAttachment(int id, int attachmentNo, boolean rgba)
+	private void addAttachment(int id, int attachmentNo, boolean integerRgba)
 	{
 		glBindTexture(GL_TEXTURE_2D, id);
 		
@@ -143,7 +143,7 @@ public class RenderTarget {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		
 		//initialize size
-		if(rgba)
+		if(integerRgba)
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0,GL_RGBA, GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
 		}
@@ -155,7 +155,7 @@ public class RenderTarget {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
 
 		//clear
-		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		//unbind here?

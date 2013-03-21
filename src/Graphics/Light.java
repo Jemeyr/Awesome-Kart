@@ -46,6 +46,11 @@ public class Light {
 		Matrix4f.translate(pos, world, world);
 	}
 	
+	public Vector3f getPosition()
+	{
+		return this.pos;
+	}
+	
 	public void setRad(float f)
 	{
 		this.rad = f;

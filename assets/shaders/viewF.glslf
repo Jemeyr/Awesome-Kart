@@ -22,33 +22,9 @@ void main()
 		edge = 0.05;
 	}
 	
-	/*
-	if(vTexCoord.x < .33)
-	{
-		outColor = color1 * edge;
-	}
-	else if(vTexCoord.x > .66)
-	{
-		outColor = color2 * edge;
-	}
-	else
-	{
-		outColor =  color3 * edge;
-	}*/
+	// + texture(colTex, vTexCoord).xyz
+	outColor = vec4(texture(labTex, vTexCoord).xyz, 1);// * edge;
 	
-	/*
-	vec3 lightDir = normalize(vec3(0,2,1));
-	vec3 norm = color2.xyz * 2 - vec3(1,1,1);
-	norm = normalize(norm);
-	*/
-	
-	
-	outColor = vec4(texture(labTex, vTexCoord).xyz, 1);
-	
-	
-	//(vec4(texture(colTex, vTexCoord).xyz, 1) * vec4(texture(labTex, vTexCoord).xyz, 0.5));//* edge;
-	
-	//color1 * dot(color2.xyz, vec3(1,0,1)) * edge;
 	
 }
 

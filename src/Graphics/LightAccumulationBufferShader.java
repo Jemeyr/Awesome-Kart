@@ -31,6 +31,9 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 
 public class LightAccumulationBufferShader extends Shader{
@@ -50,7 +53,7 @@ public class LightAccumulationBufferShader extends Shader{
 
 	
 	protected int position_attr;
-	protected int radUni;
+	protected int radUni, centerUni;
 	
 	protected int outCol;
 	
@@ -93,6 +96,7 @@ public class LightAccumulationBufferShader extends Shader{
         inverseVpMatIndex = glGetUniformLocation(shaderProgram, "ivpMatrix");
 		
         radUni = glGetUniformLocation( shaderProgram, "radius");
+        centerUni = glGetUniformLocation( shaderProgram, "center");
 		
         
         camDirIndex = glGetAttribLocation(shaderProgram, "camDir");
@@ -116,9 +120,10 @@ public class LightAccumulationBufferShader extends Shader{
 		glUniformMatrix4(inverseVpMatIndex, true, genFloatBuffer(ivp));
 	}
 	
-	private void setScale(float f)
+	private void setUniforms(Light l)
 	{
-		glUniform1f(radUni, f);
+		glUniform3f(centerUni, l.getPosition().x, l.getPosition().y, l.getPosition().z );
+		glUniform1f(radUni, l.rad);
 	}
 	
 	protected void useCam(Camera cam)
@@ -150,7 +155,7 @@ public class LightAccumulationBufferShader extends Shader{
 			return;
 		}
 
-		setScale(l.rad);
+		setUniforms(l);
 		setTransform(l.getModelMat(), viewProjection, inverseViewProjection);	//good good, also make sure to set the radius and color
 		glBindVertexArray(Light.mesh.vao);
 

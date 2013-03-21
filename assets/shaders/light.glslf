@@ -21,8 +21,20 @@ void main()
 	
 	vec4 objCol = texture(colTex, samplePos);
 	
-	//MRT
-	outColor = objCol;// vec4(texture(posTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y)).xyz,1.0);
+	float diff = distance(posFS, objPos.xyz);
 	
-}
+	//MRT
+	if(diff > 50)
+	{
+		outColor = vec4(0,0,0,0);
+	}
+	else
+	{
+		float scale = 1 - (diff / 50);
+		scale = 0.5 * (scale + scale * scale);//polynomial falloff
+		outColor = vec4(scale, scale, scale,1);
+	}
+	
+	
+}	
 

@@ -15,7 +15,7 @@ uniform sampler2D modelTexture;
 void main()
 {
 	vec4 col = texture(modelTexture, texCoordFS);
-	vec3 norm = 0.5 * (vec3(1.0,1.0,1.0) + normalize(normFS));
+	vec3 norm = normalize(normFS);//0.5 * (vec3(1.0,1.0,1.0) + normalize(normFS));
 	//float depth = posFS.z / posFS.w;
 	
 	//MRT
