@@ -14,21 +14,15 @@ in vec3 posFS;
 
 void main()
 {
-
-	vec3 objNorm = texture(normTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y)).xyz;
+	vec2 samplePos = vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y);
+	vec3 objNorm = texture(normTex, samplePos).xyz;
 	
-	vec4 objPos = texture(posTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y));
+	vec4 objPos = texture(posTex, samplePos);
+	
+	vec4 objCol = texture(colTex, samplePos);
 	
 	//MRT
-	//outColor = vec4(texture(posTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y)).xyz,1.0);
-	if(objPos.x > 0)
-	{
-		outColor = vec4(0,1,0,1);
-	}
-	else
-	{
-		outColor = vec4(1,0,0,1);
-	}	
-	//outColor = vec4(objPos,1);
+	outColor = objCol;// vec4(texture(posTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y)).xyz,1.0);
+	
 }
 
