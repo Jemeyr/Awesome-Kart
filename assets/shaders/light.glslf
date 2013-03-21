@@ -17,15 +17,18 @@ void main()
 
 	vec3 objNorm = texture(normTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y)).xyz;
 	
-	vec3 depTex = texture(posTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y)).xyz;
-	float dep = depTex.x;
-	
-	vec3 forward = dep * vec3(0,0,1);
-	vec3 objPos = vec3(ivpMatrix * vec4(forward.xyz, 1));
-	
+	vec4 objPos = texture(posTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y));
 	
 	//MRT
 	//outColor = vec4(texture(posTex, vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y)).xyz,1.0);
-	outColor = vec4(normalize(objPos),1);
+	if(objPos.x > 0)
+	{
+		outColor = vec4(0,1,0,1);
+	}
+	else
+	{
+		outColor = vec4(1,0,0,1);
+	}	
+	//outColor = vec4(objPos,1);
 }
 

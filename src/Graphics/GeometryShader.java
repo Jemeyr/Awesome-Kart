@@ -58,7 +58,7 @@ public class GeometryShader extends Shader{
         //set render target frag locations MRT
         glBindFragDataLocation( shaderProgram, 0, "outColor");
         glBindFragDataLocation( shaderProgram, 1, "outNormal");
-        glBindFragDataLocation( shaderProgram, 2, "outDepth");
+        glBindFragDataLocation( shaderProgram, 2, "outPosition");
         
         glLinkProgram(shaderProgram);
 

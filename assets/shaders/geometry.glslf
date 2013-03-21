@@ -2,7 +2,7 @@
 
 out vec4 outColor;
 out vec4 outNormal;
-out float outDepth;
+out vec4 outPosition;
 
 
 
@@ -16,12 +16,11 @@ void main()
 {
 	vec4 col = texture(modelTexture, texCoordFS);
 	vec3 norm = 0.5 * (vec3(1.0,1.0,1.0) + normalize(normFS));
-	float depth = posFS.z / posFS.w;
+	//float depth = posFS.z / posFS.w;
 	
 	//MRT
 	outColor = 	vec4(col);
 	outNormal = vec4(norm, 1.0);
-	//outDepth = vec4(depth, depth, depth, 1);//'
-	outDepth = depth;
+	outPosition = posFS;
 }
 

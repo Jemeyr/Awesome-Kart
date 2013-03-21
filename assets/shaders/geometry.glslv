@@ -18,7 +18,7 @@ void main() {
 	vec4 normF = worldMatrix * vec4(normal.xyz, 0.0);
 	
 	normFS = normF.xyz;
-	posFS = pos;
+	posFS = worldMatrix * vec4(position, 1);
 	texCoordFS = texCoord;
 	
 	gl_Position = pos;
