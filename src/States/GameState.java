@@ -1,7 +1,10 @@
 package States;
 
+import java.util.List;
+
 import Graphics.RenderMaster;
 import Sound.SoundMaster;
+import World.Player;
 
 public interface GameState {
 	
@@ -13,5 +16,7 @@ public interface GameState {
 	void moveDown(final StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId);
 	void moveLeft(final StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId);
 	void moveRight(final StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId);
+	void execute(List<Player> playerList); //Could be renamed, whatever
+	void initialiseState(); //Call to initialise everything at the start of the state.
 	
 }

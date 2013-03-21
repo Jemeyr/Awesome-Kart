@@ -1,26 +1,77 @@
 package States;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
+
+import Controller.ControllerManager;
+import Controller.ControllerType;
+import Controller.EventManager;
+import Controller.GameController;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
+import World.Kart;
+import World.Player;
 
 public class StateContext {
 	
-	protected static final GameState RACING_STATE 		= new RacingState();
-	protected static final GameState PAUSE_MENU_STATE 	= new PauseMenuState();
-	private static final int DEFAULT_CONTROLLER_LOCK 	= 0;			
+	private static final int DEFAULT_CONTROLLER_LOCK 	= 0;
 	
-	private RenderMaster renderMaster;
-	private SoundMaster soundMaster;
-	private GameState gameState;
-	private int lockedControllerId; // ID of Controller with "lock" (For Pausing and Such). 0 For Nobody
+	protected static GameState RACING_STATE; 
+	protected static GameState PAUSE_MENU_STATE;
+	
+	private RenderMaster 		renderMaster;
+	private SoundMaster 		soundMaster;
+	private ControllerManager 	controllerManager;	
+	private EventManager 		eventManager;
+	private GameState 			gameState;
+	private int 				lockedControllerId; // ID of Controller with "lock" (For Pausing and Such). 0 For Nobody
+	
+	private List<Player>		playerList;
 	
 	public StateContext() {
-		//renderMaster = RenderMasterFactory.getRenderMaster();
-		soundMaster = new SoundMaster();
+		renderMaster	 	= RenderMasterFactory.getRenderMaster();
+		soundMaster 		= new SoundMaster();
+		controllerManager 	= new ControllerManager();
+		eventManager 		= new EventManager();
+		playerList 			= new ArrayList<Player>();
+		
+		soundMaster.execute(); // Hah, gaaaaaaaaaaaaaaaaaay
+		loadModels();
+		
+		RACING_STATE 		= new RacingState(renderMaster, soundMaster);
+		PAUSE_MENU_STATE 	= new PauseMenuState();
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
+		
+		addPlayer();
+	}
+	
+	private void loadModels() {
+		renderMaster.loadModel("test");
+		renderMaster.loadModel("testTer");
+		renderMaster.loadModel("kart");
+		renderMaster.loadModel("hat");
+		renderMaster.loadModel("wheel");
+		renderMaster.loadModel("aktext");
+	}
+	
+	private void addPlayer(){
+		// Stuff a Player Needs
+		GameController gameController = controllerManager.addController(ControllerType.KEYBOARD);
+		Kart kart = new Kart(renderMaster);
+		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, -22.5f, -300f + (10%4) * 150.0f);
+		kart.killme = 12340f;
+		Vector4f playerDelta = new Vector4f();
+		Vector3f.add(kart.position, new Vector3f(0f,-22.5f, 0f), kart.position);
+
+		Player player = new Player(gameController, kart, playerDelta);
+		playerList.add(player);
 	}
 	
 	public GameState getState(){
@@ -73,5 +124,18 @@ public class StateContext {
 
 	public void moveRight(StateContext stateContext, int invokingId) {
 		gameState.moveRight(stateContext, renderMaster, soundMaster, invokingId);
+	}
+	
+	public boolean execute(){
+		controllerManager.poll();
+		eventManager.handleEvents(controllerManager.getEvents(), this, renderMaster);
+		
+		gameState.execute(playerList);
+		
+		if(Display.isCloseRequested()){
+			soundMaster.cleanUpALData();
+			return false;
+		}
+		return true;
 	}
 }

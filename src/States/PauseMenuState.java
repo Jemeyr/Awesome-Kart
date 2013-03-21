@@ -1,12 +1,19 @@
 package States;
 
+import java.util.List;
+
 import Graphics.RenderMaster;
 import Sound.SoundMaster;
+import World.Player;
 
 
 public class PauseMenuState implements GameState {
 
 	public static final boolean DEBUG = true;
+	
+	public PauseMenuState(){
+		initialiseState();
+	}
 	
 	@Override
 	public void useActionButton(StateContext stateContext, RenderMaster randerMaster, SoundMaster soundMaster, int invokingId) {
@@ -64,6 +71,17 @@ public class PauseMenuState implements GameState {
 		if(DEBUG) System.out.println(invokingId + ": Moving Right in menu, but does nothing");
 		// Do nothing probably
 
+	}
+
+	@Override
+	public void execute(List<Player> playerList) {
+		// Put whatever the pause menu needs to do in here
+		
+	}
+
+	@Override
+	public void initialiseState() {
+		
 	}
 
 }
