@@ -2,7 +2,7 @@
 
 out vec4 outColor;
 out vec4 outNormal;
-out vec4 outDepth;
+out float outDepth;
 
 
 
@@ -21,7 +21,7 @@ void main()
 	//MRT
 	outColor = 	vec4(col);
 	outNormal = vec4(norm, 1.0);
-	outDepth = 	vec4(depth, depth, depth, 1.0);
-	
+	//outDepth = vec4(depth, depth, depth, 1);//'
+	outDepth = depth;
 }
 

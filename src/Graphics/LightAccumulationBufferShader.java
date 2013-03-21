@@ -42,9 +42,11 @@ public class LightAccumulationBufferShader extends Shader{
 	
 	private int wMatIndex;
 	private int vpMatIndex;
+	private int inverseVpMatIndex;
 	
 	private int camDirIndex;
 	private Matrix4f viewProjection;
+	private Matrix4f inverseViewProjection;
 
 	
 	protected int position_attr;
@@ -88,6 +90,7 @@ public class LightAccumulationBufferShader extends Shader{
         
         wMatIndex = glGetUniformLocation(shaderProgram, "worldMatrix");
         vpMatIndex = glGetUniformLocation(shaderProgram, "vpMatrix");
+        inverseVpMatIndex = glGetUniformLocation(shaderProgram, "ivpMatrix");
 		
         radUni = glGetUniformLocation( shaderProgram, "radius");
 		
@@ -99,14 +102,18 @@ public class LightAccumulationBufferShader extends Shader{
 
 		setRectSize();//TODO: make this more extensible 600 800
 		
-        viewProjection = new Matrix4f();
+		viewProjection = new Matrix4f();
+		inverseViewProjection = new Matrix4f();
+        
         
 	}
 		
-	private void setTransform(Matrix4f world, Matrix4f vp)
+	private void setTransform(Matrix4f world, Matrix4f vp, Matrix4f ivp)
 	{
 		glUniformMatrix4(wMatIndex, true, genFloatBuffer(world));
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
+		
+		glUniformMatrix4(inverseVpMatIndex, true, genFloatBuffer(ivp));
 	}
 	
 	private void setScale(float f)
@@ -124,13 +131,14 @@ public class LightAccumulationBufferShader extends Shader{
 		
 		this.viewProjection = camVP;
 		
+		Matrix4f.invert(viewProjection, inverseViewProjection);
+		
 		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
 	}
 	
 	protected void setRectSize()
 	{
 		//1/800, 1/600
-		System.out.println("screen rect " + screenRect);
 		glUniform2f(screenRect, 0.00125f, 0.001666f);
 	}
 
@@ -143,7 +151,7 @@ public class LightAccumulationBufferShader extends Shader{
 		}
 
 		setScale(l.rad);
-		setTransform(l.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
+		setTransform(l.getModelMat(), viewProjection, inverseViewProjection);	//good good, also make sure to set the radius and color
 		glBindVertexArray(Light.mesh.vao);
 
 		//bind all the texture info from the Gbuffer
