@@ -79,6 +79,7 @@ public class Player {
 	}
 	
 	private float getJump(){
+		
 		float jumpValue = getGameController().getJumpValue();
 		if(jump > 0f || jumpValue == 1){
 			if (jump < 20f) {
