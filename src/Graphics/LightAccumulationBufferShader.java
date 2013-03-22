@@ -31,9 +31,6 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 
 public class LightAccumulationBufferShader extends Shader{
@@ -41,11 +38,8 @@ public class LightAccumulationBufferShader extends Shader{
 	private int vert_id;
 	private int frag_id;
 	
-	
-	
 	private int wMatIndex;
 	private int vpMatIndex;
-	private int inverseVpMatIndex;
 	
 	private int camDirIndex;
 	private Matrix4f viewProjection;
@@ -93,7 +87,6 @@ public class LightAccumulationBufferShader extends Shader{
         
         wMatIndex = glGetUniformLocation(shaderProgram, "worldMatrix");
         vpMatIndex = glGetUniformLocation(shaderProgram, "vpMatrix");
-        inverseVpMatIndex = glGetUniformLocation(shaderProgram, "ivpMatrix");
 		
         radUni = glGetUniformLocation( shaderProgram, "radius");
         centerUni = glGetUniformLocation( shaderProgram, "center");
@@ -116,8 +109,6 @@ public class LightAccumulationBufferShader extends Shader{
 	{
 		glUniformMatrix4(wMatIndex, true, genFloatBuffer(world));
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
-		
-		glUniformMatrix4(inverseVpMatIndex, true, genFloatBuffer(ivp));
 	}
 	
 	private void setUniforms(Light l)
@@ -135,8 +126,6 @@ public class LightAccumulationBufferShader extends Shader{
 		camVP = Matrix4f.mul(camView, camProj, null);
 		
 		this.viewProjection = camVP;
-		
-		Matrix4f.invert(viewProjection, inverseViewProjection);
 		
 		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
 	}

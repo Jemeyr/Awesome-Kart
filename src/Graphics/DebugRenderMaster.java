@@ -139,7 +139,6 @@ public class DebugRenderMaster implements RenderMaster {
 			
 			//render the lights here
 			v.setRenderTarget(RenderBufferEnum.lightAccumulation);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			labShader.begin();
 			labShader.useCam(v.cam);

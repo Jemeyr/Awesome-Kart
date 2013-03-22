@@ -22,7 +22,8 @@ void main()
 		edge = 0.05;
 	}
 	
-	// + texture(colTex, vTexCoord).xyz
+	// +  * texture(colTex, vTexCoord).xyz
+	
 	outColor = vec4(texture(labTex, vTexCoord).xyz, 1);// * edge;
 	
 	

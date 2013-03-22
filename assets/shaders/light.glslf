@@ -1,11 +1,10 @@
 #version 150
 
-uniform mat4 ivpMatrix;
-
 uniform sampler2D colTex;
 uniform sampler2D normTex;
 uniform sampler2D posTex;
 
+uniform float radius;
 uniform vec2 screenRect;
 
 out vec4 outColor;
@@ -21,19 +20,22 @@ void main()
 	
 	vec4 objCol = texture(colTex, samplePos);
 	
-	float diff = distance(posFS, objPos.xyz);
+	vec3 otol = (posFS - objPos.xyz);
+	float diff = length(otol);
+	
+	float scale = max(0.15, 1 - diff * 0.02);
 	
 	//MRT
-	if(diff > 50)
+	/*
+	if(objPos.x < -100)
 	{
-		outColor = vec4(0,0,0,0);
+		outColor = vec4(scale, scale, scale,1);
 	}
 	else
 	{
-		float scale = 1 - (diff / 50);
-		scale = 0.5 * (scale + scale * scale);//polynomial falloff
-		outColor = vec4(scale, scale, scale,1);
-	}
+		outColor = vec4(1,0,1,1);
+	}*/
+	outColor = vec4(objPos.xyz,1);
 	
 	
 }	
