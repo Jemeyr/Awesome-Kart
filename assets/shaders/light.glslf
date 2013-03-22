@@ -25,16 +25,8 @@ void main()
 	
 	float scale = max(0.15, 1 - diff * 0.02);
 	
-	//MRT
-	/*
-	if(objPos.x < -100)
-	{
-		outColor = vec4(scale, scale, scale,1);
-	}
-	else
-	{
-		outColor = vec4(1,0,1,1);
-	}*/
+//	outColor = vec4(scale, scale, scale, 1);
+
 	outColor = vec4(objPos.xyz,1);
 	
 	

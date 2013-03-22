@@ -8,7 +8,7 @@ out vec4 outPosition;
 
 in vec2 texCoordFS;
 in vec3 normFS;
-in vec4 posFS;
+in vec3 posFS;
 
 uniform sampler2D modelTexture;
 
@@ -20,6 +20,6 @@ void main()
 	//MRT
 	outColor = 	vec4(col);
 	outNormal = vec4(norm, 1.0);
-	outPosition = posFS;
+	outPosition = vec4(posFS.xyz, 1);
 }
 
