@@ -23,6 +23,7 @@ import Graphics.DebugRenderMaster;
 import Graphics.GraphicsComponent;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
+import Sound.SoundEmitter;
 import Sound.SoundMaster;
 import States.StateContext;
 import World.Kart;
@@ -103,15 +104,15 @@ public class Game {
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
 		this.soundMaster.execute();
-		int musicCode = this.soundMaster.addSound("Music",0, false);
-		int accCode = this.soundMaster.addSound("Acc",0, false);
-		int pewCode = this.soundMaster.addSound("Pew",0, true);
+		
+		SoundEmitter pewComponent = this.soundMaster.getSoundComponent("assets/sound/Pew_Pew.wav",true);
+		
+		pewComponent.playSound();
+		
 		long startTime = System.currentTimeMillis();
 
 		int frames = 0;
 
-		this.soundMaster.playSound(musicCode);
-		
 		//this.soundMaster.play();
 		cam.setPosition(new Vector3f(-50,40,-30));
 		while(Conti && elec360power <= 9000){
@@ -127,6 +128,10 @@ public class Game {
 
 			elec360power += 1;
 			
+			if(elec360power == 100){
+				
+				pewComponent.stopSound();
+			}
 			
 			//runs the do donuts on each kart
 			for(Kart k : karts)

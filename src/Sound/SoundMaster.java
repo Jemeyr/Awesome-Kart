@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 import javax.sound.sampled.AudioSystem;
@@ -26,19 +27,15 @@ public class SoundMaster {
 	public static final int NUM_SOURCES = 128;
 	
 	/** indexes of sounds*/
+	public Hashtable soundIndexes ;
 	
-	public static final int aCivMusic = 0;
-	public static final int carAcceleration = 1;
-	public static final int pewPew = 2;
-	
-	/**Hash table to associate the audio sources with their position in the bufffer */
-	Hashtable SoundValues =null; 
 	/** Buffers hold sound data. */
 	protected IntBuffer buffer = BufferUtils.createIntBuffer(NUM_BUFFERS);;
-  
-	/** Sources are points emitting sound. */
-	protected IntBuffer source = BufferUtils.createIntBuffer(NUM_BUFFERS);;
 	
+	/** Sources are points emitting sound. */
+	protected IntBuffer source = BufferUtils.createIntBuffer(NUM_SOURCES);;
+	/** Boolean array of which parts of the source buffer actually have an active source in that spot in the buffer*/
+	protected boolean[] sourceIsFilled; 
 	  /** Position of the source sound. */
 	protected  FloatBuffer sourcePos = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
 
@@ -49,7 +46,7 @@ public class SoundMaster {
 	protected FloatBuffer listenerPos = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
 	
 	  /** Velocity of the listener. */
-	protected FloatBuffer listenerVel = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
+	protected FloatBuffer listenerVel = BufferUtils.createFloatBuffer(3).put(new float[] { .0f, 0.0f, 0.0f });
 	
 	  /** Orientation of the listener. (first 3 elements are "at", second 3 are "up") */
 	protected FloatBuffer listenerOri =
@@ -78,11 +75,33 @@ public class SoundMaster {
 	    }
 	  }
 	  
-	
+	  /**
+	   * 
+	   * @param soundID the id of the sound, ie the location of the sound within the buffer
+	   * @param toLoop boolean on if one wants this to loop
+	   * @return the soundCode on pass
+	   * 		 -1 on failure
+	   */
 	  protected int addSource(int soundID, boolean toLoop)
 	  {
-		  int position = source.position();
-		  source.limit(position + 1);
+		  int position = -1;
+		  
+		  //find the position of the first unused spot in the source buffer  
+		  for(int i = 0 ; i < NUM_SOURCES;i++)
+		  {
+			  if (sourceIsFilled[i]==false)
+			  {
+				  position = i;
+				  break;
+			  }
+		  }
+		  
+		  //No space if buffer
+		  if (position == -1)
+		  {
+			  return -1;
+		  }
+		  //source.limit(position + 1);
 		  AL10.alGenSources(source);
 
 		  if (AL10.alGetError() != AL10.AL_NO_ERROR)
@@ -97,61 +116,42 @@ public class SoundMaster {
 		  
 		  if (AL10.alGetError() != AL10.AL_NO_ERROR)
 			  return -1;
-		  
-		  source.position(position+1);
+		  sourceIsFilled[position] = true; 
+		  //source.position(position+1);
 		  
 		  return position;
 		  
 	  }
 	  
-	  public int addSound(String soundName, int soundID , boolean toLoop)
+	  /**
+	   * Sets a souce to loop or not
+	   * 
+	   * @param soundID
+	   * @param toLoop
+	   * @return
+	   */
+	  protected boolean setLooping(int soundID, boolean toLoop)
 	  {
-		  int soundCode = -1;
-		  if(SoundValues.size()<NUM_SOURCES)
-		  {
-			  //There is still space for sound sources
-			  
-			  soundCode = addSource(soundID, toLoop);
-			  if(soundCode==-1)
-			  {
-				  //Error adding sound
-				  return soundCode;
-			  }
-			  
-			  SoundValues.put(soundName, soundCode);
-			  
-			  
-		  }
-		  else
-		  {
-			  return -1;
-		  }
 		  
-		  return soundCode;
+		  AL10.alSourcei(source.get(soundID), AL10.AL_LOOPING,  (toLoop ? AL10.AL_TRUE : AL10.AL_FALSE));
+		  
+		  if (AL10.alGetError() != AL10.AL_NO_ERROR)
+			  return false;
+		  
+		  return true;
+	  
 	  }
 	  
-	
-	  
-	  public boolean playSound(String soundID){
-		  
-		  Object obj = SoundValues.get(soundID);
-		  
-		  if(obj != null)
-		  {
-			  
-			  int key = (Integer) obj;
-			  
-			  return playSound(key);
-			  
-		  }
-		  return false;
-	  }
 	  
 	  public boolean playSound(int soundCode){
 		  int state = AL10.alGetSourcei(source.get(soundCode), AL10.AL_SOURCE_STATE);
 		  String errorString;
 		  int errCode;
-			
+		  
+		  //you dun goofed, that sound was removed
+		  if(!sourceIsFilled[soundCode]){
+			  return false;
+		  }
 		  if(state != AL10.AL_PLAYING)
 		  {
 			  AL10.alSourcePlay(source.get(soundCode));
@@ -169,6 +169,38 @@ public class SoundMaster {
 
 	  }
 	  
+	  public boolean stopSound(int soundCode)
+	  {
+		  int state = AL10.alGetSourcei(source.get(soundCode), AL10.AL_SOURCE_STATE);
+		  String errorString;
+		  int errCode;
+			
+		  if(state == AL10.AL_PLAYING)
+		  {
+			  AL10.alSourceStop(source.get(soundCode));
+			  if((errCode=loadAllSoundData()) == AL10.AL_FALSE)
+			  {
+				  errorString= getALErrorString(errCode);
+				  System.out.println(errorString);
+				  return false;
+			  
+			  }
+		  }
+		  
+		  return true;
+		  
+	  }
+	  
+	  public boolean removeSound(int soundCode)
+	  {
+		  stopSound(soundCode);
+		  
+		  sourceIsFilled[soundCode] = false;
+		  
+		  return true;
+		  
+	  }
+	  
 	  
 	  /**
 	   * void killALData()
@@ -178,7 +210,9 @@ public class SoundMaster {
 	   */
 	  public void cleanUpALData() {
 		  
-		SoundValues.clear();
+		
+		int position = source.position();
+	    source.position(0).limit(position);
 		
 	    AL10.alDeleteSources(source);
 	    AL10.alDeleteBuffers(buffer);
@@ -210,17 +244,18 @@ public class SoundMaster {
 		  InputStream is = null;
 		  InputStream bufferedIs = null;
 		  WaveData waveFile= null;
+		  String fileName = "";
 		  
 		  AL10.alGenBuffers(buffer);
 		  
 			try {
-				is = new FileInputStream("assets/sound/ACiv Battle 2.wav");
+				fileName = "assets/sound/ACiv Battle 2.wav";
+				is = new FileInputStream(fileName);
 				bufferedIs = new BufferedInputStream(is);
 				waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
 				
-				AL10.alBufferData(buffer.get(aCivMusic), waveFile.format, waveFile.data, waveFile.samplerate);	  
+				AL10.alBufferData(buffer.get((Integer) soundIndexes.get(fileName)), waveFile.format, waveFile.data, waveFile.samplerate);	  
 				waveFile.dispose();
-				//is = new FileInputStream("./assets/sound/FancyPants.wav");
 			
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -229,13 +264,13 @@ public class SoundMaster {
 			}
 			
 			try {
-				is = new FileInputStream("assets/sound/Car Accelerating.wav");
+				fileName = "assets/sound/Car Accelerating.wav";
+				is = new FileInputStream(fileName);
 				bufferedIs = new BufferedInputStream(is);
 				waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
 				
-				AL10.alBufferData(buffer.get(carAcceleration), waveFile.format, waveFile.data, waveFile.samplerate);	  
+				AL10.alBufferData(buffer.get((Integer) soundIndexes.get(fileName)), waveFile.format, waveFile.data, waveFile.samplerate);	  
 				waveFile.dispose();
-				//is = new FileInputStream("./assets/sound/FancyPants.wav");
 			
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -244,13 +279,13 @@ public class SoundMaster {
 			}
 			
 			try {
-				is = new FileInputStream("assets/sound/Pew_Pew.wav");
+				fileName = "assets/sound/Pew_Pew.wav";
+				is = new FileInputStream(fileName);
 				bufferedIs = new BufferedInputStream(is);
 				waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
 				
-				AL10.alBufferData(buffer.get(pewPew), waveFile.format, waveFile.data, waveFile.samplerate);	  
+				AL10.alBufferData(buffer.get((Integer) soundIndexes.get(fileName)), waveFile.format, waveFile.data, waveFile.samplerate);	  
 				waveFile.dispose();
-				//is = new FileInputStream("./assets/sound/FancyPants.wav");
 			
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -258,6 +293,7 @@ public class SoundMaster {
 				
 			}
 		  
+
 		  
 		  
 		  // Do another error check and return.
@@ -276,8 +312,7 @@ public class SoundMaster {
 	   */
 	  
 	  public void execute(){
-		  
-		SoundValues = new Hashtable();
+		
 		String errorString;
 		int errCode;
 		// Initialize the buffers for audio data
@@ -335,6 +370,26 @@ public class SoundMaster {
 		  
 		  setListenerValues();
 		  
+		  
+	  }
+	  
+	  public SoundEmitter getSoundComponent(String fileName, boolean toLoop){
+		  SoundEmitter sA = new SoundEmitter(this, fileName, toLoop);
+		  
+		  
+		  return sA;
+		  
+	  }
+	  
+	  public SoundMaster(){
+		  
+			sourceIsFilled = new boolean[NUM_SOURCES];
+			Arrays.fill(sourceIsFilled, false);
+			
+			soundIndexes = new Hashtable();
+			soundIndexes.put("assets/sound/ACiv Battle 2.wav", new Integer(0));
+			soundIndexes.put("assets/sound/Car Accelerating.wav", new Integer(1));
+			soundIndexes.put("assets/sound/Pew_Pew.wav", new Integer(2));
 		  
 	  }
 	  
