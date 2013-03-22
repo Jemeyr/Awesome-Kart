@@ -83,9 +83,8 @@ public class RacingState implements GameState {
 		text.setPosition(new Vector3f(-200, 40, 100));
 		otherGraphics.put("AKText", text);
 		
-		// Do some music
-		int musicCode = this.soundMaster.addSound("Music",0, false);
-		this.soundMaster.playSound(musicCode);
+		// Do some music, except not really
+		this.soundMaster.playSound((Integer)soundMaster.soundIndexes.get("assets/sound/ACiv Battle 2.wav")); // Doesn't actually work.
 		
 		// Set initial position?
 		cameras.get(0).setPosition(new Vector3f(-50,40,-30));
