@@ -100,12 +100,10 @@ public class LightAccumulationBufferShader extends Shader{
 		setRectSize();//TODO: make this more extensible 600 800
 		
 		viewProjection = new Matrix4f();
-		inverseViewProjection = new Matrix4f();
-        
         
 	}
 		
-	private void setTransform(Matrix4f world, Matrix4f vp, Matrix4f ivp)
+	private void setTransform(Matrix4f world, Matrix4f vp)
 	{
 		glUniformMatrix4(wMatIndex, true, genFloatBuffer(world));
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
@@ -145,7 +143,7 @@ public class LightAccumulationBufferShader extends Shader{
 		}
 
 		setUniforms(l);
-		setTransform(l.getModelMat(), viewProjection, inverseViewProjection);	//good good, also make sure to set the radius and color
+		setTransform(l.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
 		glBindVertexArray(Light.mesh.vao);
 
 		//bind all the texture info from the Gbuffer

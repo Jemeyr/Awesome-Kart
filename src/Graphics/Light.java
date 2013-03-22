@@ -43,6 +43,7 @@ public class Light {
 	{
 		this.pos = pos;
 		this.world = new Matrix4f();
+		this.world.setIdentity();
 		Matrix4f.translate(pos, world, world);
 	}
 	

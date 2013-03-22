@@ -12,7 +12,6 @@ out vec3 posFS;
 
 void main() {
 
-	vec4 pos = vpMatrix * worldMatrix * vec4(radius * position.xyz, 1.0);
 	posFS = center;
-	gl_Position = pos;
+	gl_Position = vpMatrix * worldMatrix * vec4(radius * position.xyz, 1.0);
 }

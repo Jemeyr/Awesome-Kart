@@ -14,20 +14,19 @@ in vec3 posFS;
 void main()
 {
 	vec2 samplePos = vec2(gl_FragCoord.x * screenRect.x, gl_FragCoord.y * screenRect.y);
+
 	vec3 objNorm = texture(normTex, samplePos).xyz;
-	
 	vec4 objPos = texture(posTex, samplePos);
-	
 	vec4 objCol = texture(colTex, samplePos);
 	
-	vec3 otol = (posFS - objPos.xyz);
-	float diff = length(otol);
+//	vec3 otol = (posFS - objPos.xyz);
+//	float diff = length(otol);
 	
-	float scale = max(0.15, 1 - diff * 0.02);
+	float scale = 1.0;//max(0.15, 1 - diff /radius);
 	
-//	outColor = vec4(scale, scale, scale, 1);
+	outColor = vec4(scale, scale, scale, 0.0);
 
-	outColor = vec4(objPos.xyz,1);
+//	outColor = vec4(objCol.xyz,1);
 	
 	
 }	
