@@ -17,6 +17,7 @@ public class Light {
 	static protected void init(DebugMesh m)
 	{
 		Light.mesh = m;
+
 	}
 	
 	public Light(float rad)
@@ -42,9 +43,13 @@ public class Light {
 	public void setPosition(Vector3f pos)
 	{
 		this.pos = pos;
-		this.world = new Matrix4f();
 		this.world.setIdentity();
-		Matrix4f.translate(pos, world, world);
+		
+		//translate
+		this.world.m03 = this.pos.x;
+		this.world.m13 = this.pos.y;
+		this.world.m23 = this.pos.z;
+		
 	}
 	
 	public Vector3f getPosition()
@@ -60,7 +65,14 @@ public class Light {
 	public void addPosition(Vector3f pos)
 	{
 		Vector3f.add(this.pos, pos, this.pos);
-		Matrix4f.translate(pos, world, world);
+		
+		this.world.setIdentity();
+		
+		//translate
+		this.world.m03 = this.pos.x;
+		this.world.m13 = this.pos.y;
+		this.world.m23 = this.pos.z;
+		
 	}
 	
 	protected Matrix4f getModelMat()

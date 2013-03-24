@@ -19,10 +19,10 @@ void main()
 	vec4 objPos = texture(posTex, samplePos);
 	vec4 objCol = texture(colTex, samplePos);
 	
-//	vec3 otol = (posFS - objPos.xyz);
-//	float diff = length(otol);
+	vec3 otol = (posFS - objPos.xyz);
+	float diff = length(otol);
 	
-	float scale = 1.0;//max(0.15, 1 - diff /radius);
+	float scale = max(0.15, 1 - diff /radius);
 	
 	outColor = vec4(scale, scale, scale, 0.0);
 

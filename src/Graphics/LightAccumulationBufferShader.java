@@ -134,6 +134,21 @@ public class LightAccumulationBufferShader extends Shader{
 		glUniform2f(screenRect, 0.00125f, 0.001666f);
 	}
 
+	
+	/*
+	 * setTransform(gc.getModelMat(), viewProjection);
+		
+		glBindVertexArray(gc.mesh.vao);
+
+		glActiveTexture(GL_TEXTURE0);//to texture 0
+        glBindTexture(GL_TEXTURE_2D, gc.mesh.texId);
+
+        glDrawElements(GL_TRIANGLES, gc.mesh.elementCount, GL_UNSIGNED_INT, 0);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+		glBindVertexArray(0);
+	 * */
 	protected void draw(Light l, View v)
 	{
 		if(!active)
@@ -145,7 +160,7 @@ public class LightAccumulationBufferShader extends Shader{
 		setUniforms(l);
 		setTransform(l.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
 		glBindVertexArray(Light.mesh.vao);
-
+		
 		//bind all the texture info from the Gbuffer
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, v.getColorTexture());

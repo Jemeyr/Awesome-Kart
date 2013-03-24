@@ -12,6 +12,6 @@ out vec3 posFS;
 
 void main() {
 
-	posFS = center;
+	posFS = center;	//TODO worldmatrix messes things up
 	gl_Position = vpMatrix * worldMatrix * vec4(radius * position.xyz, 1.0);
 }
