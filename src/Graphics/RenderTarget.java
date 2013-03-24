@@ -14,7 +14,12 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGenTextures;
@@ -61,7 +66,7 @@ public class RenderTarget {
 	
 	public RenderTarget(boolean multiChannel)
 	{
-		this.clearColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+		this.clearColor = new Vector4f(0.0f, 0.0f, 0.0f, 0.0f);
 		
 		//init and bind
 		this.fboId = glGenFramebuffers();
@@ -125,7 +130,11 @@ public class RenderTarget {
 			throw new RuntimeException("OpenGL error: "+org.lwjgl.util.glu.GLU.gluErrorString(lkj));
 		} 
 		
-     
+
+        //set alpha blending
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
 		//unbind fbo
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -155,7 +164,7 @@ public class RenderTarget {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
 
 		//clear
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		//unbind here?

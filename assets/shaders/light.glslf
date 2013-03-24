@@ -24,7 +24,7 @@ void main()
 	
 	float scale = max(0.15, 1 - diff /radius);
 	
-	outColor = vec4(scale, scale, scale, 0.0);
+	outColor = vec4(1.0, 1.0, 1.0, scale);
 
 //	outColor = vec4(objCol.xyz,1);
 	
