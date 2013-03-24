@@ -74,15 +74,13 @@ public class Game {
 			//le.setRad(400.0f);
 			//le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
 		}
-		//le = renderMaster.addLight();
-		//le.setRad(50.0f);
-		//le.setPosition(new Vector3f(-130,0,0));
-		
-		//GraphicsComponent gcss = renderMaster.addModel("lightSphere");
-		//gcss.setPosition(new Vector3f(100,0,0));
-		
 		le = renderMaster.addLight();
 		le.setRad(50.0f);
+		le.setPosition(new Vector3f(-130,0,0));
+		
+		
+		le = renderMaster.addLight();
+		le.setRad(75.0f);
 		le.setPosition(new Vector3f(100,0,0));
 		
 		renderMaster.addModel("testTer");

@@ -23,8 +23,10 @@ void main()
 	}
 	
 	// +  * texture(colTex, vTexCoord).xyz
+	vec4 labVal = texture(labTex, vTexCoord);
+	vec3 lightAmount = vec3(max(0.15,labVal.x), max(0.15,labVal.y), max(0.15,labVal.z)); 
 	
-	outColor = vec4(texture(labTex, vTexCoord).xyz, 1);// * edge;
+	outColor = vec4(lightAmount * texture(colTex, vTexCoord).xyz, 1);// * edge;
 	
 	
 }
