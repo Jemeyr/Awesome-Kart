@@ -421,8 +421,33 @@ public class SoundMaster {
 		  
 	  }
 	  
-	  public void execute(){
+	  
+	  /**
+	   * Constructor for the sound master Class
+	   * 
+	   * Creates the audio engine itself as well as sets up buffers and data structures for the
+	   * sound Master
+	   * 
+	   *  This function is were sound files are added to the sound buffer, so that a source may use it later
+	   *  
+	   *  To add a new sound file, add a new entry to the hash table soundIndex with the key being the 
+	   *  	filename complete with path and then a new interger counting up from the previous soundIndexes entry.
+	   *  	see the examples below
+	   *  
+	   *  As it is at this point the sound master can hold NUM_BUFFERS worth of sound files and NUM_SOURCES worth of sources
+	   * 
+	   */
+	  public SoundMaster(){
 		  
+			sourceIsFilled = new boolean[NUM_SOURCES];
+			Arrays.fill(sourceIsFilled, false);
+			
+			soundIndexes = new Hashtable();
+			soundIndexes.put("assets/sound/ACiv Battle 2.wav", new Integer(0));
+			soundIndexes.put("assets/sound/Car Accelerating.wav", new Integer(1));
+			soundIndexes.put("assets/sound/Pew_Pew.wav", new Integer(2));
+			soundIndexes.put("assets/sound/piano2.wav", new Integer(3));
+			
 			String errorString;
 			int errCode;
 			// Initialize the buffers for audio data
@@ -467,36 +492,6 @@ public class SoundMaster {
 				  audioEngineOperational = true;
 			  
 			  setListenerValues();
-		  
-		  
-	  }
-	  
-	  /**
-	   * Constructor for the sound master Class
-	   * 
-	   * Creates the audio engine itself as well as sets up buffers and data structures for the
-	   * sound Master
-	   * 
-	   *  This function is were sound files are added to the sound buffer, so that a source may use it later
-	   *  
-	   *  To add a new sound file, add a new entry to the hash table soundIndex with the key being the 
-	   *  	filename complete with path and then a new interger counting up from the previous soundIndexes entry.
-	   *  	see the examples below
-	   *  
-	   *  As it is at this point the sound master can hold NUM_BUFFERS worth of sound files and NUM_SOURCES worth of sources
-	   * 
-	   */
-	  public SoundMaster(){
-		  
-			sourceIsFilled = new boolean[NUM_SOURCES];
-			Arrays.fill(sourceIsFilled, false);
-			
-			soundIndexes = new Hashtable();
-			soundIndexes.put("assets/sound/ACiv Battle 2.wav", new Integer(0));
-			soundIndexes.put("assets/sound/Car Accelerating.wav", new Integer(1));
-			soundIndexes.put("assets/sound/Pew_Pew.wav", new Integer(2));
-			soundIndexes.put("assets/sound/piano2.wav", new Integer(3));
-			
 		  	
 			  
 			  
