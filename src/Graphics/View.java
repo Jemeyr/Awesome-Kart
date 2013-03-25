@@ -50,8 +50,8 @@ public class View {
 		this.rect = r; //this assumes windowsize of 800,600, does it?
 		this.cam = c;
 
-		this.geometryRenderTarget = new RenderTarget(true);//we want a multichannel (multiple rgb)
-		this.lightAccumulationRenderTarget = new RenderTarget(false);//we want this single channel 
+		this.geometryRenderTarget = new RenderTarget(true, false);//we want a multichannel without light
+		this.lightAccumulationRenderTarget = new RenderTarget(false, true);//we want this single channel with light 
 		
 		
 		screenPos = new float[2];

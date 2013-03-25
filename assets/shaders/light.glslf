@@ -22,7 +22,7 @@ void main()
 	vec3 otol = (posFS - objPos.xyz);
 	float diff = length(otol);
 	
-	float scale = max(0.15, 1 - diff /radius);
+	float scale = max(0.0, 1 - diff /radius);
 	
 	outColor = vec4(1.0, 1.0, 1.0, scale);
 

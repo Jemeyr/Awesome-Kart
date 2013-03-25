@@ -75,8 +75,8 @@ public class Game {
 			//le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
 		}
 		le = renderMaster.addLight();
-		le.setRad(50.0f);
-		le.setPosition(new Vector3f(-130,0,0));
+		le.setRad(500.0f);
+		le.setPosition(new Vector3f(-130,-20,0));
 		
 		
 		le = renderMaster.addLight();
