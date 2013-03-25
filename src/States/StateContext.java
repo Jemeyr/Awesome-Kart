@@ -40,7 +40,6 @@ public class StateContext {
 		eventManager 		= new EventManager();
 		playerList 			= new ArrayList<Player>();
 		
-		soundMaster.execute(); // Hah, gaaaaaaaaaaaaaaaaaay
 		loadModels();
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster);

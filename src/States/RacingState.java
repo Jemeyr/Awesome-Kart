@@ -17,6 +17,7 @@ import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
 import Graphics.GraphicsComponent;
 import Graphics.RenderMaster;
+import Sound.SoundEmitter;
 import Sound.SoundMaster;
 import World.Kart;
 import World.Player;
@@ -83,8 +84,9 @@ public class RacingState implements GameState {
 		text.setPosition(new Vector3f(-200, 40, 100));
 		otherGraphics.put("AKText", text);
 		
-		// Do some music, except not really
-		this.soundMaster.playSound((Integer)soundMaster.soundIndexes.get("assets/sound/ACiv Battle 2.wav")); // Doesn't actually work.
+		// Add and start music
+		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/ACiv Battle 2.wav", true); 
+		musicComponent.playSound();
 		
 		// Set initial position?
 		cameras.get(0).setPosition(new Vector3f(-50,40,-30));

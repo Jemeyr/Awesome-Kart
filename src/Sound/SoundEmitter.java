@@ -6,7 +6,11 @@ import org.lwjgl.openal.AL10;
 
 
 /**
- * Emitter object that a is recieved from the sound Master when a game component wants a sound
+ * This class is used to simplify the playing of sounds
+ * <p>
+ * An instance of this class is returned by the soundMaster when the user wants a source to be created.
+ * <p>
+ * This source can now be interacted with, by using this classes simple methods such as playSound() and stopSound()
  * 
  * 
  * @author Daniel
@@ -41,7 +45,7 @@ public class SoundEmitter {
 	
 	
 	/**
-	 * 
+	 * Plays the sound
 	 * 
 	 * @return true if success
 	 * 		   False on failure	
@@ -49,7 +53,7 @@ public class SoundEmitter {
 	public boolean playSound()
 	{
 		
-		return soundMaster.playSound(soundCode);
+		return soundMaster.stopSource(soundCode);
 	}
 	
 	/**
@@ -61,7 +65,7 @@ public class SoundEmitter {
 	public boolean stopSound()
 	{
 		
-		return soundMaster.stopSound(soundCode);
+		return soundMaster.stopSource(soundCode);
 		
 	}
 	
@@ -92,9 +96,9 @@ public class SoundEmitter {
 	  /**
 	   *  Sets the position of the listener
 	   */
-	  public void setSoundPosition(FloatBuffer vector){
+	  public void setSoundPosition(int x, int y , int z){
 		  
-		  soundMaster.setSourcePosition(vector, soundCode);
+		  soundMaster.setSourcePosition(x ,y , z, soundCode);
 
 		    
 	  }
@@ -102,15 +106,22 @@ public class SoundEmitter {
 	  /**
 	   *  Sets the velocity of the Listener
 	   */
-	  public void setSoundVelocity(FloatBuffer vector){
+	  public void setSoundVelocity(int x, int y , int z){
 		  
-		 soundMaster.setSourceVelocity(vector, soundCode);  
+		 soundMaster.setSourceVelocity(x ,y , z, soundCode);  
 		  
 	  }
 	
-	public void destroySound()
+	 /**
+	  * Removes the sound from the audio engine and deactivates this object
+	  * 
+	  * After this, this object will no longer server a purpose, and thus should be destroyed
+	  */
+	public void removeSound()
 	{
+		soundMaster.removeSource(soundCode);
 		
+		this.active = false;
 		
 	}
 	

@@ -45,7 +45,7 @@ public class Game {
 		this.soundMaster = new SoundMaster();
 		this.controllerManager = new ControllerManager();
 		this.eventManager = new EventManager();
-		//this.stateContext = new StateContext();
+		this.stateContext = new StateContext();
 		this.drm = new DigitalRightsManagement();
 	}
 
@@ -105,8 +105,6 @@ public class Game {
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
-		this.soundMaster.execute();
-		
 		SoundEmitter pewComponent = this.soundMaster.getSoundComponent("assets/sound/Pew_Pew.wav",true);
 		SoundEmitter pianoComponent = this.soundMaster.getSoundComponent("assets/sound/piano2.wav",true);
 		pianoComponent.playSound();
@@ -131,9 +129,6 @@ public class Game {
 			elec360power += 1;
 			
 			if(elec360power == 100){
-				FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { -10000.0f, -10000.0f, -10000.0f });
-				vector.flip();
-				pianoComponent.setSoundPosition(vector);
 				pianoComponent.stopSound();
 				pianoComponent.playSound();
 			}
