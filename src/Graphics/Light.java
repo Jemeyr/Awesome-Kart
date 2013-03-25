@@ -26,7 +26,12 @@ public class Light {
 		this.color = new Vector3f(1,1,1);
 		this.pos = new Vector3f(0,0,0);
 		this.world = new Matrix4f();
-		Matrix4f.translate(pos, world, world);
+		this.world.setIdentity();
+		
+		//translate
+		this.world.m03 = this.pos.x;
+		this.world.m13 = this.pos.y;
+		this.world.m23 = this.pos.z;
 	}
 	
 	public Light()
@@ -36,7 +41,12 @@ public class Light {
 		this.color = new Vector3f(1,1,1);
 		this.pos = new Vector3f(0,0,0);
 		this.world = new Matrix4f();
-		Matrix4f.translate(pos, world, world);
+		this.world.setIdentity();
+		
+		//translate
+		this.world.m03 = this.pos.x;
+		this.world.m13 = this.pos.y;
+		this.world.m23 = this.pos.z;
 	}
 
 	public void setColor(Vector3f col)

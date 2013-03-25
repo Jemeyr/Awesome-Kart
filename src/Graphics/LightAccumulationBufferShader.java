@@ -114,7 +114,7 @@ public class LightAccumulationBufferShader extends Shader{
 	private void setTransform(Matrix4f world, Matrix4f vp)
 	{
 		Matrix4f modelMat = new Matrix4f();
-		Matrix4f.mul(world, this.invView, modelMat);
+		Matrix4f.mul(this.invView, world, modelMat);
 		//this is new
 		glUniformMatrix4(wMatIndex, true, genFloatBuffer(modelMat));
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
@@ -138,9 +138,15 @@ public class LightAccumulationBufferShader extends Shader{
 		//store inverse view matrix
 		Matrix4f.invert(cam.viewMat, this.invView);
 
+
+		this.invView.m30 = 0.0f;
+		this.invView.m31 = 0.0f;
+		this.invView.m32 = 0.0f;
+		
 		this.invView.m03 = 0.0f;
 		this.invView.m13 = 0.0f;
 		this.invView.m23 = 0.0f;
+		this.invView.m33 = 1.0f;
 		
 		this.viewProjection = camVP;
 		
