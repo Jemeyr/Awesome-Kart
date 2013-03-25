@@ -53,7 +53,7 @@ public class SoundEmitter {
 	public boolean playSound()
 	{
 		
-		return soundMaster.stopSource(soundCode);
+		return soundMaster.playSource(soundCode);
 	}
 	
 	/**
