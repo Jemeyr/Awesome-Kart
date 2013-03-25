@@ -6,6 +6,7 @@ uniform sampler2D posTex;
 
 uniform float radius;
 uniform vec2 screenRect;
+uniform vec3 lightColor;
 
 out vec4 outColor;
 
@@ -24,10 +25,7 @@ void main()
 	
 	float scale = max(0.0, 1 - diff /radius);
 	
-	outColor = vec4(1.0, 1.0, 1.0, scale);
-
-//	outColor = vec4(objCol.xyz,1);
-	
+	outColor = vec4(normalize(lightColor), scale);
 	
 }	
 

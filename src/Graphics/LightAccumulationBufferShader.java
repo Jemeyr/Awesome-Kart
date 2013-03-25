@@ -19,6 +19,8 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
+import static org.lwjgl.opengl.GL14.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14.glBlendEquation;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
@@ -48,11 +50,10 @@ public class LightAccumulationBufferShader extends Shader{
 	
 	private int camDirIndex;
 	private Matrix4f viewProjection;
-	private Matrix4f inverseViewProjection;
 
 	
 	protected int position_attr;
-	protected int radUni, centerUni;
+	protected int radUni, centerUni, colorUni;
 	
 	protected int outCol;
 	
@@ -95,7 +96,7 @@ public class LightAccumulationBufferShader extends Shader{
 		
         radUni = glGetUniformLocation( shaderProgram, "radius");
         centerUni = glGetUniformLocation( shaderProgram, "center");
-		
+        colorUni = glGetUniformLocation( shaderProgram, "lightColor");
         
         camDirIndex = glGetAttribLocation(shaderProgram, "camDir");
         
@@ -118,6 +119,7 @@ public class LightAccumulationBufferShader extends Shader{
 	{
 		glUniform3f(centerUni, l.getPosition().x, l.getPosition().y, l.getPosition().z );
 		glUniform1f(radUni, l.rad);
+		glUniform3f(colorUni, l.getColor().x, l.getColor().y, l.getColor().z);
 	}
 	
 	protected void useCam(Camera cam)

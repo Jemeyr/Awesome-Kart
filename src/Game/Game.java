@@ -78,10 +78,16 @@ public class Game {
 		le.setRad(500.0f);
 		le.setPosition(new Vector3f(-130,-20,0));
 		
-		
+
 		le = renderMaster.addLight();
-		le.setRad(75.0f);
+		le.setRad(25.0f);
 		le.setPosition(new Vector3f(100,0,0));
+		le.setColor(new Vector3f(1.0f, 0.0f, 1.0f));
+
+		le = renderMaster.addLight();
+		le.setRad(25.0f);
+		le.setPosition(new Vector3f(200,0,0));
+		le.setColor(new Vector3f(0.0f, 1.0f, 1.0f));
 		
 		renderMaster.addModel("testTer");
 		GraphicsComponent text = renderMaster.addModel("aktext");

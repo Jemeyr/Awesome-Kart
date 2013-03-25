@@ -10,6 +10,8 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glGetError;
+import static org.lwjgl.opengl.GL11.*;
+
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -149,7 +151,7 @@ public class DebugRenderMaster implements RenderMaster {
 			}
 
 			labShader.end();
-			
+		
 			v.unsetRenderTarget();
 			
 			

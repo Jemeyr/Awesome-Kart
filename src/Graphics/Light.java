@@ -40,6 +40,16 @@ public class Light {
 		Matrix4f.translate(pos, world, world);
 	}
 
+	public void setColor(Vector3f col)
+	{
+		this.color = col;
+	}
+	
+	public Vector3f getColor()
+	{
+		return this.color;
+	}
+	
 	public void setPosition(Vector3f pos)
 	{
 		this.pos = pos;
