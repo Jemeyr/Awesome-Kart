@@ -7,6 +7,8 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.sound.sampled.AudioSystem;
 
@@ -46,11 +48,11 @@ public class SoundMaster {
 	protected FloatBuffer listenerPos = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
 	
 	  /** Velocity of the listener. */
-	protected FloatBuffer listenerVel = BufferUtils.createFloatBuffer(3).put(new float[] { .0f, 0.0f, 0.0f });
+	protected FloatBuffer listenerVel = BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f });
 	
 	  /** Orientation of the listener. (first 3 elements are "at", second 3 are "up") */
 	protected FloatBuffer listenerOri =
-	      BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f });
+	      BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f });
 	
 	/**
 	   * 1) Identify the error code.
@@ -219,6 +221,52 @@ public class SoundMaster {
 	    AL.destroy();
 	  }
 	  
+	  
+	  /**
+	   *  Sets the position of the listener
+	   */
+	  public void setSourcePosition(FloatBuffer vector, int soundCode){
+		  
+		  AL10.alSource (source.get(soundCode), AL10.AL_POSITION, vector);
+
+		    
+	  }
+	  
+	  /**
+	   *  Sets the velocity of the Listener
+	   */
+	  public void setSourceVelocity(FloatBuffer vector, int soundCode){
+		  AL10.alSource (source.get(soundCode), AL10.AL_VELOCITY, vector);
+		    
+		  
+	  }
+	  
+	  /**
+	   *  Sets the position of the listener
+	   */
+	  public void setListenerPosition(FloatBuffer vector){
+		  
+		  AL10.alListener(AL10.AL_POSITION,   vector);
+		    
+	  }
+	  
+	  /**
+	   *  Sets the velocity of the Listener
+	   */
+	  public void setListenerVelocity(FloatBuffer vector){
+		  AL10.alListener(AL10.AL_VELOCITY,    vector);
+		    
+		  
+	  }
+	  
+	  /**
+	   *  
+	   */
+	  public void setListenerOrientation(FloatBuffer vector){
+		  
+		  AL10.alListener(AL10.AL_ORIENTATION, vector);
+	  }
+	  
 	  /**
 	   * void setListenerValues()
 	   *
@@ -248,50 +296,25 @@ public class SoundMaster {
 		  
 		  AL10.alGenBuffers(buffer);
 		  
-			try {
-				fileName = "assets/sound/ACiv Battle 2.wav";
-				is = new FileInputStream(fileName);
-				bufferedIs = new BufferedInputStream(is);
-				waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
+		  Set soundFileNames =  soundIndexes.keySet();
+		  
+		  for(Iterator<String> it = soundFileNames.iterator(); it.hasNext(); ){
+			  try {
+					fileName = it.next();
+					is = new FileInputStream(fileName);
+					bufferedIs = new BufferedInputStream(is);
+					waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
+					
+					AL10.alBufferData(buffer.get((Integer) soundIndexes.get(fileName)), waveFile.format, waveFile.data, waveFile.samplerate);	  
+					waveFile.dispose();
 				
-				AL10.alBufferData(buffer.get((Integer) soundIndexes.get(fileName)), waveFile.format, waveFile.data, waveFile.samplerate);	  
-				waveFile.dispose();
-			
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-			}
-			
-			try {
-				fileName = "assets/sound/Car Accelerating.wav";
-				is = new FileInputStream(fileName);
-				bufferedIs = new BufferedInputStream(is);
-				waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
-				
-				AL10.alBufferData(buffer.get((Integer) soundIndexes.get(fileName)), waveFile.format, waveFile.data, waveFile.samplerate);	  
-				waveFile.dispose();
-			
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-			}
-			
-			try {
-				fileName = "assets/sound/Pew_Pew.wav";
-				is = new FileInputStream(fileName);
-				bufferedIs = new BufferedInputStream(is);
-				waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
-				
-				AL10.alBufferData(buffer.get((Integer) soundIndexes.get(fileName)), waveFile.format, waveFile.data, waveFile.samplerate);	  
-				waveFile.dispose();
-			
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-			}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					
+				}
+			  
+		  }
 		  
 
 		  
@@ -390,7 +413,7 @@ public class SoundMaster {
 			soundIndexes.put("assets/sound/ACiv Battle 2.wav", new Integer(0));
 			soundIndexes.put("assets/sound/Car Accelerating.wav", new Integer(1));
 			soundIndexes.put("assets/sound/Pew_Pew.wav", new Integer(2));
-		  
+			soundIndexes.put("assets/sound/piano2.wav", new Integer(3));
 	  }
 	  
 	

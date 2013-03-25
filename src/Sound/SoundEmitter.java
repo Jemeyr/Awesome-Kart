@@ -1,5 +1,9 @@
 package Sound;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.openal.AL10;
+
 
 /**
  * Emitter object that a is recieved from the sound Master when a game component wants a sound
@@ -84,6 +88,25 @@ public class SoundEmitter {
 		return soundMaster.setLooping(soundCode, false);
 		
 	}
+	
+	  /**
+	   *  Sets the position of the listener
+	   */
+	  public void setSoundPosition(FloatBuffer vector){
+		  
+		  soundMaster.setSourcePosition(vector, soundCode);
+
+		    
+	  }
+	  
+	  /**
+	   *  Sets the velocity of the Listener
+	   */
+	  public void setSoundVelocity(FloatBuffer vector){
+		  
+		 soundMaster.setSourceVelocity(vector, soundCode);  
+		  
+	  }
 	
 	public void destroySound()
 	{

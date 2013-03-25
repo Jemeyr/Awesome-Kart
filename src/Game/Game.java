@@ -1,8 +1,10 @@
 package Game;
 
+import java.nio.FloatBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.Rectangle;
@@ -43,7 +45,7 @@ public class Game {
 		this.soundMaster = new SoundMaster();
 		this.controllerManager = new ControllerManager();
 		this.eventManager = new EventManager();
-		this.stateContext = new StateContext();
+		//this.stateContext = new StateContext();
 		this.drm = new DigitalRightsManagement();
 	}
 
@@ -106,8 +108,8 @@ public class Game {
 		this.soundMaster.execute();
 		
 		SoundEmitter pewComponent = this.soundMaster.getSoundComponent("assets/sound/Pew_Pew.wav",true);
-		
-		pewComponent.playSound();
+		SoundEmitter pianoComponent = this.soundMaster.getSoundComponent("assets/sound/piano2.wav",true);
+		pianoComponent.playSound();
 		
 		long startTime = System.currentTimeMillis();
 
@@ -122,15 +124,18 @@ public class Game {
 			}*/
 			
 			controllerManager.poll();
-			eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);
+			//eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);
 			
 			frames++;
 
 			elec360power += 1;
 			
 			if(elec360power == 100){
-				
-				pewComponent.stopSound();
+				FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { -10000.0f, -10000.0f, -10000.0f });
+				vector.flip();
+				pianoComponent.setSoundPosition(vector);
+				pianoComponent.stopSound();
+				pianoComponent.playSound();
 			}
 			
 			//runs the do donuts on each kart
@@ -169,12 +174,8 @@ public class Game {
 
 			modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
 			Matrix4f.transform(modelInv, campos2, campos2);
-			/*
-			System.out.println("	campos " + campos + "\n\ttarg" + targ);
-			System.out.println("------------------------------------------------------------");
-			System.out.println(modelInv);
-			System.out.println("------------------------------------------------------------");
-			*/
+			
+			
 			
 			
 			cam.setPosition(new Vector3f(campos.x, campos.y, campos.z));
@@ -183,6 +184,12 @@ public class Game {
 			cam2.setPosition(new Vector3f(campos2.x, campos2.y, campos2.z));
 			cam2.setTarget(new Vector3f(targ.x, targ.y, targ.z));
 			
+			/*
+			System.out.println("	campos " + campos + "\n\ttarg" + targ);
+			System.out.println("------------------------------------------------------------");
+			System.out.println(modelInv);
+			System.out.println("------------------------------------------------------------");
+			*/
 			
 			
 			//draw
