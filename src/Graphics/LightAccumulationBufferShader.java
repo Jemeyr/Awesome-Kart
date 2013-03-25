@@ -39,6 +39,7 @@ import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 public class LightAccumulationBufferShader extends Shader{
 	
@@ -51,6 +52,7 @@ public class LightAccumulationBufferShader extends Shader{
 	private int camDirIndex;
 	private Matrix4f viewProjection;
 	private Matrix4f invView;
+	private Vector3f camPosition;
 
 	
 	protected int position_attr;
@@ -108,14 +110,34 @@ public class LightAccumulationBufferShader extends Shader{
 		
 		viewProjection = new Matrix4f();
 		invView = new Matrix4f();
-        
+        camPosition = new Vector3f();
 	}
 		
-	private void setTransform(Matrix4f world, Matrix4f vp)
+	private void setTransform(Light l, Matrix4f world, Matrix4f vp)
 	{
 		Matrix4f modelMat = new Matrix4f();
-		Matrix4f.mul(this.invView, world, modelMat);
+		
+		/*float sqrDiff = 	(world.m03 - camPosition.x)*(world.m03 - camPosition.x) +
+							(world.m13 - camPosition.y)*(world.m13 - camPosition.y) +
+							(world.m23 - camPosition.z)*(world.m23 - camPosition.z);
+		if(sqrDiff < l.rad * l.rad)
+		{
+			Matrix4f tempWorld = world;
+			tempWorld.m03 = 0;
+			tempWorld.m13 = 0;
+			tempWorld.m23 = 1;
+			Matrix4f.mul(this.invView, tempWorld, modelMat);
+				
+		}
+		else
+		{
+			Matrix4f.mul(this.invView, world, modelMat);
+		}
+		*/
 		//this is new
+		
+		Matrix4f.mul(this.invView, world, modelMat);
+		
 		glUniformMatrix4(wMatIndex, true, genFloatBuffer(modelMat));
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
 	}
@@ -138,7 +160,6 @@ public class LightAccumulationBufferShader extends Shader{
 		//store inverse view matrix
 		Matrix4f.invert(cam.viewMat, this.invView);
 
-
 		this.invView.m30 = 0.0f;
 		this.invView.m31 = 0.0f;
 		this.invView.m32 = 0.0f;
@@ -149,6 +170,8 @@ public class LightAccumulationBufferShader extends Shader{
 		this.invView.m33 = 1.0f;
 		
 		this.viewProjection = camVP;
+		
+		this.camPosition = cam.position;
 		
 		glUniform3f(camDirIndex, cam.direction.x, cam.direction.y, cam.direction.z);
 	}
@@ -185,7 +208,7 @@ public class LightAccumulationBufferShader extends Shader{
 		}
 
 		setUniforms(l);
-		setTransform(l.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
+		setTransform(l, l.getModelMat(), viewProjection);	//good good, also make sure to set the radius and color
 		glBindVertexArray(Light.mesh.vao);
 		
 		//bind all the texture info from the Gbuffer
