@@ -50,6 +50,7 @@ public class LightAccumulationBufferShader extends Shader{
 	
 	private int camDirIndex;
 	private Matrix4f viewProjection;
+	private Matrix4f invView;
 
 	
 	protected int position_attr;
@@ -106,12 +107,16 @@ public class LightAccumulationBufferShader extends Shader{
 		setRectSize();//TODO: make this more extensible 600 800
 		
 		viewProjection = new Matrix4f();
+		invView = new Matrix4f();
         
 	}
 		
 	private void setTransform(Matrix4f world, Matrix4f vp)
 	{
-		glUniformMatrix4(wMatIndex, true, genFloatBuffer(world));
+		Matrix4f modelMat = new Matrix4f();
+		Matrix4f.mul(world, this.invView, modelMat);
+		//this is new
+		glUniformMatrix4(wMatIndex, true, genFloatBuffer(modelMat));
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
 	}
 	
@@ -129,6 +134,13 @@ public class LightAccumulationBufferShader extends Shader{
 		Matrix4f camVP = new Matrix4f();
 		
 		camVP = Matrix4f.mul(camView, camProj, null);
+		
+		//store inverse view matrix
+		Matrix4f.invert(cam.viewMat, this.invView);
+
+		this.invView.m03 = 0.0f;
+		this.invView.m13 = 0.0f;
+		this.invView.m23 = 0.0f;
 		
 		this.viewProjection = camVP;
 		

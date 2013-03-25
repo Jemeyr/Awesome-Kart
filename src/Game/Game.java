@@ -74,20 +74,23 @@ public class Game {
 			//le.setRad(400.0f);
 			//le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
 		}
+		/*
 		le = renderMaster.addLight();
 		le.setRad(500.0f);
 		le.setPosition(new Vector3f(-130,-20,0));
 		
 
 		le = renderMaster.addLight();
-		le.setRad(25.0f);
-		le.setPosition(new Vector3f(100,0,0));
-		le.setColor(new Vector3f(1.0f, 0.0f, 1.0f));
-
+		le.setRad(50.0f);
+		le.setPosition(new Vector3f(100,-50,1));
+		le.setColor(new Vector3f(1.0f, 1.0f, 1.0f));
+		*/
+		
 		le = renderMaster.addLight();
 		le.setRad(25.0f);
-		le.setPosition(new Vector3f(200,0,0));
-		le.setColor(new Vector3f(0.0f, 1.0f, 1.0f));
+		//le.setPosition(new Vector3f(100,-100,0));
+		le.setColor(new Vector3f(1.0f, 1.0f, 1.0f));
+		
 		
 		renderMaster.addModel("testTer");
 		GraphicsComponent text = renderMaster.addModel("aktext");
@@ -189,7 +192,7 @@ public class Game {
 			
 			//draw
 			renderMaster.draw();
-			
+
 			if(Display.isCloseRequested())
 			{
 				

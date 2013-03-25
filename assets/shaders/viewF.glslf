@@ -27,8 +27,7 @@ void main()
 	vec3 lightAmount = vec3(max(0.15,labVal.w * labVal.x), max(0.15,labVal.w * labVal.y), max(0.15,labVal.w * labVal.z)); 
 	
 	//* texture(colTex, vTexCoord).xyz
-	outColor = vec4(lightAmount, 1);// * edge;
-	
+	outColor = vec4(lightAmount * texture(colTex, vTexCoord).xyz, 1);// * edge;
 	
 }
 

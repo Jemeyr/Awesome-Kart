@@ -17,7 +17,6 @@ public class Light {
 	static protected void init(DebugMesh m)
 	{
 		Light.mesh = m;
-
 	}
 	
 	public Light(float rad)
