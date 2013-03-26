@@ -21,6 +21,7 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL14.GL_FUNC_ADD;
 import static org.lwjgl.opengl.GL14.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL14.glBlendEquation;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
@@ -118,11 +119,29 @@ public class LightAccumulationBufferShader extends Shader{
 	{
 		Matrix4f modelMat = new Matrix4f();
 
-		Matrix4f.mul(this.invView, world, modelMat);
 		
-		glUniformMatrix4(wMatIndex, true, genFloatBuffer(modelMat));
 		
+		//compensate for internal light surfaces
+		Vector3f camDist = new Vector3f();
+		Vector3f.sub(camPosition, l.getPosition(), camDist);
+		if(camDist.lengthSquared() < 2*l.rad*l.rad)
+		{
+
+			modelMat.m00 = 10f;
+			modelMat.m11 = 10f;
+			modelMat.m22 = 10f;
+
+			modelMat.m03 = 0f;
+			modelMat.m13 = 0f;
+			modelMat.m23 = 1f;
+			Matrix4f.mul(this.invView, modelMat, modelMat);
+		}
+		else
+		{
+			Matrix4f.mul(this.invView, world, modelMat);
+		}
 		//glUniformMatrix4(wMatIndex, true, genFloatBuffer(world));
+		glUniformMatrix4(wMatIndex, true, genFloatBuffer(modelMat));
 		
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
 	}
@@ -171,15 +190,26 @@ public class LightAccumulationBufferShader extends Shader{
 	{
 		super.begin();
 	    glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE, GL_ONE);
-        glBlendEquation(GL_FUNC_ADD);
-    
+	    
+	    glDisable(GL_ALPHA_TEST);
+	    glDisable(GL_DEPTH_TEST);
+	    
+	    glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
+	    //glBlendFunc(GL_ONE,GL_ONE);
+	    glBlendEquation(GL_FUNC_ADD);
+
+	    
 	}
 	
 	
 	protected void end()
 	{
+		glEnable(GL_DEPTH_TEST);
+	    
+		glEnable(GL_ALPHA_TEST);
 	    glDisable(GL_BLEND);
+
+//	    glStencilFunc(GL_NOTEQUAL, 0, 0xFF);
     	
 		super.end();
 	}

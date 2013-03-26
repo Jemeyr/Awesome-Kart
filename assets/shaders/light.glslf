@@ -23,9 +23,9 @@ void main()
 	vec3 otol = (posFS - objPos.xyz);
 	float diff = length(otol);
 	
-	float scale = max(0.0, 1 - diff /radius);
+	float scale = max(0.0, 1 - diff /(radius));
 	
-	outColor = vec4(normalize(lightColor), 0.5);//scale);
+	outColor = vec4(normalize(lightColor), scale);
 	
 }	
 

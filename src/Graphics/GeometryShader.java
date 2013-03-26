@@ -72,10 +72,6 @@ public class GeometryShader extends Shader{
         texCoord_attr = glGetAttribLocation( shaderProgram, "texCoord");
 
         
-        //would be a nice idea, but it causes an error
-        //texId = glGetUniformLocation(shaderProgram, "modelTexture");
-		//glUniform1i(texId, 0);//bind fbo color indices to them
-		
         viewProjection = new Matrix4f();
         
 	}
@@ -152,7 +148,19 @@ public class GeometryShader extends Shader{
 		return texCoord_attr;
 	}
 	
+	protected void begin()
+	{
+		super.begin();
+		//set stencil technique?
+		
+	}
 	
+	protected void end()
+	{
+		//undo any stencil changes
+		
+		super.end();
+	}
 
 
 	

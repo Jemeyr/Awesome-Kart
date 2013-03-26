@@ -67,7 +67,7 @@ public class RenderTarget {
 	
 	public RenderTarget(boolean multiChannel, boolean isLight)
 	{
-		this.clearColor = new Vector4f(0.0f, 0.0f, 0.0f, 0.0f);
+		this.clearColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 		
 		//init and bind
 		this.fboId = glGenFramebuffers();
@@ -161,7 +161,7 @@ public class RenderTarget {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachmentNo, GL_TEXTURE_2D, id, 0);
 
 		//clear
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		//unbind here?
@@ -176,8 +176,8 @@ public class RenderTarget {
 		glViewport(0,0,800,600);//set to our texture size. adjust this later depending on the resolution and view size
 		
 		//clear it
-		glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glClearColor(clearColor.x, clearColor.y, clearColor.z, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT  );
 		
 		
 	}

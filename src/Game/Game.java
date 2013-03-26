@@ -3,6 +3,7 @@ package Game;
 import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.glGetError;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class Game {
 	public void execute()
 	{		
 		
+		
+		
 		boolean Conti;
 		int elec360power;
 
@@ -75,20 +78,21 @@ public class Game {
 			//le.setRad(400.0f);
 			//le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
 		}
+		/*
 		le = renderMaster.addLight();
-		le.setRad(500.0f);
-		le.setPosition(new Vector3f(-750,100,0));
-	 	
+		le.setRad(5.0f);
+		le.setPosition(new Vector3f(-750,-20,0));
+	 	*/
 		
 		le = renderMaster.addLight();
-		le.setRad(500.0f);
-		le.setPosition(new Vector3f(50,100,0));
-		le.setColor(new Vector3f(1.0f, 1.0f, 1.0f));
+		le.setRad(250.0f);
+		le.setPosition(new Vector3f(50,-20,0));
+		le.setColor(new Vector3f(1.0f, 0.0f, 0.0f));
 		
 		le = renderMaster.addLight();
-		le.setRad(500.0f);
-		le.setPosition(new Vector3f(30,100,0));
-		le.setColor(new Vector3f(1.0f, 1.0f, 1.0f));
+		le.setRad(150.0f);
+		le.setPosition(new Vector3f(10,-20,0));
+		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
 		
 		
 		renderMaster.addModel("testTer");
@@ -113,9 +117,9 @@ public class Game {
 			k.killme = i*1234f;
 		}
 
-		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0, 800, 600));//0,300,800,300));
-		//Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));
-		Camera cam2 = new Camera(new Vector3f(1,2,3),new Vector3f(3,4,5), 1, 2);
+		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300, 800, 300));//0,300,800,300));
+		Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));
+		//Camera cam2 = new Camera(new Vector3f(1,2,3),new Vector3f(3,4,5), 1, 2);
 		
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("rocket");
 		triforce.setPosition(new Vector3f(0,0.4f,0));
@@ -152,7 +156,6 @@ public class Game {
 			{ 
 				k.killmenow(elec360power);
 			}
-
 
 			
 			
