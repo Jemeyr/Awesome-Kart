@@ -83,9 +83,9 @@ public class Game {
 		le.setRad(5.0f);
 		le.setPosition(new Vector3f(-750,-20,0));
 	 	*/
-		
+
 		le = renderMaster.addLight();
-		le.setRad(250.0f);
+		le.setRad(150.0f);
 		le.setPosition(new Vector3f(50,-20,0));
 		le.setColor(new Vector3f(1.0f, 0.0f, 0.0f));
 		
@@ -93,6 +93,9 @@ public class Game {
 		le.setRad(150.0f);
 		le.setPosition(new Vector3f(10,-20,0));
 		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
+		
+		
+		
 		
 		
 		renderMaster.addModel("testTer");

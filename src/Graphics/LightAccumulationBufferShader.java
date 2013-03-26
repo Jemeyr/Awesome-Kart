@@ -124,7 +124,7 @@ public class LightAccumulationBufferShader extends Shader{
 		//compensate for internal light surfaces
 		Vector3f camDist = new Vector3f();
 		Vector3f.sub(camPosition, l.getPosition(), camDist);
-		if(camDist.lengthSquared() < 2*l.rad*l.rad)
+		if(camDist.lengthSquared() < 2 * l.rad*l.rad)
 		{
 
 			modelMat.m00 = 10f;
@@ -194,8 +194,8 @@ public class LightAccumulationBufferShader extends Shader{
 	    glDisable(GL_ALPHA_TEST);
 	    glDisable(GL_DEPTH_TEST);
 	    
-	    glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
-	    //glBlendFunc(GL_ONE,GL_ONE);
+	    //glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
+	    glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	    glBlendEquation(GL_FUNC_ADD);
 
 	    
