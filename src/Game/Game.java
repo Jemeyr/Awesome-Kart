@@ -105,10 +105,11 @@ public class Game {
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
-		this.soundMaster.execute();
 		
-		SoundEmitter pewComponent = this.soundMaster.getSoundComponent("assets/sound/Pew_Pew.wav",true);
+		
+		//
 		SoundEmitter pianoComponent = this.soundMaster.getSoundComponent("assets/sound/piano2.wav",true);
+		SoundEmitter pewComponent = this.soundMaster.getSoundComponent("assets/sound/ACiv Battle 2.wav",true);
 		pianoComponent.playSound();
 		
 		long startTime = System.currentTimeMillis();
@@ -131,8 +132,9 @@ public class Game {
 			elec360power += 1;
 			
 			if(elec360power == 100){
+				/*pianoComponent.setSoundPosition(1000, 0, 0);
 				pianoComponent.stopSound();
-				pianoComponent.playSound();
+				pianoComponent.playSound();*/
 			}
 			
 			//runs the do donuts on each kart

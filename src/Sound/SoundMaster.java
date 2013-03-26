@@ -130,7 +130,15 @@ public class SoundMaster {
 		  AL10.alSource (sources.get(position), AL10.AL_POSITION, sourcePos);
 		  AL10.alSource (sources.get(position), AL10.AL_VELOCITY, sourceVel);
 		  AL10.alSourcei(sources.get(position), AL10.AL_LOOPING,  (toLoop ? AL10.AL_TRUE : AL10.AL_FALSE));
+		  AL10.alSourcef(sources.get(position), AL10.AL_MAX_GAIN,  1.0f);
+		  AL10.alSourcef(sources.get(position), AL10.AL_MIN_GAIN,  0.1f);
+		  AL10.alSourcef(sources.get(position), AL10.AL_MAX_DISTANCE,  1000f);
 		  
+
+		  //AL10.alSourcef(sources.get(position),AL10.AL_GAIN, 0.1f);
+		  
+		  float maxGain = AL10.alGetSourcef(sources.get(position), AL10.AL_MAX_GAIN);
+		  float minGain = AL10.alGetSourcef(sources.get(position), AL10.AL_MIN_GAIN);
 		  if (AL10.alGetError() != AL10.AL_NO_ERROR)
 			  return -1;
 		  sourceIsFilled[position] = true; 
@@ -178,13 +186,14 @@ public class SoundMaster {
 		  {
 			  AL10.alSourcePlay(sources.get(soundCode));
 			  
-			  if((errCode=loadAllSoundData()) == AL10.AL_FALSE)
-			  {
-				  errorString= getALErrorString(errCode);
-				  System.out.println(errorString);
-				  return false;
+		  }
+		  
+		  if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+		  {
 			  
-			  }
+			  errorString= getALErrorString(errCode);
+			  System.out.println(errorString);
+			  return false;
 		  }
 		  
 		  return true;
@@ -206,13 +215,15 @@ public class SoundMaster {
 		  if(state == AL10.AL_PLAYING)
 		  {
 			  AL10.alSourceStop(sources.get(soundCode));
-			  if((errCode=loadAllSoundData()) == AL10.AL_FALSE)
-			  {
-				  errorString= getALErrorString(errCode);
-				  System.out.println(errorString);
-				  return false;
+			 
+		  }
+		  
+		  if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+		  {
 			  
-			  }
+			  errorString= getALErrorString(errCode);
+			  System.out.println(errorString);
+			  return false;
 		  }
 		  
 		  return true;
@@ -493,8 +504,10 @@ public class SoundMaster {
 			  
 			  setListenerValues();
 		  	
+			  AL10.alDistanceModel(AL10.AL_INVERSE_DISTANCE);
 			  
-			  
+			  //Work around, the first component created does not work, but others will, so we create one here
+			  SoundEmitter pewComponent = this.getSoundComponent("assets/sound/ACiv Battle 2.wav",true);
 	  }
 	  
 	
