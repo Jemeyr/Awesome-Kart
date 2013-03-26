@@ -40,6 +40,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 public class LightAccumulationBufferShader extends Shader{
 	
@@ -116,29 +117,13 @@ public class LightAccumulationBufferShader extends Shader{
 	private void setTransform(Light l, Matrix4f world, Matrix4f vp)
 	{
 		Matrix4f modelMat = new Matrix4f();
-		
-		/*float sqrDiff = 	(world.m03 - camPosition.x)*(world.m03 - camPosition.x) +
-							(world.m13 - camPosition.y)*(world.m13 - camPosition.y) +
-							(world.m23 - camPosition.z)*(world.m23 - camPosition.z);
-		if(sqrDiff < l.rad * l.rad)
-		{
-			Matrix4f tempWorld = world;
-			tempWorld.m03 = 0;
-			tempWorld.m13 = 0;
-			tempWorld.m23 = 1;
-			Matrix4f.mul(this.invView, tempWorld, modelMat);
-				
-		}
-		else
-		{
-			Matrix4f.mul(this.invView, world, modelMat);
-		}
-		*/
-		//this is new
-		
+
 		Matrix4f.mul(this.invView, world, modelMat);
 		
 		glUniformMatrix4(wMatIndex, true, genFloatBuffer(modelMat));
+		
+		//glUniformMatrix4(wMatIndex, true, genFloatBuffer(world));
+		
 		glUniformMatrix4(vpMatIndex, true, genFloatBuffer(vp));
 	}
 	

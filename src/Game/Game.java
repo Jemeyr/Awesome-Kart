@@ -60,6 +60,7 @@ public class Game {
 		renderMaster.loadModel("hat");
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
+		renderMaster.loadModel("rocket");
 		
 		renderMaster.loadModel("aktext");
 		
@@ -75,20 +76,19 @@ public class Game {
 			//le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
 		}
 		le = renderMaster.addLight();
-		le.setRad(50.0f);
-		le.setPosition(new Vector3f(-130,-20,0));
+		le.setRad(500.0f);
+		le.setPosition(new Vector3f(-750,100,0));
 	 	
 		
 		le = renderMaster.addLight();
-		le.setRad(50.0f);
-		le.setPosition(new Vector3f(50,-50,0));
-		le.setColor(new Vector3f(1.0f, 1.0f, 0.0f));
-		
+		le.setRad(500.0f);
+		le.setPosition(new Vector3f(50,100,0));
+		le.setColor(new Vector3f(1.0f, 1.0f, 1.0f));
 		
 		le = renderMaster.addLight();
-		le.setRad(25.0f);
-		le.setPosition(new Vector3f(30,-20,0));
-		le.setColor(new Vector3f(0.0f, 1.0f, 1.0f));
+		le.setRad(500.0f);
+		le.setPosition(new Vector3f(30,100,0));
+		le.setColor(new Vector3f(1.0f, 1.0f, 1.0f));
 		
 		
 		renderMaster.addModel("testTer");
@@ -97,6 +97,10 @@ public class Game {
 		
 		List<Kart> karts = new LinkedList<Kart>();
 		Kart pk = null;
+		
+		GraphicsComponent poster = renderMaster.addModel("rocket");
+		poster.setPosition(new Vector3f(0,1700,0)); 
+		poster.setRotation(new Vector3f(0.10f,1.80f,0.1f));
 		
 		for(int i = 0; i < 16; i++)
 		{
@@ -113,11 +117,11 @@ public class Game {
 			k.killme = i*1234f;
 		}
 
-		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300,800,300));
-		Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));
- 
+		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0, 800, 600));//0,300,800,300));
+		//Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));
+		Camera cam2 = new Camera(new Vector3f(1,2,3),new Vector3f(3,4,5), 1, 2);
 		
-		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
+		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("rocket");
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		
 		//this.soundMaster.execute();
@@ -159,28 +163,28 @@ public class Game {
 			//update the objects
 			//triforce that rotates and flies away
 			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
-			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
+			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 10, 0));
 			
 			//rotating text
 			text.setRotation(new Vector3f(0,elec360power/1500f, 0));
 			
 			//set the camera position
 			
-			Vector4f campos = new Vector4f(0,35,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
-			Vector4f targ = new Vector4f(0,10,0,1);		//divide by 2, I don't know why, height one for overhead.
+			Vector4f campos = new Vector4f(0,1700,-20, 1);//was 35 up, -50	
+			Vector4f targ = new Vector4f(0,1700,0,1);		//was 10 up
 			Vector4f campos2 = new Vector4f(0,20, 2 ,1);
 			Vector4f targ2 = new Vector4f(0,20,1,1);		//divide by 2, I don't know why, height one for overhead.
 			
 			//System.out.println("campos " + campos + "\ntarg" + targ);
 			
 			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat(); //cache that shit? actually do I ened to?
-			
+			/*
 			Matrix4f.transform(modelInv, campos, campos);
 			Matrix4f.transform(modelInv, targ, targ);
 			
 			Matrix4f.transform(modelInv, campos2, campos2);
 			Matrix4f.transform(modelInv, targ2, targ2);
-			
+			*/
 			
 			cam.setPosition(new Vector3f(campos));
 			cam.setTarget(new Vector3f(targ));

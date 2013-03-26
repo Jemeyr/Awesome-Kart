@@ -170,17 +170,15 @@ public class DebugRenderMaster implements RenderMaster {
 	}
 
 	public void loadModel(String s) {
-		//if the loaded models already has the id, just use that.
-		for(DebugMesh dm : loadedModels)
-		{
-			if(dm.id.equals(s))
-			{
+		// if the loaded models already has the id, just use that.
+		for (DebugMesh dm : loadedModels) {
+			if (dm.id.equals(s)) {
 				return;
 			}
 		}
 
-		loadedModels.add(new DebugMesh(s,geoShader));
-		
+		loadedModels.add(new DebugMesh(s, geoShader));
+
 	}
 
 	public void flushUnused() {
