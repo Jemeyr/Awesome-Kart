@@ -98,10 +98,6 @@ public class Game {
 		List<Kart> karts = new LinkedList<Kart>();
 		Kart pk = null;
 		
-		GraphicsComponent poster = renderMaster.addModel("rocket");
-		poster.setPosition(new Vector3f(0,1700,0)); 
-		poster.setRotation(new Vector3f(0.10f,1.80f,0.1f));
-		
 		for(int i = 0; i < 16; i++)
 		{
 			
@@ -170,21 +166,18 @@ public class Game {
 			
 			//set the camera position
 			
-			Vector4f campos = new Vector4f(0,1700,-20, 1);//was 35 up, -50	
-			Vector4f targ = new Vector4f(0,1700,0,1);		//was 10 up
+			Vector4f campos = new Vector4f(0,35,-50, 1);//relative coords
+			Vector4f targ = new Vector4f(0,10,0,1);		
 			Vector4f campos2 = new Vector4f(0,20, 2 ,1);
-			Vector4f targ2 = new Vector4f(0,20,1,1);		//divide by 2, I don't know why, height one for overhead.
-			
-			//System.out.println("campos " + campos + "\ntarg" + targ);
-			
-			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat(); //cache that shit? actually do I ened to?
-			/*
+			Vector4f targ2 = new Vector4f(0,20,1,1);		
+
+			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat(); //cache that shit? actually do I need to?
+
 			Matrix4f.transform(modelInv, campos, campos);
 			Matrix4f.transform(modelInv, targ, targ);
 			
 			Matrix4f.transform(modelInv, campos2, campos2);
 			Matrix4f.transform(modelInv, targ2, targ2);
-			*/
 			
 			cam.setPosition(new Vector3f(campos));
 			cam.setTarget(new Vector3f(targ));
