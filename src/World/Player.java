@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import Controller.GameController;
 import Graphics.DebugGraphicsComponent;
+import Sound.ListenerComponent;
 
 public class Player {
 	
@@ -16,7 +17,7 @@ public class Player {
 	
 	private GameController 	gameController;
 	private Kart			kart;
-	
+	private ListenerComponent listenerComponent ; 
 	private Vector4f		playerDelta;
 	
 	private float 			jump;
@@ -24,11 +25,11 @@ public class Player {
 	private float			acceleration;
 	private int				direction; // 1 for forward, -1 for back, 0 for none
 	
-	public Player(GameController gameController, Kart kart, Vector4f playerDelta){
+	public Player(GameController gameController, Kart kart, Vector4f playerDelta, ListenerComponent listenerComponent ){
 		this.gameController = gameController;
 		this.kart 			= kart;
 		this.playerDelta	= playerDelta;
-		
+		this.listenerComponent = listenerComponent;
 		acceleration 		= DEFAULT_ACCEL;
 		direction 			= 0;
 		speed 				= 0f;
@@ -101,6 +102,8 @@ public class Player {
 		Vector3f.add(getKart().getPosition(), new Vector3f(playerDelta), getKart().getPosition());
 		getKart().update();
 		
+		//This will cause a null exception if used with ryan's ControllerMain test class
+		listenerComponent.setListenerPosition(getKart().getPosition());
 		playerDelta.set(0, 0, 0, 0);
 	}
 

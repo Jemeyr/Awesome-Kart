@@ -3,6 +3,7 @@ package Sound;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.openal.AL10;
+import org.lwjgl.util.vector.Vector3f;
 
 
 /**
@@ -96,7 +97,7 @@ public class SoundEmitter {
 	  /**
 	   *  Sets the position of the listener
 	   */
-	  public void setSoundPosition(int x, int y , int z){
+	  public void setSoundPosition(float x, float y , float z){
 		  
 		  soundMaster.setSourcePosition(x ,y , z, soundCode);
 
@@ -104,9 +105,18 @@ public class SoundEmitter {
 	  }
 	  
 	  /**
+	   *  Sets the position of the listener
+	   */
+	  public void setSoundPosition(Vector3f vector){
+		  
+		  soundMaster.setSourcePosition(vector.getX() ,vector.getY() , vector.getZ(), soundCode);
+    
+	  }
+	  
+	  /**
 	   *  Sets the velocity of the Listener
 	   */
-	  public void setSoundVelocity(int x, int y , int z){
+	  public void setSoundVelocity(float x, float y , float z){
 		  
 		 soundMaster.setSourceVelocity(x ,y , z, soundCode);  
 		  

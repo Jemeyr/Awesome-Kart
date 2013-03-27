@@ -19,6 +19,7 @@ import Graphics.DebugRenderMaster;
 import Graphics.GraphicsComponent;
 import Graphics.Light;
 import Graphics.RenderMaster;
+import Sound.ListenerComponent;
 import Sound.SoundEmitter;
 import Sound.SoundMaster;
 import World.Kart;
@@ -59,10 +60,11 @@ public class RacingState implements GameState {
 	public void initialiseState() {
 		// Add Terrain
 		addTerrain();
-		
+		ListenerComponent listenerComponent = null;
 		// Add Donut Karts
 		for(int i = 0; i < 16; i++)
 		{
+			
 			if(i == 10) i++;
 			Kart k = new Kart(renderMaster);
 			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, -22.5f, -300f + (i%4) * 150.0f);
