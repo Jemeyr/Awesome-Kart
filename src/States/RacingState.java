@@ -71,10 +71,10 @@ public class RacingState implements GameState {
 		}
 		
 		// Add Cameras
-		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300,800,300));
-		//Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));
+		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300,800,300));//TODO RPETTY Why do you keep a reference to these cameras but still refer to them by their position in the list? omg
+		Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));//
 		cameras.add(cam);
-		//cameras.add(cam2);
+		cameras.add(cam2);
 		
 		// Add Triforce
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
@@ -210,8 +210,8 @@ public class RacingState implements GameState {
 		cameras.get(0).setPosition(new Vector3f(campos.x, campos.y, campos.z));
 		cameras.get(0).setTarget(new Vector3f(targ.x, targ.y, targ.z));
 		
-		//cameras.get(1).setPosition(new Vector3f(campos2.x, campos2.y, campos2.z));
-		//cameras.get(1).setTarget(new Vector3f(targ.x, targ.y, targ.z));
+		cameras.get(1).setPosition(new Vector3f(campos2.x, campos2.y, campos2.z));
+		cameras.get(1).setTarget(new Vector3f(targ.x, targ.y, targ.z));
 		
 		renderMaster.draw();
 	}
