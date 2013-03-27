@@ -47,6 +47,7 @@ public class ControllerManager {
 	}
 	
 	public void poll(){
+		gameEvents = new HashSet<GameEvent>();
 		for(Map.Entry<Controller, GameController> entry : getControllersMap().entrySet()){
 			Controller c = entry.getKey();
 			c.poll();
