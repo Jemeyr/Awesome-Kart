@@ -1,9 +1,8 @@
 #version 150
 
-//uniform vec2 pos;		//topleft to bottom right position -1 -> 1
-//uniform vec2 size;		//size
-uniform vec2 pos;// = vec2(-1,-1);
-uniform vec2 size;// = vec2(1,1);
+
+uniform vec2 pos;
+uniform vec2 size;
 
 
 const vec2 os = vec2(0.5, 0.5);

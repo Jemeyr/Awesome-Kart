@@ -3,26 +3,17 @@ package Graphics;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.GL_RENDERBUFFER;
-import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
-import static org.lwjgl.opengl.GL30.glBindFramebuffer;
-import static org.lwjgl.opengl.GL30.glBindRenderbuffer;
-import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
-import static org.lwjgl.opengl.GL30.glGenFramebuffers;
-import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
-import static org.lwjgl.opengl.GL32.glFramebufferTexture;
+import static org.lwjgl.opengl.GL11.glGetError;
+import static org.lwjgl.opengl.GL11.*;
 
+
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -30,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -38,54 +30,39 @@ public class DebugRenderMaster implements RenderMaster {
 	private List<DebugGraphicsComponent> graphicsComponents;
 	private List<DebugMesh >loadedModels;
 	
+	private List<Light> lights;
+	
 	private List<View> views;
 	
 	private float aspect;
 	
-	private NormalShader normalShader;
+	private GeometryShader geoShader;
+	private LightAccumulationBufferShader labShader;
 	private ViewShader viewShader;
 	
-	private int fboId, texId, dbufId;
 	
 	protected DebugRenderMaster(float aspect)
 	{
 		//freedee
         glEnable(GL_DEPTH_TEST);
-        glClearColor(0f, 0f, 0f, 1f);
         
-        this.normalShader = new NormalShader();
-		this.viewShader = new ViewShader();
+        this.geoShader = new GeometryShader();
+        
+		this.labShader = new LightAccumulationBufferShader();
+        
+        this.viewShader = new ViewShader();
         
         this.aspect = aspect;
 		
         
         this.views = new LinkedList<View>();
-
-        //System.out.println("DebugRenderMaster: created shader and camera");
 		
 		this.graphicsComponents = new ArrayList<DebugGraphicsComponent>();
 		this.loadedModels = new ArrayList<DebugMesh>();
-		
-		
-		this.fboId = glGenFramebuffers();
-		this.texId = glGenTextures();
-		this.dbufId = glGenRenderbuffers();
-		
-		glBindFramebuffer(GL_FRAMEBUFFER, fboId);
-		
-		glBindTexture(GL_TEXTURE_2D, texId);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId);
-	
-		glBindRenderbuffer(GL_RENDERBUFFER, dbufId);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
-		
-		//unbind fbo
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		
-		
-		
 
+		this.lights = new ArrayList<Light>();
+		Light.init(new DebugMesh("lightSphere", labShader));
+		
 	}
 	
 	public void removeModel(GraphicsComponent g)
@@ -101,6 +78,27 @@ public class DebugRenderMaster implements RenderMaster {
 		this.views.add(new View(r,c));
 		
 		return c;
+	}
+	
+	public Light addLight(float rad)
+	{
+		Light l = new Light(rad);
+		lights.add(l);
+		
+		return l;
+	}
+	
+	public Light addLight() {
+		Light l = new Light();
+		lights.add(l);
+		
+		return l;
+	}
+
+	
+	public void removeLight(Light l)
+	{
+		lights.remove(l);
 	}
 	
 	public GraphicsComponent addModel(String id)
@@ -126,25 +124,37 @@ public class DebugRenderMaster implements RenderMaster {
 		//this should draw each object for each view, then draw the view to screen on a quad with a simple shader
     	for(View v : views)
     	{
-    		v.setRenderTarget();
-			glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-    		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    		
+    		v.setRenderTarget(RenderBufferEnum.geometry);
+
 			//how to draw, iterate over all the graphics components and draw their parts
-			normalShader.begin();
-			
-			normalShader.useCam(v.cam);
+			geoShader.begin();			
+
+			geoShader.useCam(v.cam);
 			
 			for(DebugGraphicsComponent gc : graphicsComponents)
 			{
-				normalShader.draw(gc);
+				geoShader.draw(gc);
 			}
 			
+			geoShader.end();
 			
-			normalShader.end();
 			
+			//render the lights here
+			v.setRenderTarget(RenderBufferEnum.lightAccumulation);
 			
+			labShader.begin();
+			labShader.useCam(v.cam);
+			
+			for(Light light : lights)
+			{
+				labShader.draw(light, v);
+			}
+
+			labShader.end();
+		
 			v.unsetRenderTarget();
+			
+			
 			
 			viewShader.begin();
 			viewShader.draw(v);
@@ -153,23 +163,22 @@ public class DebugRenderMaster implements RenderMaster {
     	}
     	
     	Display.sync(60);
-		Display.update();
-		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+    	Display.update();
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 	}
 
 	public void loadModel(String s) {
-		//if the loaded models already has the id, just use that.
-		for(DebugMesh dm : loadedModels)
-		{
-			if(dm.id.equals(s))
-			{
+		// if the loaded models already has the id, just use that.
+		for (DebugMesh dm : loadedModels) {
+			if (dm.id.equals(s)) {
 				return;
 			}
 		}
-		loadedModels.add(new DebugMesh(s,normalShader));
-		
+
+		loadedModels.add(new DebugMesh(s, geoShader));
+
 	}
 
 	public void flushUnused() {
@@ -211,6 +220,7 @@ public class DebugRenderMaster implements RenderMaster {
 		//you haven't loaded the model
 		return null;
 	}
+
 
 
 }

@@ -24,9 +24,16 @@ import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL21.*;
+import static org.lwjgl.opengl.GL20.*;
+
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -48,7 +55,8 @@ public class ViewShader extends Shader{
 	protected int texCoord_attr;
 
 	private int posUniform, sizeUniform;
-	
+
+	private int colTex, normTex, posTex, labTex;
 	
 	public ViewShader()
 	{
@@ -63,17 +71,36 @@ public class ViewShader extends Shader{
         glAttachShader(shaderProgram, vert_id);
         glAttachShader(shaderProgram, frag_id);
         
-        glBindFragDataLocation( shaderProgram, 0, "outColor");
-        
         glLinkProgram(shaderProgram);
         
+        glUseProgram(shaderProgram);
         
 		position_attr = glGetAttribLocation( shaderProgram, "position");
-        
 
+        glBindFragDataLocation( shaderProgram, 0, "outColor");
+
+        
+        
+        
+        //Get the input texture positions
+		colTex = glGetUniformLocation(shaderProgram, "colTex");
+		normTex = glGetUniformLocation(shaderProgram, "normTex");
+		posTex = glGetUniformLocation(shaderProgram, "posTex");
+		labTex = glGetUniformLocation(shaderProgram, "labTex");
+		
+		glUniform1i(colTex, 0);//bind fbo color indices to them
+		glUniform1i(normTex, 1);
+		glUniform1i(posTex, 2);
+		glUniform1i(labTex, 3);
+		
+
+        
+		//uniforms for size
 		posUniform = glGetUniformLocation(shaderProgram, "pos");
 		sizeUniform = glGetUniformLocation(shaderProgram, "size");
+
 		
+		//make a rectangle
         vao = glGenVertexArrays();
         glBindVertexArray(vao);
         
@@ -102,6 +129,7 @@ public class ViewShader extends Shader{
         
         glEnableVertexAttribArray(position_attr);
 
+        
         glBindVertexArray(0);
  
 	}
@@ -117,15 +145,25 @@ public class ViewShader extends Shader{
 		//set uniforms from the view
 		glUniform2f(posUniform,  v.screenPos[0], v.screenPos[1]);
 		glUniform2f(sizeUniform, v.screenSize[0], v.screenSize[1]);
+
 		
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, v.getColorTexture());
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, v.getNormalTexture());
+		
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, v.getPosTexture());
+		
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, v.getLightTexture());
+
+		//bind vao for the rect
 		glBindVertexArray(vao);
-		glBindTexture(GL_TEXTURE_2D, v.getRenderTexture());
+				
+		glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
 
-
-		
-        glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
-
-        glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
 
 	}

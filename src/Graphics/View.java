@@ -3,13 +3,13 @@ package Graphics;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glGetError;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
@@ -40,22 +40,19 @@ public class View {
 	protected Rectangle rect;
 	protected Camera cam;
 	
-	private RenderTarget renderTarget;
+	private RenderTarget geometryRenderTarget, lightAccumulationRenderTarget;
 	
 	protected float screenPos[];
-	protected float screenSize[];
-
-//	protected float screenPos[] = {-1.0f, -1.0f};
-//	protected float screenSize[] = {1.0f, 1.0f};
-	
-	
+	protected float screenSize[];	
 	
 	protected View(Rectangle r, Camera c)
 	{
-		this.rect = r; //this assumes windowsize of 800,600
+		this.rect = r; //this assumes windowsize of 800,600, does it?
 		this.cam = c;
+
+		this.geometryRenderTarget = new RenderTarget(true, false);//we want a multichannel without light
+		this.lightAccumulationRenderTarget = new RenderTarget(false, true);//we want this single channel with light 
 		
-		this.renderTarget = new RenderTarget();
 		
 		screenPos = new float[2];
 		screenPos[0] = r.getX() / 400.0f - 1.0f;
@@ -65,26 +62,48 @@ public class View {
 		screenSize[0] = r.getWidth() / 400.0f;
 		screenSize[1] = r.getHeight() / 300.0f;
 		
-		c.setAspectRatio((float)r.getWidth() / (float)r.getHeight());
+		c.setAspectRatio(30f * 0.011111f * 3.14159f * (float)r.getWidth() / (float)r.getHeight());
 		
 		
 		
 	}
 	
-	protected void setRenderTarget()
+	protected void setRenderTarget(RenderBufferEnum e)
 	{
-		renderTarget.set();
+		if(e == RenderBufferEnum.geometry)
+		{
+			geometryRenderTarget.set();
+		}
+		else if(e == RenderBufferEnum.lightAccumulation)
+		{
+			lightAccumulationRenderTarget.set();
+		}
 	}
 	
 	protected void unsetRenderTarget()
 	{
-		renderTarget.unset();
+		geometryRenderTarget.unset();
 	}
 	
-	protected int getRenderTexture()
+	protected int getColorTexture()
 	{
-		return this.renderTarget.getTexId();
-		
+		return this.geometryRenderTarget.getColId();
 	}
+	
+	protected int getNormalTexture()
+	{
+		return this.geometryRenderTarget.getNormId();
+	}
+	
+	protected int getPosTexture()
+	{
+		return this.geometryRenderTarget.getPosId();
+	}
+	
+	protected int getLightTexture()
+	{
+		return this.lightAccumulationRenderTarget.getColId();
+	}
+	
 	
 }

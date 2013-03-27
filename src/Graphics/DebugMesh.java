@@ -2,6 +2,7 @@ package Graphics;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
@@ -11,6 +12,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glGetError;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
@@ -56,29 +58,27 @@ public class DebugMesh {
 	protected int diffTexId;
 	protected int normTexId;
 	
-	private NormalShader shader;
+	private Shader shader;
 	
-	protected DebugMesh(String s, NormalShader shader)
+	protected DebugMesh(String s, Shader shader)
 	{
 		this.shader = shader;
-		
+
 		//set id
 		id = s;
 		
 		
-		//generate a new vertex array (note, this is the mesh, not a component, so this should be instantiated once per load, not per instance
+		//generate a new vertex array 
         vao = glGenVertexArrays();
 
+        //bind the vao
         glBindVertexArray(vao);
-        
+
+		
         //create vbos here when loading model
         load("assets/graphics/" + s + "/object.obj");
 
-        
-        
-
-        //diffTexId= glGenTextures();
-        //loadTex(s,"diffuse",diffTexId);
+        //generate a texture and load to it
         texId = glGenTextures();
         loadTex(s,"debug",texId);
 	}
@@ -100,7 +100,11 @@ public class DebugMesh {
         	
         }catch (Exception e)
         {
-        	System.out.println("error " + e);
+        	if(!s.equals("lightSphere"))//lightSphere doesn't need a texture
+        	{
+        		System.out.println("error " + e);
+        	}
+        	return;
         }
         
         
@@ -288,7 +292,7 @@ public class DebugMesh {
         IntBuffer ebuff = BufferUtils.createIntBuffer(elements.length);
         ebuff.put(elements);
         ebuff.rewind();
-        
+             
         vbo_v = glGenBuffers();
         vbo_t = glGenBuffers();
         vbo_n = glGenBuffers();
@@ -297,50 +301,55 @@ public class DebugMesh {
         
         glBindBuffer(GL_ARRAY_BUFFER, vbo_v);
         glBufferData(GL_ARRAY_BUFFER, vbuff , GL_STATIC_DRAW);
+
         
         glBindBuffer(GL_ARRAY_BUFFER, vbo_t);
         glBufferData(GL_ARRAY_BUFFER, tcbuff, GL_STATIC_DRAW);
-        
+
         glBindBuffer(GL_ARRAY_BUFFER, vbo_n);
         glBufferData(GL_ARRAY_BUFFER, nbuff , GL_STATIC_DRAW);
+
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, ebuff, GL_STATIC_DRAW);
         
         
-        //elementCount = ebuff.array().length;	
         ebuff.flip();
         elementCount = ebuff.capacity();
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem);
-        
-        //System.out.println("Mesh: buffering some data. count is " + elementCount);
 
 
-        int position_attr = shader.position_attr;
-        int normal_attr = shader.normal_attr;
-        int texCoord_attr = shader.texCoord_attr;
+        int position_attr = shader.getPositionAttr();
+        int normal_attr = shader.getNormalAttr();
+        int texCoord_attr = shader.getTexCoordAttr();
         
 
-		//
-        glBindBuffer(GL_ARRAY_BUFFER, 	vbo_v);								//These three and their order
-        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);		//
-        glEnableVertexAttribArray(position_attr);								//
-		
-        glBindBuffer(GL_ARRAY_BUFFER, vbo_t);
-        glVertexAttribPointer( texCoord_attr, 2, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(texCoord_attr);
-		
-        glBindBuffer(GL_ARRAY_BUFFER, vbo_n);
-        glVertexAttribPointer( normal_attr, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(normal_attr);
-		
+		if(position_attr != -1)
+		{
+	        glBindBuffer(GL_ARRAY_BUFFER, 	vbo_v);								//These three and their order
+	        glVertexAttribPointer( position_attr, 3, GL_FLOAT, false, 0, 0);		//
+	        glEnableVertexAttribArray(position_attr);								//
+		}
+        
+        if(texCoord_attr != -1)//some things aren't textured
+        {
+	        glBindBuffer(GL_ARRAY_BUFFER, vbo_t);//URGENT glerror happens here
+	        glVertexAttribPointer( texCoord_attr, 2, GL_FLOAT, false, 0, 0);
+	        glEnableVertexAttribArray(texCoord_attr);
+        }
+        
+        if(normal_attr != -1)
+        {
+	        glBindBuffer(GL_ARRAY_BUFFER, vbo_n);
+	        glVertexAttribPointer( normal_attr, 3, GL_FLOAT, false, 0, 0);
+	        glEnableVertexAttribArray(normal_attr);
+        }
+        
+        
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
         
-        
-        
-        //unbind vao
+        //unbind vbo
         glBindBuffer(GL_ARRAY_BUFFER,0);
 
 	}
