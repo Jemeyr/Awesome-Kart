@@ -2,6 +2,7 @@ package World;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import Collision.CollisionBox;
 import Graphics.GraphicsComponent;
 import Graphics.Light;
 import Graphics.RenderMaster;
@@ -17,6 +18,8 @@ public class Rocket {
 	private float alternator;
 	private boolean inc;
 	
+	public CollisionBox collisionBox;
+	
 	public Rocket(Vector3f position, Vector3f rotation, RenderMaster renderMaster)
 	{
 		this.position = position;
@@ -28,7 +31,10 @@ public class Rocket {
 		this.alternator = 0.0f;
 		this.inc = true;
 		light.setColor(new Vector3f(1,alternator,0));
-		light.setRad(150);
+		light.setRad(100);
+		
+		this.collisionBox = new CollisionBox(this.position, new Vector3f(2,2,2));
+		
 	}
 	
 	public void update()
@@ -37,7 +43,6 @@ public class Rocket {
 		
 		Vector3f.add(delta, this.position, this.position);
 
-		
 		this.graphicsComponent.setPosition(position);
 
 		this.graphicsComponent.setRotation(rotation);
@@ -57,7 +62,10 @@ public class Rocket {
 		}
 		
 		this.light.setPosition(new Vector3f(position.x, position.y + 20, position.z));
-		light.setColor(new Vector3f(1,alternator,0));		
+		light.setColor(new Vector3f(1,alternator,0));	
+		
+		//collision?
+		
 		
 	}
 	

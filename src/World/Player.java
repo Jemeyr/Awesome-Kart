@@ -101,7 +101,9 @@ public class Player {
 	
 	public void useWeapon()
 	{
-		world.addRocket(new Vector3f(this.kart.position), new Vector3f(0,this.kart.getRotation().y,0));
+		Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
+		
+		world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y,0));
 	}
 	
 	public void update(){
