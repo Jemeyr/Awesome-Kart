@@ -48,7 +48,10 @@ public class RacingState implements GameState {
 		
 		elec360power		= 0;
 		
+		this.world = /*A whole*/ new World(renderMaster, playerList);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
+		
 		initialiseState();
+		
 		for(Player player : playerList)
 		{
 			player.setWorld(this.world);
@@ -61,7 +64,6 @@ public class RacingState implements GameState {
 		
 		ListenerComponent listenerComponent = null;
 
-		this.world = new World(renderMaster);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
 		
 		
 		
@@ -134,7 +136,7 @@ public class RacingState implements GameState {
 			player.update();
 		}
 		
-		this.world.update(playerList);
+		this.world.update();
 		
 		int i = 0;
 		Vector3f camPos, targ; 

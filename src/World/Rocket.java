@@ -9,6 +9,8 @@ import Graphics.RenderMaster;
 
 public class Rocket {
 	public Player owner;
+	public World world;
+	
 	public Vector3f position;
 	public Vector3f rotation;
 	
@@ -20,10 +22,13 @@ public class Rocket {
 	
 	public CollisionBox collisionBox;
 	
-	public Rocket(Vector3f position, Vector3f rotation, RenderMaster renderMaster)
+	public Rocket(Vector3f position, Vector3f rotation, RenderMaster renderMaster, World world)
 	{
+		this.world = world;
+		
 		this.position = position;
 		this.rotation = rotation;
+		
 		
 		this.graphicsComponent = renderMaster.addModel("rocket");
 		this.light = renderMaster.addLight();
@@ -65,7 +70,20 @@ public class Rocket {
 		light.setColor(new Vector3f(1,alternator,0));	
 		
 		//collision?
+		Kart toRemove = null;
 		
+		for(Kart k : world.donutKarts)
+		{
+			if (this.collisionBox.bIntersects(k.collisionBox))
+			{
+				toRemove = k;
+			}
+		}
+		if(toRemove != null)
+		{
+			toRemove.graphicsComponent.setPosition(new Vector3f(0,2000,0));
+			world.donutKarts.remove(toRemove);
+		}
 		
 	}
 	
