@@ -89,7 +89,6 @@ public class RacingState implements GameState {
 		// Add Lights
 		addLights();
 		
-		
 		// Add and start music
 		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/ACiv Battle 2.wav", true); 
 		musicComponent.playSound();
