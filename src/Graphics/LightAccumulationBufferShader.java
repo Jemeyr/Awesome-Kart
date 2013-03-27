@@ -126,14 +126,19 @@ public class LightAccumulationBufferShader extends Shader{
 		Vector3f.sub(camPosition, l.getPosition(), camDist);
 		if(camDist.lengthSquared() < l.rad*l.rad)
 		{
-
-			modelMat.m00 = 10f;
-			modelMat.m11 = 10f;
-			modelMat.m22 = 10f;
-
-			modelMat.m03 = 0f;
-			modelMat.m13 = 0f;
-			modelMat.m23 = 1f;
+			//forward matrix
+			modelMat.m03 = 0.0f;
+			modelMat.m13 = 0.0f;
+			modelMat.m23 = -1.0f;
+			//rotate to face camera direction
+			Matrix4f.mul(modelMat, this.invView, modelMat);
+			
+			//add to position
+			modelMat.m03 += camPosition.x;
+			modelMat.m13 += camPosition.y;
+			modelMat.m23 += camPosition.z;
+			
+			//rotate billboard to face to camera
 			Matrix4f.mul(this.invView, modelMat, modelMat);
 		}
 		else
