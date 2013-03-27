@@ -18,5 +18,6 @@ public class EventManager {
 					gameEvent.getGameController().handleEvent(gameEvent.getEvent(), stateContext, renderMaster);
 				}
 			}
+			gameEvents.clear();
 		}
 }

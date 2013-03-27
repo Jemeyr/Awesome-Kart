@@ -35,49 +35,40 @@ public class RacingState implements GameState {
 	
 	private RenderMaster 								renderMaster;
 	private SoundMaster									soundMaster;
-//	private List<Kart>									donutKarts;
 	private World										world;
 	private List<Camera>								cameras;
-//	private HashMap<String, DebugGraphicsComponent> 	otherDebugGraphics;
-//	private HashMap<String, GraphicsComponent>			otherGraphics;
 	private int											elec360power;
 		
-	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster){
+	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster, List<Player> playerList){
 		this.renderMaster 	= renderMaster;
 		this.soundMaster	= soundMaster;
-//		donutKarts 			= new ArrayList<Kart>();
 		cameras 			= new ArrayList<Camera>();
-//		otherDebugGraphics	= new HashMap<String, DebugGraphicsComponent>();
-//		otherGraphics		= new HashMap<String, GraphicsComponent>();
-		
-		this.world = new World(renderMaster);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
 
 
 		
 		elec360power		= 0;
 		
+		this.world = /*A whole*/ new World(renderMaster, playerList);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
+		
 		initialiseState();
+		
+		for(Player player : playerList)
+		{
+			player.setWorld(this.world);
+		}
+		
 	}
 	
 	@Override
 	public void initialiseState() {
-		
 		ListenerComponent listenerComponent = null;
-		
-		// Add Cameras
-		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300,800,300));//TODO RPETTY Why do you keep a reference to these cameras but still refer to them by their position in the list? omg
-		Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));//
-		cameras.add(cam);
-		cameras.add(cam2);
-		
 
+		
+		
 		
 		// Add and start music
 		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/alarma.wav", true); 
 		musicComponent.playSound();
-		
-		// Set initial position?
-		cameras.get(0).setPosition(new Vector3f(-50,40,-30));
 	}
 	
 	@Override
@@ -94,8 +85,8 @@ public class RacingState implements GameState {
 
 	@Override
 	public void useWeapon(StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId) {
+		stateContext.getPlayerList().get(invokingId).useWeapon();
 		
-		this.world.addRocket();
 		// Delegate to player/kart, call use weapon.
 		if(DEBUG) System.out.println(invokingId + ": Fire Homing Torpedoes!");
 	}
@@ -133,19 +124,10 @@ public class RacingState implements GameState {
 			player.update();
 		}
 		
-		this.world.update(playerList);
+		this.world.update();
 		
-		int i = 0;
-		Vector3f camPos, targ; 
 		for(Player player: playerList){
-			//set the camera position
-			camPos = player.getKart().graphicsComponent.getTransformedVector(0.0f, 35.0f, -50f, true);
-			targ = player.getKart().graphicsComponent.getTransformedVector(0.0f, 1.0f, 0.0f, true);
-			
-			// Camera setting
-			cameras.get(i).setPosition(camPos);
-			cameras.get(i).setTarget(targ);
-			i++;
+			player.updateCamera();
 		}
 		
 		renderMaster.draw();

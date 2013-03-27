@@ -6,17 +6,10 @@ public class CollisionBox {
 	private Vector3f position;
 	private Vector3f dimensions;
 	
-	private static Vector3f diffPos;
-	private static Vector3f diffSize;
-	private static Vector3f diff;
+	private static Vector3f diffPos = new Vector3f();
+	private static Vector3f diffSize = new Vector3f();
+	private static Vector3f diff = new Vector3f();
 	
-	public CollisionBox()
-	{
-		
-		diffPos = new Vector3f();
-		diffSize = new Vector3f();
-		diff = new Vector3f();
-	}
 	
 	public CollisionBox(Vector3f center, Vector3f dimensions)
 	{
@@ -46,7 +39,7 @@ public class CollisionBox {
 		}
 		
 		diff.z = (Math.abs(diffPos.z) - diffSize.z);
-		if(diff.x >=0)
+		if(diff.z >=0)
 		{
 			return false;
 		}
@@ -57,8 +50,12 @@ public class CollisionBox {
 			return false;
 		}
 		
+		System.out.println("diffpos " + diffPos);
+		System.out.println("diffsize " + diffSize);
+		
+		
 		return true;
-		}
+	}
 	
 	public Vector3f intersects(CollisionBox other)
 	{
