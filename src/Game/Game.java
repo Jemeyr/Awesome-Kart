@@ -114,7 +114,7 @@ public class Game {
 		List<Kart> karts = new LinkedList<Kart>();
 		Kart pk = null;
 		Player player = null;
-		Vector4f playerDelta = new Vector4f();
+		Vector3f playerDelta = new Vector3f();
 		
 		for(int i = 0; i < 16; i++)
 		{
@@ -201,29 +201,19 @@ public class Game {
 			//rotating text
 			text.setRotation(new Vector3f(0,elec360power/1500f, 0));
 			
-			//set the camera position
-			
-			Vector4f campos = new Vector4f(0,35,-50, 1);//relative coords
-			Vector4f targ = new Vector4f(0,10,0,1);		
-			Vector4f campos2 = new Vector4f(0,20, 2 ,1);
-			Vector4f targ2 = new Vector4f(0,20,1,1);		
-
-			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat(); //cache that shit? actually do I need to?
-
-			Matrix4f.transform(modelInv, campos, campos);
-			Matrix4f.transform(modelInv, targ, targ);
-			
-			Matrix4f.transform(modelInv, campos2, campos2);
-
-			Matrix4f.transform(modelInv, targ2, targ2);
+			//set the camera positions
+			Vector3f camPos = pk.graphicsComponent.getTransformedVector(0,35,-50, true);
+			Vector3f target = pk.graphicsComponent.getTransformedVector(0,10,0, true);
+			Vector3f camPos2 = pk.graphicsComponent.getTransformedVector(0,20,2, true);
+			Vector3f target2 = pk.graphicsComponent.getTransformedVector(0,20,1, true);
 
 			
-			cam.setPosition(new Vector3f(campos));
-			cam.setTarget(new Vector3f(targ));
+			cam.setPosition(camPos);
+			cam.setTarget(target);
 			
 
-			cam2.setPosition(new Vector3f(campos2));
-			cam2.setTarget(new Vector3f(targ2));
+			cam2.setPosition(camPos2);
+			cam2.setTarget(target2);
 
 			
 			

@@ -191,24 +191,15 @@ public class RacingState implements GameState {
 		otherGraphics.get("AKText").setRotation(new Vector3f(0,elec360power/1500f, 0));
 		
 		int i = 0;
+		Vector3f camPos, targ; 
 		for(Player player: playerList){
 			//set the camera position
-			Vector4f campos = new Vector4f(0,35,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
-			Vector4f targ = new Vector4f(0,1,0,1);		//divide by 2, I don't know why, height one for overhead.
-			Vector4f campos2 = new Vector4f(0,35, 50,1);
-			
-			// Some matrix shit, hardcoded to use player 1
-			Matrix4f modelInv = ((DebugGraphicsComponent)player.getKart().graphicsComponent).getInvModelMat();
-			Matrix4f.transform(modelInv, campos, campos);
-			modelInv = ((DebugGraphicsComponent)player.getKart().graphicsComponent).getInvModelMat();
-			Matrix4f.transform(modelInv, targ, targ);
-			
-			modelInv = ((DebugGraphicsComponent)player.getKart().graphicsComponent).getInvModelMat();
-			Matrix4f.transform(modelInv, campos2, campos2);
+			camPos = player.getKart().graphicsComponent.getTransformedVector(0.0f, 35.0f, -50f, true);
+			targ = player.getKart().graphicsComponent.getTransformedVector(0.0f, 1.0f, 0.0f, true);
 			
 			// Camera setting
-			cameras.get(i).setPosition(new Vector3f(campos.x, campos.y, campos.z));
-			cameras.get(i).setTarget(new Vector3f(targ.x, targ.y, targ.z));
+			cameras.get(i).setPosition(camPos);
+			cameras.get(i).setTarget(targ);
 			i++;
 		}
 		

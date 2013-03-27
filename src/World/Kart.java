@@ -2,7 +2,6 @@ package World;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import Controller.GameController;
 import Graphics.GraphicsComponent;
 import Graphics.RenderMaster;
 
@@ -82,9 +81,6 @@ public class Kart {
 		//get input
 		graphicsComponent.setPosition(this.position);
 		graphicsComponent.setRotation(this.rotation);
-		
-		
-		
 		
 		
 	}

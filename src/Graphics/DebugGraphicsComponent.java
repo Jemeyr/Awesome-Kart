@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 public class DebugGraphicsComponent implements GraphicsComponent {
 	
@@ -17,6 +18,8 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	private Matrix4f parentMat;
 	
 	private Matrix4f modelMat;
+	
+	private Matrix4f invModelMat;
 	
 	protected List<DebugGraphicsComponent> subComponents;
 	
@@ -72,18 +75,7 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		return this.modelMat;
 	}
 	
-	public Matrix4f getInvModelMat()
-	{
-		Matrix4f ret = new Matrix4f();
-		Matrix4f.transpose(this.modelMat, ret);
-		//ret = this.modelMat;
-		return ret;
-	}
-	
-	public Matrix4f DEBUGgetModelMat()
-	{
-		return this.modelMat;
-	}
+		
 	
 	public void setParentMat(Matrix4f parent)
 	{
@@ -166,8 +158,37 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		
 		return gc;
 	}
+
+
+
+	@Override
+	public Vector3f getTransformedVector(float x, float y, float z, boolean absolute) 
+	{
+		Vector4f vec4 = new Vector4f(x,y,z, absolute ? 1.0f : 0.0f);
+
+		invModelMat = new Matrix4f();
+		Matrix4f.transpose(this.modelMat, invModelMat);
+		
+		
+		Matrix4f.transform(invModelMat, vec4, vec4);
+
+		return new Vector3f(vec4.x,vec4.y,vec4.z);
+	}
 	
-	
+	@Override
+	public Vector3f getTransformedVector(Vector3f vec, boolean absolute) 
+	{
+		Vector4f vec4 = new Vector4f(vec.x,vec.y,vec.z, absolute ? 1.0f : 0.0f);
+
+			
+		invModelMat = new Matrix4f();
+		Matrix4f.transpose(this.modelMat, invModelMat);
+		
+		Matrix4f.transform(invModelMat, vec4, vec4);
+		
+		// TODO Auto-generated method stub
+		return new Vector3f(vec4.x,vec4.y,vec4.z);
+	}
 	
 	
 }

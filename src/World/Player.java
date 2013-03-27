@@ -1,11 +1,8 @@
 package World;
 
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import Controller.GameController;
-import Graphics.DebugGraphicsComponent;
 import Sound.ListenerComponent;
 
 public class Player {
@@ -18,14 +15,14 @@ public class Player {
 	private GameController 		gameController;
 	private Kart				kart;
 	private ListenerComponent 	listenerComponent; 
-	private Vector4f			playerDelta;
+	private Vector3f			playerDelta;
 	
 	private float 				jump;
 	private float				speed;
 	private float				acceleration;
 	private int					direction; // 1 for forward, -1 for back, 0 for none
 	
-	public Player(GameController gameController, Kart kart, Vector4f playerDelta, ListenerComponent listenerComponent ){
+	public Player(GameController gameController, Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent ){
 		this.gameController 	= gameController;
 		this.kart 				= kart;
 		this.playerDelta		= playerDelta;
@@ -45,11 +42,11 @@ public class Player {
 		return kart;
 	}
 	
-	public Vector4f getPlayerDelta(){
+	public Vector3f getPlayerDelta(){
 		return playerDelta;
 	}
 	
-	public void setPlayerDelta(Vector4f playerDelta){
+	public void setPlayerDelta(Vector3f playerDelta){
 		this.playerDelta = playerDelta;
 	}
 	
@@ -96,16 +93,16 @@ public class Player {
 	}
 	
 	public void update(){
-		Vector4f.add(playerDelta, new Vector4f(0, getJump(), getAcceleration(), 0), playerDelta); // Forward/Backward movement
+		Vector3f.add(playerDelta, new Vector3f(0, getJump(), getAcceleration()), playerDelta); // Forward/Backward movement
 		Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-20f, 0), getKart().getRotation()); //Left/Right Movement
 		
-		Matrix4f.transform(((DebugGraphicsComponent)getKart().graphicsComponent).getInvModelMat(), playerDelta, playerDelta);	
-		Vector3f.add(getKart().getPosition(), new Vector3f(playerDelta), getKart().getPosition());
+		playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
+		Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
 		getKart().update();
 		
 		//This will cause a null exception if used with ryan's ControllerMain test class
 		listenerComponent.setListenerPosition(getKart().getPosition());
-		playerDelta.set(0, 0, 0, 0);
+		playerDelta.set(0, 0, 0);
 	}
 
 }

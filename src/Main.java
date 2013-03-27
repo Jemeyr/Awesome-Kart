@@ -17,7 +17,7 @@ public class Main {
 			}
 			else
 			{
-				Game game = new Game();
+				Game2 game = new Game2();
 				game.execute();
 			}
 		}

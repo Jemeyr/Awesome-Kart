@@ -11,5 +11,9 @@ public interface GraphicsComponent {
 	public void setRotation(Vector3f v);
 	public void updateRotation(Vector3f v);
 	
+	public Vector3f getTransformedVector(float x, float y, float z, boolean absolute);
+	public Vector3f getTransformedVector(Vector3f vec, boolean absolute);
+	
+	
 	
 }
