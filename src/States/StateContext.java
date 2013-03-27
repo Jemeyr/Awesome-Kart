@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -11,6 +12,8 @@ import Controller.ControllerManager;
 import Controller.ControllerType;
 import Controller.EventManager;
 import Controller.GameController;
+import Graphics.Camera;
+import Graphics.DebugRenderMaster;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
@@ -51,7 +54,7 @@ public class StateContext {
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
 		
 		addPlayer(ControllerType.KEYBOARD);
-		//addPlayer(ControllerType.KEYBOARD);
+		addPlayer(ControllerType.XBOX);
 	}
 	
 	private void loadModels() {
@@ -72,8 +75,9 @@ public class StateContext {
 		kart.killme = 12340f;
 		Vector3f playerDelta = new Vector3f();
 		Vector3f.add(kart.position, new Vector3f(offset,-22.5f, 0f), kart.position);
+		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300 - (int)(offset*7.5f),800,300));
 
-		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent());
+		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent(), cam);
 		playerList.add(player);
 		offset += 40f;
 	}

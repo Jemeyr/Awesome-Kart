@@ -3,6 +3,7 @@ package World;
 import org.lwjgl.util.vector.Vector3f;
 
 import Controller.GameController;
+import Graphics.Camera;
 import Sound.ListenerComponent;
 
 
@@ -17,17 +18,19 @@ public class Player {
 	private Kart				kart;
 	private ListenerComponent 	listenerComponent; 
 	private Vector3f			playerDelta;
+	private Camera				camera;
 	
 	private float 				jump;
 	private float				speed;
 	private float				acceleration;
 	private int				direction; // 1 for forward, -1 for back, 0 for none
 	
-	public Player(GameController gameController, Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent ){
+	public Player(GameController gameController, Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent, Camera camera){
 		this.gameController 	= gameController;
 		this.kart 				= kart;
 		this.playerDelta		= playerDelta;
 		this.listenerComponent 	= listenerComponent;
+		this.camera				= camera;
 		
 		acceleration 			= DEFAULT_ACCEL;
 		direction 				= 0;
@@ -49,6 +52,10 @@ public class Player {
 	
 	public void setPlayerDelta(Vector3f playerDelta){
 		this.playerDelta = playerDelta;
+	}
+	
+	public Camera getCamera(){
+		return camera;
 	}
 	
 	/**
@@ -106,6 +113,15 @@ public class Player {
 		//This will cause a null exception if used with ryan's ControllerMain test class
 		listenerComponent.setListenerPosition(getKart().getPosition());
 		playerDelta.set(0, 0, 0);
+	}
+	
+	public void updateCamera(){
+		Vector3f camPos, targ; 
+		camPos = getKart().graphicsComponent.getTransformedVector(0.0f, 35.0f, -50f, true);
+		targ = getKart().graphicsComponent.getTransformedVector(0.0f, 1.0f, 0.0f, true);
+		
+		getCamera().setPosition(camPos);
+		getCamera().setTarget(targ);
 	}
 
 }

@@ -18,8 +18,9 @@ public class ControllerManager {
 	private int currentId;
 	
 	public ControllerManager() {
-		this.gameControllers = new HashMap<Controller, GameController>();
-		currentId = 1;
+		this.gameControllers 	= new HashMap<Controller, GameController>();
+		this.gameEvents 		= new HashSet<GameEvent>();
+		currentId 				= 1;
 	}
 	
 	public GameController addController(ControllerType controllerType) {
@@ -46,7 +47,6 @@ public class ControllerManager {
 	}
 	
 	public void poll(){
-		gameEvents = new HashSet<GameEvent>();
 		for(Map.Entry<Controller, GameController> entry : getControllersMap().entrySet()){
 			Controller c = entry.getKey();
 			c.poll();
@@ -60,7 +60,7 @@ public class ControllerManager {
 	}
 	
 	public HashSet<GameEvent> getEvents(){
-		return new HashSet<GameEvent>(gameEvents);
+		return gameEvents;
 	}
 	
 	public HashMap<Controller, GameController> getControllersMap(){
