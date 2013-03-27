@@ -128,7 +128,9 @@ public class Game {
 			
 			controllerManager.poll();
 			//eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);
-			alarmComponent.setSoundPosition(elec360power, 0, 0);
+			alarmComponent.setSoundPosition( 0, elec360power, 0);
+			
+			//soundMaster.setListenerPosition(elec360power, 0, 0);
 			frames++;
 
 			elec360power += 1;
