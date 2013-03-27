@@ -94,6 +94,8 @@ public class RacingState implements GameState {
 
 	@Override
 	public void useWeapon(StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId) {
+		
+		this.world.addRocket();
 		// Delegate to player/kart, call use weapon.
 		if(DEBUG) System.out.println(invokingId + ": Fire Homing Torpedoes!");
 	}

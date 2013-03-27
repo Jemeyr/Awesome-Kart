@@ -16,7 +16,8 @@ public class World {
 	private RenderMaster renderMaster;
 
 	private List<Kart> donutKarts;
-
+	private List<Rocket> rockets;
+	
 	private HashMap<String, GraphicsComponent>			otherGraphics;
 	
 	private int elec360power;
@@ -28,6 +29,7 @@ public class World {
 		elec360power = 0;
 		
 		donutKarts = new ArrayList<Kart>();
+		rockets = new ArrayList<Rocket>();
 		
 		otherGraphics		= new HashMap<String, GraphicsComponent>();
 		
@@ -80,12 +82,26 @@ public class World {
 		otherGraphics.get("Triforce").setPosition(tempRocket);
 		
 		
+		for(Rocket r : rockets)
+		{
+			r.update();
+			if(r.position.lengthSquared() > 320000)
+			{
+				//kill
+			}
+		}
 		
 		// Rotating Text
 		otherGraphics.get("AKText").setRotation(new Vector3f(0,elec360power/1500f, 0));
 		
 	}
 	
+	
+	public void addRocket()
+	{
+		Rocket r = new Rocket(new Vector3f(),new Vector3f(), renderMaster);
+		this.rockets.add(r);
+	}
 
 	private void addLights()
 	{
