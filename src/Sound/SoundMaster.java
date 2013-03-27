@@ -330,14 +330,10 @@ public class SoundMaster {
 	   * @param z
 	   */
 	  public void setListenerPosition(int x, int y , int z){
+		  listenerPos.put(0, x);
+		  listenerPos.put(1, y);
+		  listenerPos.put(2, z);
 		  AL10.alListener3f(AL10.AL_POSITION, x, y, z);
-		  
-		  /*
-		  FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { x , y , z });
-		  vector.flip();
-		  
-		  AL10.alListener(AL10.AL_POSITION,   vector);
-		  */
 		    
 	  }
 	  
@@ -350,31 +346,27 @@ public class SoundMaster {
 	   */
 	  public void setListenerVelocity(int x, int y , int z){
 		  
-		  FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { x , y , z });
-		  vector.flip();
-		  
-		  AL10.alListener(AL10.AL_VELOCITY,    vector);
+		  listenerVel.put(0, x);
+		  listenerVel.put(1, y);
+		  listenerVel.put(2, z);
+		  AL10.alListener3f(AL10.AL_VELOCITY, x, y, z);
 		    
 		  
 	  }
 	  
 	 /**
-	  * Sets the position of the Listener.  This function uses 2 vectors.  Imagine the listener is a face
-	  * 	The first vector is where the nose is pointing, the second is where the top of the head is pointing or "Up"
+	  * Sets the position of the Listener. 
 	  * 
 	  * @param x - nose vector x
 	  * @param y - nose vector y
 	  * @param z - nose vector z
-	  * @param xUp - Up vector x
-	  * @param yUp - Up vector y
-	  * @param zUp - Up vector z
 	  */
-	  public void setListenerOrientation(int x, int y , int z, int xUp, int yUp , int zUp){
-		  FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { x , y , z, xUp, yUp , zUp });
-		  vector.flip();
+	  public void setListenerOrientation(int x, int y , int z){
 		  
-		  
-		  AL10.alListener(AL10.AL_ORIENTATION, vector);
+		  listenerOri.put(0, x);
+		  listenerOri.put(1, y);
+		  listenerOri.put(2, z);
+		  AL10.alListener(AL10.AL_ORIENTATION, listenerOri);
 	  }
 	  
 	  /**
@@ -457,6 +449,24 @@ public class SoundMaster {
 		  
 		  return sA;
 		  
+	  }
+	  
+	  /**
+	   * This function returns a ListenerComponent which provides game components, ie A kart
+	   * This component will be created in one of two states, active and inactive
+	   * 
+	   * In the active state, the component will work as expected
+	   * 
+	   * In the inactive state, the component will function as a dummy component
+	   * 
+	   * 
+	   * @param isActive Weather the component will be active or not
+	   * @return
+	   */
+	  public ListenerComponent getListenerComponent(boolean isActive){
+		  ListenerComponent Lc = new ListenerComponent(this, isActive);
+		  
+		  return Lc;
 	  }
 	  
 	  
