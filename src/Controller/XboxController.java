@@ -39,7 +39,7 @@ public class XboxController implements GameController {
 	@Override
 	public void handleEvent(Event event, StateContext stateContext, RenderMaster renderMaster) {
 		float eventValue = event.getValue();
-		System.out.println("My event is '" + event.getComponent().getName() + "' and value is '" + event.getValue() + "'");
+		//System.out.println("My event is '" + event.getComponent().getName() + "' and value is '" + event.getValue() + "'");
 		
 		int intEventValue = (int)eventValue;
 		String eventComponentString = event.getComponent().toString();
