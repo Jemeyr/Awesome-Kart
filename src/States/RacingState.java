@@ -64,7 +64,6 @@ public class RacingState implements GameState {
 		
 		ListenerComponent listenerComponent = null;
 		
-		
 		// Add Cameras
 		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300,800,300));//TODO RPETTY Why do you keep a reference to these cameras but still refer to them by their position in the list? omg
 		Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));//
@@ -132,7 +131,7 @@ public class RacingState implements GameState {
 			player.update();
 		}
 		
-		this.world.update();
+		this.world.update(playerList);
 		
 		int i = 0;
 		Vector3f camPos, targ; 

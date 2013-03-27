@@ -17,7 +17,6 @@ public class World {
 
 	private List<Kart> donutKarts;
 
-	private HashMap<String, DebugGraphicsComponent> 	otherDebugGraphics;
 	private HashMap<String, GraphicsComponent>			otherGraphics;
 	
 	private int elec360power;
@@ -30,7 +29,6 @@ public class World {
 		
 		donutKarts = new ArrayList<Kart>();
 		
-		otherDebugGraphics	= new HashMap<String, DebugGraphicsComponent>();
 		otherGraphics		= new HashMap<String, GraphicsComponent>();
 		
 		//add Terrain
@@ -47,9 +45,9 @@ public class World {
 		}
 		
 		// Add Triforce
-		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
+		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("rocket");
 		triforce.setPosition(new Vector3f(0,0.4f,0));
-		otherDebugGraphics.put("Triforce", triforce);
+		otherGraphics.put("Triforce", triforce);
 		
 		// Add Awesome Kart Text
 		GraphicsComponent text = renderMaster.addModel("aktext");
@@ -59,10 +57,9 @@ public class World {
 
 		// Add Lights
 		addLights();
-		
 	}
 	
-	public void update()
+	public void update(List<Player> playerList)
 	{
 		
 
@@ -74,8 +71,15 @@ public class World {
 		elec360power++;
 		
 		//triforce that rotates and flies away
-		otherDebugGraphics.get("Triforce").setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
-		otherDebugGraphics.get("Triforce").setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
+		otherGraphics.get("Triforce").setRotation(new Vector3f(3.14f * (elec360power/100f),-3.14f * (elec360power/100f), 3.14f * (elec360power/100f)));
+		//otherGraphics.get("Triforce").setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
+		Vector3f tempRocket = otherGraphics.get("Triforce").getTransformedVector(0, 0, 0, true);
+		tempRocket.x = (float) (tempRocket.x * 0.97 + 0.03 * playerList.get(0).getKart().position.x);
+		tempRocket.y = (float) (tempRocket.y * 0.97 + 0.03 * (playerList.get(0).getKart().position.y + 10));
+		tempRocket.z = (float) (tempRocket.z * 0.97 + 0.03 * playerList.get(0).getKart().position.z);
+		otherGraphics.get("Triforce").setPosition(tempRocket);
+		
+		
 		
 		// Rotating Text
 		otherGraphics.get("AKText").setRotation(new Vector3f(0,elec360power/1500f, 0));

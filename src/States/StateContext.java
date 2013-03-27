@@ -61,6 +61,7 @@ public class StateContext {
 		renderMaster.loadModel("hat");
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
+		renderMaster.loadModel("rocket");
 	}
 	
 	private void addPlayer(ControllerType controllerType){
