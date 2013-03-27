@@ -549,8 +549,9 @@ public class SoundMaster {
 				  return;
 			  }
 			  
-			  //Work around, the first component created does not work, but others will, so we create one here
-			  //SoundEmitter pewComponent = this.getSoundComponent("assets/sound/ACiv Battle 2.wav",true);
+			  //Set doppler settings
+			  AL10.alDopplerFactor(1.0f);
+			  AL10.alDopplerVelocity(1024.0f);
 	  }
 	  
 	
