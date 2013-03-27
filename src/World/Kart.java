@@ -2,6 +2,7 @@ package World;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import Collision.CollisionBox;
 import Graphics.GraphicsComponent;
 import Graphics.RenderMaster;
 
@@ -23,12 +24,16 @@ public class Kart {
 	private GraphicsComponent rider;
 	private GraphicsComponent hat;
 	
+
+	public CollisionBox collisionBox;
+	
 	public Vector3f position;
 	public Vector3f rotation;
 	
 	public float turn;
 	public float speed;
 	public boolean sliding;
+	
 	
 	//public heldweapon
 	
@@ -54,7 +59,7 @@ public class Kart {
 		rider.setPosition(new Vector3f(0,4,0));
 		hat.setPosition(new Vector3f(0,2,-0.35f));
 		
-		
+		this.collisionBox = new CollisionBox(new Vector3f(), new Vector3f(4,4,4));
 		
 		this.position = new Vector3f();
 		this.rotation = new Vector3f();
@@ -72,6 +77,7 @@ public class Kart {
 		Vector3f rot = new Vector3f(0,-(elec360power),0);
 		
 		this.position = pos;
+		
 		this.rotation = rot;
 		update();
 	}
@@ -81,8 +87,8 @@ public class Kart {
 		//get input
 		graphicsComponent.setPosition(this.position);
 		graphicsComponent.setRotation(this.rotation);
-		
-		
+
+		collisionBox.setPosition(this.position);
 	}
 	
 	public Vector3f getRotation() {
