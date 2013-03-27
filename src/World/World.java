@@ -15,16 +15,18 @@ import Graphics.RenderMaster;
 public class World {
 	private RenderMaster renderMaster;
 
-	private List<Kart> donutKarts;
-	private List<Rocket> rockets;
+	protected List<Kart> donutKarts;
+	protected List<Rocket> rockets;
+	protected List<Player> players;
 	
-	private HashMap<String, GraphicsComponent>			otherGraphics;
+	private HashMap<String, GraphicsComponent>	otherGraphics;
 	
 	private int elec360power;
 	
-	public World(RenderMaster renderMaster)
+	public World(RenderMaster renderMaster,List<Player> playerList)
 	{
 		this.renderMaster = renderMaster;
+		this.players = playerList;
 		
 		elec360power = 0;
 		
@@ -61,7 +63,7 @@ public class World {
 		addLights();
 	}
 	
-	public void update(List<Player> playerList)
+	public void update()
 	{
 		
 
@@ -76,9 +78,9 @@ public class World {
 		otherGraphics.get("Triforce").setRotation(new Vector3f(3.14f * (elec360power/100f),-3.14f * (elec360power/100f), 3.14f * (elec360power/100f)));
 		//otherGraphics.get("Triforce").setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 		Vector3f tempRocket = otherGraphics.get("Triforce").getTransformedVector(0, 0, 0, true);
-		tempRocket.x = (float) (tempRocket.x * 0.97 + 0.03 * playerList.get(0).getKart().position.x);
-		tempRocket.y = (float) (tempRocket.y * 0.97 + 0.03 * (playerList.get(0).getKart().position.y + 10));
-		tempRocket.z = (float) (tempRocket.z * 0.97 + 0.03 * playerList.get(0).getKart().position.z);
+		tempRocket.x = (float) (tempRocket.x * 0.97 + 0.03 * players.get(0).getKart().position.x);
+		tempRocket.y = (float) (tempRocket.y * 0.97 + 0.03 * (players.get(0).getKart().position.y + 10));
+		tempRocket.z = (float) (tempRocket.z * 0.97 + 0.03 * players.get(0).getKart().position.z);
 		otherGraphics.get("Triforce").setPosition(tempRocket);
 		
 		
@@ -99,7 +101,7 @@ public class World {
 	
 	public void addRocket(Vector3f position, Vector3f rotation)
 	{
-		Rocket r = new Rocket(position, rotation, renderMaster);
+		Rocket r = new Rocket(position, rotation, renderMaster, this);
 	
 		this.rockets.add(r);
 	}

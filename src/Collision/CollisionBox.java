@@ -39,7 +39,7 @@ public class CollisionBox {
 		}
 		
 		diff.z = (Math.abs(diffPos.z) - diffSize.z);
-		if(diff.x >=0)
+		if(diff.z >=0)
 		{
 			return false;
 		}
@@ -50,8 +50,12 @@ public class CollisionBox {
 			return false;
 		}
 		
+		System.out.println("diffpos " + diffPos);
+		System.out.println("diffsize " + diffSize);
+		
+		
 		return true;
-		}
+	}
 	
 	public Vector3f intersects(CollisionBox other)
 	{
