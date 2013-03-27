@@ -1,25 +1,13 @@
 package States;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-
-import org.lwjgl.util.Rectangle;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import Graphics.Camera;
-import Graphics.DebugGraphicsComponent;
-import Graphics.DebugRenderMaster;
-import Graphics.GraphicsComponent;
-import Graphics.Light;
 import Graphics.RenderMaster;
 import Sound.ListenerComponent;
 import Sound.SoundEmitter;
 import Sound.SoundMaster;
-import World.Kart;
 import World.Player;
 import World.World;
 

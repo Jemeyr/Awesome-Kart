@@ -27,7 +27,6 @@ public class ControllerManager {
 		GameController gameController = null;
 		if(ControllerEnvironment.getDefaultEnvironment().getControllers().length > gameControllers.size()){
 			for(Controller c : ControllerEnvironment.getDefaultEnvironment().getControllers()){
-				//System.out.println(c.getName());
 				if(gameControllers.get(c) == null && 
 							c.getName().toLowerCase().contains(controllerType.getName())){
 						switch(controllerType){

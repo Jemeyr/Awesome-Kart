@@ -47,18 +47,14 @@ public class StateContext {
 		
 		loadModels();
 		
-
 		addPlayer(ControllerType.KEYBOARD);
-		//addPlayer(ControllerType.KEYBOARD);
+		addPlayer(ControllerType.XBOX);
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
-		
-		addPlayer(ControllerType.KEYBOARD);
-		addPlayer(ControllerType.XBOX);
 	}
 	
 	private void loadModels() {
