@@ -12,6 +12,9 @@ public interface RenderMaster {
 	//this removes a model, the model remains loaded (assume few one-use models)
 	public void removeModel(GraphicsComponent g);
 	
+	public Light addLight();
+	public void removeLight(Light l);
+	
 	//this loads a model in advance. Use it to set up level
 	public void loadModel(String s);
 	public void flushUnused();

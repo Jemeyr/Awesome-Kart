@@ -3,6 +3,7 @@ package States;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.Rectangle;
@@ -16,6 +17,7 @@ import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
 import Graphics.GraphicsComponent;
+import Graphics.Light;
 import Graphics.RenderMaster;
 import Sound.SoundEmitter;
 import Sound.SoundMaster;
@@ -84,12 +86,40 @@ public class RacingState implements GameState {
 		text.setPosition(new Vector3f(-200, 40, 100));
 		otherGraphics.put("AKText", text);
 		
+		// Add Lights
+		addLights();
+		
+		
 		// Add and start music
 		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/ACiv Battle 2.wav", true); 
 		musicComponent.playSound();
 		
 		// Set initial position?
 		cameras.get(0).setPosition(new Vector3f(-50,40,-30));
+	}
+	
+	private void addLights()
+	{
+		Light le;
+		le = renderMaster.addLight();
+		le.setRad(150.0f);
+		le.setPosition(new Vector3f(50,-20,0));
+		le.setColor(new Vector3f(1.0f, 0.0f, 0.0f));
+		
+		le = renderMaster.addLight();
+		le.setRad(150.0f);
+		le.setPosition(new Vector3f(-30,-20,0));
+		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
+		
+		Random r = new Random();
+		
+		for(int h = 0; h < 40; h++)
+		{
+			le = renderMaster.addLight();
+			le.setRad(100.0f);
+			le.setColor(new Vector3f(r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f));
+			le.setPosition(new Vector3f(200 - 100 * (h % 6), -10, 200 - 100 * h/6));
+		}
 	}
 	
 	private void addTerrain(){

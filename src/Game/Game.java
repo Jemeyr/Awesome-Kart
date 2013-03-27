@@ -1,6 +1,13 @@
 package Game;
 
+
 import java.nio.FloatBuffer;
+
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
+import static org.lwjgl.opengl.GL11.glGetError;
+
+import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +30,7 @@ import Graphics.Camera;
 import Graphics.DebugGraphicsComponent;
 import Graphics.DebugRenderMaster;
 import Graphics.GraphicsComponent;
+import Graphics.Light;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundEmitter;
@@ -41,7 +49,9 @@ public class Game {
 	private DigitalRightsManagement drm;
 	
 	public Game(){
+		
 		this.renderMaster = RenderMasterFactory.getRenderMaster();
+		
 		this.soundMaster = new SoundMaster();
 		this.controllerManager = new ControllerManager();
 		this.eventManager = new EventManager();
@@ -53,18 +63,49 @@ public class Game {
 	public void execute()
 	{		
 		
+		
+		
 		boolean Conti;
 		int elec360power;
 
 		Conti = true;
 		elec360power = 0;
-
-		renderMaster.loadModel("test");
+		renderMaster.loadModel("test");		
 		renderMaster.loadModel("testTer");
 		renderMaster.loadModel("kart");
 		renderMaster.loadModel("hat");
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
+		renderMaster.loadModel("rocket");
+		
+		renderMaster.loadModel("aktext");
+		
+		renderMaster.loadModel("lightSphere");
+		
+		System.out.println("Loading Complete");
+
+		Light le = null;
+		for(int h = 0; h < 40; h++)
+		{
+			le = renderMaster.addLight();
+			le.setRad(40.0f);
+			le.setPosition(new Vector3f(200 - 15 * (h % 15), -10, 200 - 15 * h/15));
+		}
+		
+
+		le = renderMaster.addLight();
+		le.setRad(150.0f);
+		le.setPosition(new Vector3f(50,-20,0));
+		le.setColor(new Vector3f(1.0f, 0.0f, 0.0f));
+		
+		le = renderMaster.addLight();
+		le.setRad(150.0f);
+		le.setPosition(new Vector3f(-30,-20,0));
+		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
+		
+		
+		
+		
 		
 		renderMaster.addModel("testTer");
 		GraphicsComponent text = renderMaster.addModel("aktext");
@@ -97,15 +138,13 @@ public class Game {
 			karts.add(k);
 			k.killme = i*1234f;
 		}
-		
-		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300,800,300));
+
+		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300, 800, 300));//0,300,800,300));
 		Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));
- 
+		//Camera cam2 = new Camera(new Vector3f(1,2,3),new Vector3f(3,4,5), 1, 2);
 		
-		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("test");
+		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("rocket");
 		triforce.setPosition(new Vector3f(0,0.4f,0));
-		
-		
 		
 		//
 		SoundEmitter pianoComponent = this.soundMaster.getSoundComponent("assets/sound/piano2.wav",true);
@@ -116,10 +155,11 @@ public class Game {
 
 		int frames = 0;
 
-		//this.soundMaster.play();
+
 		cam.setPosition(new Vector3f(-50,40,-30));
-		while(Conti && elec360power <= 9000){
+		while(Conti && elec360power <= 900000){
 			//System.out.println(String.format("Conti's power is at %d", ++elec360power));
+
 			/*if(!drm.isValid()){
 				System.exit(7);
 			}*/
@@ -153,51 +193,44 @@ public class Game {
 			//update the objects
 			//triforce that rotates and flies away
 			triforce.setRotation(new Vector3f(3.14f * (elec360power/1500f),-3.14f * (elec360power/1500f), 3.14f * (elec360power/1500f)));
-			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
+			triforce.setPosition(new Vector3f(-30f + 60*elec360power/450f, 10, 0));
 			
 			//rotating text
 			text.setRotation(new Vector3f(0,elec360power/1500f, 0));
 			
 			//set the camera position
-			Vector4f campos = new Vector4f(0,35,-50, 1);	//12.5 is the lateral offset of the kart, 8 height, 50 behind
-			Vector4f targ = new Vector4f(0,1,0,1);		//divide by 2, I don't know why, height one for overhead.
-			Vector4f campos2 = new Vector4f(0,35, 50,1);
 			
-			//System.out.println("campos " + campos + "\ntarg" + targ);
-			
-			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
+			Vector4f campos = new Vector4f(0,35,-50, 1);//relative coords
+			Vector4f targ = new Vector4f(0,10,0,1);		
+			Vector4f campos2 = new Vector4f(0,20, 2 ,1);
+			Vector4f targ2 = new Vector4f(0,20,1,1);		
+
+			Matrix4f modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat(); //cache that shit? actually do I need to?
+
 			Matrix4f.transform(modelInv, campos, campos);
-			modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
 			Matrix4f.transform(modelInv, targ, targ);
 			
-
-			modelInv = ((DebugGraphicsComponent)pk.graphicsComponent).getInvModelMat();
 			Matrix4f.transform(modelInv, campos2, campos2);
+
+			Matrix4f.transform(modelInv, targ2, targ2);
+
 			
+			cam.setPosition(new Vector3f(campos));
+			cam.setTarget(new Vector3f(targ));
 			
-			
-			
-			cam.setPosition(new Vector3f(campos.x, campos.y, campos.z));
-			cam.setTarget(new Vector3f(targ.x, targ.y, targ.z));
-			
-			cam2.setPosition(new Vector3f(campos2.x, campos2.y, campos2.z));
-			cam2.setTarget(new Vector3f(targ.x, targ.y, targ.z));
-			
-			/*
-			System.out.println("	campos " + campos + "\n\ttarg" + targ);
-			System.out.println("------------------------------------------------------------");
-			System.out.println(modelInv);
-			System.out.println("------------------------------------------------------------");
-			*/
+
+			cam2.setPosition(new Vector3f(campos2));
+			cam2.setTarget(new Vector3f(targ2));
+
 			
 			
 			//draw
 			renderMaster.draw();
-			
+
 			if(Display.isCloseRequested())
 			{
 				
-				elec360power = 9001;
+				elec360power = 900001;
 			}
 
 		}
