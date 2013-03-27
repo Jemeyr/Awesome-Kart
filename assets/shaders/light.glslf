@@ -23,11 +23,12 @@ void main()
 	vec3 otol = (posFS - objPos.xyz);
 	float diff = length(otol);
 	
-	float incidence = dot(objNorm, normalize(otol));
+	float incidence = 0.3 + dot(objNorm, normalize(otol));
 	
 	float scale = max(0.0, 1 - diff /(radius));
 	
-	scale = clamp((1-scale) * incidence + scale * scale, 0.0, 1.0);
+	//scale = clamp((1-scale) * incidence + scale * scale, 0.0, 1.0);
+	scale = incidence * scale;
 	
 	outColor = vec4(normalize(lightColor), scale);
 	

@@ -102,12 +102,12 @@ public class RacingState implements GameState {
 	{
 		Light le;
 		le = renderMaster.addLight();
-		le.setRad(150.0f);
+		le.setRad(250.0f);
 		le.setPosition(new Vector3f(50,-20,0));
 		le.setColor(new Vector3f(1.0f, 0.0f, 0.0f));
 		
 		le = renderMaster.addLight();
-		le.setRad(150.0f);
+		le.setRad(250.0f);
 		le.setPosition(new Vector3f(-30,-20,0));
 		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
 		
