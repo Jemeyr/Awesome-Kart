@@ -124,7 +124,7 @@ public class LightAccumulationBufferShader extends Shader{
 		//compensate for internal light surfaces
 		Vector3f camDist = new Vector3f();
 		Vector3f.sub(camPosition, l.getPosition(), camDist);
-		if(camDist.lengthSquared() < 2 * l.rad*l.rad)
+		if(camDist.lengthSquared() < l.rad*l.rad)
 		{
 
 			modelMat.m00 = 10f;
