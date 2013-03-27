@@ -127,7 +127,7 @@ public class Game {
 				k = new Kart(renderMaster);
 				pk = k;
 				
-				player = new Player(gc, pk, playerDelta);
+				player = new Player(gc, pk, playerDelta, soundMaster.getListenerComponent());
 
 				Vector3f.add(pk.position, new Vector3f(0f,-22.5f, 0f), pk.position);
 			}
