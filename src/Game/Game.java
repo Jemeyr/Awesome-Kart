@@ -109,9 +109,11 @@ public class Game {
 		
 		//
 		SoundEmitter pianoComponent = this.soundMaster.getSoundComponent("assets/sound/piano2.wav",true);
-		SoundEmitter pewComponent = this.soundMaster.getSoundComponent("assets/sound/ACiv Battle 2.wav",true);
-		pianoComponent.playSound();
-		
+		SoundEmitter pewComponent = this.soundMaster.getSoundComponent("assets/sound/Pew_Pew.wav",true);
+		SoundEmitter alarmComponent = this.soundMaster.getSoundComponent("assets/sound/alarma.wav",true);
+		//pianoComponent.playSound();
+		alarmComponent.playSound();
+		//pewComponent.playSound();
 		long startTime = System.currentTimeMillis();
 
 		int frames = 0;
@@ -126,16 +128,15 @@ public class Game {
 			
 			controllerManager.poll();
 			//eventManager.handleEvents(controllerManager.getEvents(), stateContext, renderMaster);
-			
+			alarmComponent.setSoundPosition(elec360power, 0, 0);
 			frames++;
 
 			elec360power += 1;
-			
-			if(elec360power == 100){
-				/*pianoComponent.setSoundPosition(1000, 0, 0);
-				pianoComponent.stopSound();
-				pianoComponent.playSound();*/
+			if(elec360power > 100){
+				
+				pewComponent.setSoundPosition(elec360power*5, 0, 0);
 			}
+
 			
 			//runs the do donuts on each kart
 			for(Kart k : karts)

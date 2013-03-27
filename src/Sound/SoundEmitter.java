@@ -31,7 +31,7 @@ public class SoundEmitter {
 	{
 		soundMaster = object;
 		soundName = fileName;
-		
+		int x  = (Integer)soundMaster.soundIndexes.get(fileName);
 		soundCode = soundMaster.addSource((Integer) soundMaster.soundIndexes.get(fileName), toLoop);
 		
 		//no failures while adding the source
@@ -110,6 +110,24 @@ public class SoundEmitter {
 		  
 		 soundMaster.setSourceVelocity(x ,y , z, soundCode);  
 		  
+	  }
+	  
+	  /**
+	   * Sets the reference distance of this sound object
+	   * 
+	   * The reference distance is how fast the sound is attuated or
+	   * from how far off a sound can be heard, ie a footstep may have 
+	   * a ref distance of 2 and the vol will fall off very quick
+	   * while an explosion may have a ref distance of 50, will fall 
+	   * off very slow
+	   * 
+	   * the default is 1024
+	   * 
+	   * @param refDistance
+	   */
+	  public void setReferenceDistance(float refDistance){
+		  
+		  soundMaster.setRefDistance(soundCode, refDistance);
 	  }
 	
 	 /**

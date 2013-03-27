@@ -64,7 +64,7 @@ public class SoundMaster {
 	
 	  /** Orientation of the listener. (first 3 elements are "at", second 3 are "up") */
 	protected FloatBuffer listenerOri =
-	      BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f });
+	      BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f });
 	
 	/**
 	 * Gets associated string with an OpenAl error code
@@ -90,6 +90,20 @@ public class SoundMaster {
 	        return "No such error code";
 	    }
 	  }
+	 
+	 protected void setRefDistance(int soundID, float refDistance)
+	 {
+		 
+		 int errCode=0;
+		 AL10.alSourcef(sources.get(soundID), AL10.AL_REFERENCE_DISTANCE, refDistance);
+		  
+		 if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+		  {
+			  System.out.println(getALErrorString(errCode));
+			  
+			  
+		  }
+	 }
 	  
 	  /**
 	   * Adds a source to the sources buffer and configures its properties, such as position and velocity
@@ -102,7 +116,8 @@ public class SoundMaster {
 	  protected int addSource(int soundID, boolean toLoop)
 	  {
 		  int position = -1;
-		  
+		  int x = 0;
+		  int errCode=0;
 		  //find the position of the first unused spot in the source buffer  
 		  for(int i = 0 ; i < NUM_SOURCES;i++)
 		  {
@@ -119,28 +134,26 @@ public class SoundMaster {
 			  return -1;
 		  }
 		  //source.limit(position + 1);
-		  AL10.alGenSources(sources);
-
-		  if (AL10.alGetError() != AL10.AL_NO_ERROR)
-			  return -1;
-
+		  
 		  AL10.alSourcei(sources.get(position), AL10.AL_BUFFER,   buffer.get(soundID) );
 		  AL10.alSourcef(sources.get(position), AL10.AL_PITCH,    1.0f          );
 		  AL10.alSourcef(sources.get(position), AL10.AL_GAIN,     1.0f          );
 		  AL10.alSource (sources.get(position), AL10.AL_POSITION, sourcePos);
 		  AL10.alSource (sources.get(position), AL10.AL_VELOCITY, sourceVel);
 		  AL10.alSourcei(sources.get(position), AL10.AL_LOOPING,  (toLoop ? AL10.AL_TRUE : AL10.AL_FALSE));
-		  AL10.alSourcef(sources.get(position), AL10.AL_MAX_GAIN,  1.0f);
-		  AL10.alSourcef(sources.get(position), AL10.AL_MIN_GAIN,  0.1f);
-		  AL10.alSourcef(sources.get(position), AL10.AL_MAX_DISTANCE,  1000f);
 		  
-
-		  //AL10.alSourcef(sources.get(position),AL10.AL_GAIN, 0.1f);
 		  
-		  float maxGain = AL10.alGetSourcef(sources.get(position), AL10.AL_MAX_GAIN);
-		  float minGain = AL10.alGetSourcef(sources.get(position), AL10.AL_MIN_GAIN);
-		  if (AL10.alGetError() != AL10.AL_NO_ERROR)
+		  AL10.alSourcef(sources.get(position), AL10.AL_REFERENCE_DISTANCE, 1024.0f);
+		  AL10.alSourcef(sources.get(position), AL10.AL_ROLLOFF_FACTOR, 0.5f);
+		  AL10.alSourcef(sources.get(position), AL10.AL_MAX_DISTANCE,  50000f);
+		  AL10.alSourcef(sources.get(position), AL10.AL_MIN_GAIN, 0.0f);
+		  
+		  if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+		  {
+			  System.out.println(getALErrorString(errCode));
 			  return -1;
+			  
+		  }
 		  sourceIsFilled[position] = true; 
 		  //source.position(position+1);
 		  
@@ -174,6 +187,7 @@ public class SoundMaster {
 	   * @return
 	   */
 	  protected boolean playSource(int soundCode){
+		  
 		  int state = AL10.alGetSourcei(sources.get(soundCode), AL10.AL_SOURCE_STATE);
 		  String errorString;
 		  int errCode;
@@ -275,10 +289,18 @@ public class SoundMaster {
 	   */
 	  protected void setSourcePosition(int x, int y , int z, int soundCode){
 		  
-		  FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { x , y , z });
+		  /*FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { x , y , z });
 		  vector.flip();
 		  
-		  AL10.alSource (sources.get(soundCode), AL10.AL_POSITION, vector);
+		  AL10.alSource (sources.get(soundCode), AL10.AL_POSITION, vector);*/
+		  AL10.alSource3f(sources.get( soundCode), AL10.AL_POSITION, x, y, z);
+		  
+		  /*
+		  distance = max(distance, AL_REFERENCE_DISTANCE)
+				  distance = min(distance, AL_MAX_DISTANCE)
+				  gain = (1 – AL_ROLLOFF_FACTOR * (distance – 
+				  AL_REFERENCE_DISTANCE) /
+				  (AL_MAX_DISTANCE – AL_REFERENCE_DISTANCE))*/
 
 		    
 	  }
@@ -308,10 +330,14 @@ public class SoundMaster {
 	   * @param z
 	   */
 	  public void setListenerPosition(int x, int y , int z){
+		  AL10.alListener3f(AL10.AL_POSITION, x, y, z);
+		  
+		  /*
 		  FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { x , y , z });
 		  vector.flip();
 		  
 		  AL10.alListener(AL10.AL_POSITION,   vector);
+		  */
 		    
 	  }
 	  
@@ -388,6 +414,7 @@ public class SoundMaster {
 					fileName = it.next();
 					is = new FileInputStream(fileName);
 					bufferedIs = new BufferedInputStream(is);
+					waveFile = null;
 					waveFile = WaveData.create(AudioSystem.getAudioInputStream(bufferedIs));
 					
 					AL10.alBufferData(buffer.get((Integer) soundIndexes.get(fileName)), waveFile.format, waveFile.data, waveFile.samplerate);	  
@@ -452,12 +479,17 @@ public class SoundMaster {
 		  
 			sourceIsFilled = new boolean[NUM_SOURCES];
 			Arrays.fill(sourceIsFilled, false);
-			
+			int i = 0;
 			soundIndexes = new Hashtable();
-			soundIndexes.put("assets/sound/ACiv Battle 2.wav", new Integer(0));
-			soundIndexes.put("assets/sound/Car Accelerating.wav", new Integer(1));
-			soundIndexes.put("assets/sound/Pew_Pew.wav", new Integer(2));
-			soundIndexes.put("assets/sound/piano2.wav", new Integer(3));
+			
+			
+			soundIndexes.put("assets/sound/ACiv Battle 2.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Car Accelerating.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Pew_Pew.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/piano2.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/FancyPants.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/alarma.wav", new Integer(i++));
+			
 			
 			String errorString;
 			int errCode;
@@ -503,11 +535,19 @@ public class SoundMaster {
 				  audioEngineOperational = true;
 			  
 			  setListenerValues();
-		  	
-			  AL10.alDistanceModel(AL10.AL_INVERSE_DISTANCE);
+			  
+			  AL10.alGenSources(sources);
+
+			  if ((errCode = AL10.alGetError()) != AL10.AL_NO_ERROR)
+			  {
+				  audioEngineOperational = false;
+				  errorString= getALErrorString(errCode);
+				  System.out.println(errorString);
+				  return;
+			  }
 			  
 			  //Work around, the first component created does not work, but others will, so we create one here
-			  SoundEmitter pewComponent = this.getSoundComponent("assets/sound/ACiv Battle 2.wav",true);
+			  //SoundEmitter pewComponent = this.getSoundComponent("assets/sound/ACiv Battle 2.wav",true);
 	  }
 	  
 	
