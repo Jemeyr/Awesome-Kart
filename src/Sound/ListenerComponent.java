@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
+import org.lwjgl.util.vector.Vector3f;
 
 public class ListenerComponent {
 	
@@ -13,10 +14,6 @@ public class ListenerComponent {
 	protected ListenerComponent(SoundMaster soundMaster, boolean isActive){
 		this.soundMaster = soundMaster;
 		this.isActive = isActive;
-		
-		
-		
-		  
 		
 	}
 	
@@ -28,9 +25,24 @@ public class ListenerComponent {
 	   * @param y
 	   * @param z
 	   */
-	  public void setListenerPosition(int x, int y , int z){
+	  public void setListenerPosition(float x, float y , float z){
 		  if(isActive)
 			  this.soundMaster.setListenerPosition(x, y, z);
+		  
+
+		    
+	  }
+	  
+		/**
+	   *   Sets the position of the listener by using a vector given by x, y and z
+	   * 
+	   * @param x
+	   * @param y
+	   * @param z
+	   */
+	  public void setListenerPosition(Vector3f vector){
+		  if(isActive)
+			  this.soundMaster.setListenerPosition(vector.getX() ,vector.getY() , vector.getZ());
 		  
 
 		    
@@ -43,7 +55,7 @@ public class ListenerComponent {
 	   * @param y
 	   * @param z
 	   */
-	  public void setListenerVelocity(int x, int y , int z){
+	  public void setListenerVelocity(float x, float y , float z){
 		  if(isActive)
 			  this.soundMaster.setListenerVelocity(x, y, z);
 		    
@@ -57,9 +69,24 @@ public class ListenerComponent {
 	  * @param y - nose vector y
 	  * @param z - nose vector z
 	  */
-	  public void setListenerOrientation(int x, int y , int z){
+	  public void setListenerOrientation(float x,float y ,float  z){
 		if(isActive)
 			this.soundMaster.setListenerOrientation(x, y, z);
+	  }
+	  
+	  /**
+	   * Deactivates this component by setting isActive to false
+	   * 
+	   * in addition if isActive is true, it sets soundMasters listenerComponentExists to false
+	   * so that additional listener components can be made
+	   * 
+	   */
+	  public void deactivateComponent (){
+		  if(isActive)
+			  this.soundMaster.listenerComponentExists = false;
+		  
+		  isActive = false;
+		  
 	  }
 	
 

@@ -20,8 +20,15 @@ void main()
 	vec4 objPos = texture(posTex, samplePos);
 	vec4 objCol = texture(colTex, samplePos);
 	
+	
+	
 	vec3 otol = (posFS - objPos.xyz);
 	float diff = length(otol);
+	
+	if(diff > radius)
+	{
+		discard;
+	}
 	
 	float incidence = 0.3 + dot(objNorm, normalize(otol));
 	

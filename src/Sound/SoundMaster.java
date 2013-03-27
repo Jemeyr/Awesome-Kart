@@ -35,6 +35,9 @@ public class SoundMaster {
 	/** boolean value to signify if there was a critical error in setting up the Open Al audio engine */
 	public boolean audioEngineOperational = false;
 	
+	/** boolean to signify when a listner component exists, so that only one may be set to active at a time */
+	protected boolean listenerComponentExists = false;
+	
 	/** Maximum Data Buffers and emissions */
 	public static final int NUM_BUFFERS = 10;
 	public static final int NUM_SOURCES = 128;
@@ -287,20 +290,10 @@ public class SoundMaster {
 	   * @param z
 	   * @param soundCode - the code for the source or its position within the sources buffer
 	   */
-	  protected void setSourcePosition(int x, int y , int z, int soundCode){
+	  protected void setSourcePosition(float x, float y , float z, int soundCode){
 		  
-		  /*FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { x , y , z });
-		  vector.flip();
-		  
-		  AL10.alSource (sources.get(soundCode), AL10.AL_POSITION, vector);*/
 		  AL10.alSource3f(sources.get( soundCode), AL10.AL_POSITION, x, y, z);
 		  
-		  /*
-		  distance = max(distance, AL_REFERENCE_DISTANCE)
-				  distance = min(distance, AL_MAX_DISTANCE)
-				  gain = (1 – AL_ROLLOFF_FACTOR * (distance – 
-				  AL_REFERENCE_DISTANCE) /
-				  (AL_MAX_DISTANCE – AL_REFERENCE_DISTANCE))*/
 
 		    
 	  }
@@ -313,7 +306,7 @@ public class SoundMaster {
 	   * @param z
 	   * @param soundCode - the code for the source or its position within the sources buffer
 	   */
-	  protected void setSourceVelocity(int x, int y , int z, int soundCode){
+	  protected void setSourceVelocity(float x, float y, float z, int soundCode){
 		  FloatBuffer vector = BufferUtils.createFloatBuffer(3).put(new float[] { x , y , z });
 		  vector.flip();
 		  
@@ -329,7 +322,7 @@ public class SoundMaster {
 	   * @param y
 	   * @param z
 	   */
-	  public void setListenerPosition(int x, int y , int z){
+	  public void setListenerPosition(float x, float y , float z){
 		  listenerPos.put(0, x);
 		  listenerPos.put(1, y);
 		  listenerPos.put(2, z);
@@ -344,7 +337,7 @@ public class SoundMaster {
 	   * @param y
 	   * @param z
 	   */
-	  public void setListenerVelocity(int x, int y , int z){
+	  public void setListenerVelocity(float x, float y , float z){
 		  
 		  listenerVel.put(0, x);
 		  listenerVel.put(1, y);
@@ -361,7 +354,7 @@ public class SoundMaster {
 	  * @param y - nose vector y
 	  * @param z - nose vector z
 	  */
-	  public void setListenerOrientation(int x, int y , int z){
+	  public void setListenerOrientation(float x, float y , float z){
 		  
 		  listenerOri.put(0, x);
 		  listenerOri.put(1, y);
@@ -463,9 +456,9 @@ public class SoundMaster {
 	   * @param isActive Weather the component will be active or not
 	   * @return
 	   */
-	  public ListenerComponent getListenerComponent(boolean isActive){
-		  ListenerComponent Lc = new ListenerComponent(this, isActive);
-		  
+	  public ListenerComponent getListenerComponent(){
+		  ListenerComponent Lc = new ListenerComponent(this, !listenerComponentExists);
+		  listenerComponentExists = true;
 		  return Lc;
 	  }
 	  

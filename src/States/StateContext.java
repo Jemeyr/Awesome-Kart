@@ -72,7 +72,7 @@ public class StateContext {
 		Vector4f playerDelta = new Vector4f();
 		Vector3f.add(kart.position, new Vector3f(offset,-22.5f, 0f), kart.position);
 
-		Player player = new Player(gameController, kart, playerDelta);
+		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent());
 		playerList.add(player);
 		offset += 40f;
 	}
