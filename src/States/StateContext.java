@@ -47,7 +47,11 @@ public class StateContext {
 		
 		loadModels();
 		
-		RACING_STATE 		= new RacingState(renderMaster, soundMaster);
+
+		addPlayer(ControllerType.KEYBOARD);
+		//addPlayer(ControllerType.KEYBOARD);
+		
+		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
 		
 		setState(RACING_STATE);
@@ -80,6 +84,11 @@ public class StateContext {
 		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent(), cam);
 		playerList.add(player);
 		offset += 40f;
+	}
+	
+	public List<Player> getPlayerList()
+	{
+		return this.playerList;
 	}
 	
 	public GameState getState(){

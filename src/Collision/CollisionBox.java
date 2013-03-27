@@ -6,17 +6,10 @@ public class CollisionBox {
 	private Vector3f position;
 	private Vector3f dimensions;
 	
-	private static Vector3f diffPos;
-	private static Vector3f diffSize;
-	private static Vector3f diff;
+	private static Vector3f diffPos = new Vector3f();
+	private static Vector3f diffSize = new Vector3f();
+	private static Vector3f diff = new Vector3f();
 	
-	public CollisionBox()
-	{
-		
-		diffPos = new Vector3f();
-		diffSize = new Vector3f();
-		diff = new Vector3f();
-	}
 	
 	public CollisionBox(Vector3f center, Vector3f dimensions)
 	{

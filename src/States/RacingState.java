@@ -35,33 +35,34 @@ public class RacingState implements GameState {
 	
 	private RenderMaster 								renderMaster;
 	private SoundMaster									soundMaster;
-//	private List<Kart>									donutKarts;
 	private World										world;
 	private List<Camera>								cameras;
-//	private HashMap<String, DebugGraphicsComponent> 	otherDebugGraphics;
-//	private HashMap<String, GraphicsComponent>			otherGraphics;
 	private int											elec360power;
 		
-	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster){
+	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster, List<Player> playerList){
 		this.renderMaster 	= renderMaster;
 		this.soundMaster	= soundMaster;
-//		donutKarts 			= new ArrayList<Kart>();
 		cameras 			= new ArrayList<Camera>();
-//		otherDebugGraphics	= new HashMap<String, DebugGraphicsComponent>();
-//		otherGraphics		= new HashMap<String, GraphicsComponent>();
-		
-		this.world = new World(renderMaster);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
 
 
 		
 		elec360power		= 0;
 		
 		initialiseState();
+		for(Player player : playerList)
+		{
+			player.setWorld(this.world);
+		}
+		
 	}
 	
 	@Override
 	public void initialiseState() {
 		ListenerComponent listenerComponent = null;
+
+		this.world = new World(renderMaster);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
+		
+		
 		
 		// Add and start music
 		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/ACiv Battle 2.wav", true); 
@@ -82,8 +83,8 @@ public class RacingState implements GameState {
 
 	@Override
 	public void useWeapon(StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId) {
+		stateContext.getPlayerList().get(invokingId).useWeapon();
 		
-		this.world.addRocket();
 		// Delegate to player/kart, call use weapon.
 		if(DEBUG) System.out.println(invokingId + ": Fire Homing Torpedoes!");
 	}

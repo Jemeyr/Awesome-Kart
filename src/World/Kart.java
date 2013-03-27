@@ -28,7 +28,7 @@ public class Kart {
 	public CollisionBox collisionBox;
 	
 	public Vector3f position;
-	public Vector3f rotation;
+	private Vector3f rotation;
 	
 	public float turn;
 	public float speed;
@@ -87,7 +87,7 @@ public class Kart {
 		//get input
 		graphicsComponent.setPosition(this.position);
 		graphicsComponent.setRotation(this.rotation);
-
+		
 		collisionBox.setPosition(this.position);
 	}
 	
