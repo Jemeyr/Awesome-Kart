@@ -16,11 +16,11 @@ public class ControllerMain {
 			//GameController gameController = cm.addController(ControllerType.KEYBOARD);
 			GameController gameController = cm.addController(ControllerType.XBOX);
 			EventManager em = new EventManager();
-			//StateContext stateContext = new StateContext();
+			StateContext stateContext = new StateContext();
 			Player player = new Player(gameController, null, null, null);
 			for(;;){
 				cm.poll();
-				//em.handleEvents(cm.getEvents(), stateContext, null);
+				em.handleEvents(cm.getEvents(), stateContext, null);
 			}
 		}
 }

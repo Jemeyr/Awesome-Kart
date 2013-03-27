@@ -28,7 +28,7 @@ public class GameEvent {
 		
 		GameEvent otherEvent = (GameEvent)other;
 		
-		return (otherEvent.getGameController().equals(this.getGameController()) &&
-				otherEvent.getEvent().equals(this.getEvent()));
+		return (otherEvent.getGameController().getId() == this.getGameController().getId() &&
+				otherEvent.getEvent().getComponent().getName().equals(this.getEvent().getComponent().getName()));
 	}
 }
