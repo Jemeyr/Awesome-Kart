@@ -28,6 +28,7 @@ public class XboxController implements GameController {
 	public XboxController(int id) {
 		aButtonValue = 0;
 		bButtonValue = 0;
+		xButtonValue = 0;
 		weaponButtonValue = 0;
 		pauseButtonValue = 0;
 		leftRightValue = 0;
@@ -38,18 +39,18 @@ public class XboxController implements GameController {
 	@Override
 	public void handleEvent(Event event, StateContext stateContext, RenderMaster renderMaster) {
 		float eventValue = event.getValue();
-		//System.out.println("My event is '" + event.getComponent().getName() + "' and value is '" + event.getValue() + "'");
+		System.out.println("My event is '" + event.getComponent().getName() + "' and value is '" + event.getValue() + "'");
 		
 		int intEventValue = (int)eventValue;
 		String eventComponentString = event.getComponent().toString();
 		if(A_BUTTON.equals(eventComponentString)){
-			if(eventValue > 0.01f){
+			if(intEventValue == 1){
 				stateContext.useActionButton(stateContext, getId());
 			}
 			aButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(B_BUTTON.equals(eventComponentString)){
-			if(eventValue > 0.01f){
+			if(intEventValue == 1){
 				stateContext.useBackButton(stateContext, getId());
 			}
 			bButtonValue = intEventValue * MULTIPLIER;
@@ -58,36 +59,32 @@ public class XboxController implements GameController {
 			xButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
-			if(eventValue > 0.01f){
+			if(intEventValue == 1){
 				stateContext.useWeapon(stateContext, getId());
 			}
 			weaponButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(START_BUTTON.equals(eventComponentString)){
-			if(eventValue > 0.01f){
+			if(intEventValue == 1){
 				stateContext.pause(stateContext, getId());
 			} 
 			pauseButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(JOYSTICK_X_DIR.equals(eventComponentString)){
-			int multiplier = MULTIPLIER;
-			if(eventValue < -0.25f){
+			if(eventValue < -0.01f){
 				stateContext.moveLeft(stateContext, getId());
-				multiplier *= -1;
-			} else if (eventValue > 0.25f){
+			} else if (eventValue > 0.01f){
 				stateContext.moveRight(stateContext, getId());
 			}
-			leftRightValue = eventValue * multiplier;
+			leftRightValue = eventValue;
 		}
 		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
-			int multiplier = MULTIPLIER;
-			if(eventValue > 0.25f){
+			if(eventValue > 0.01f){
 				stateContext.moveDown(stateContext, getId());
-				multiplier *= -1;
-			} else if(eventValue < -0.25f){
+			} else if(eventValue < -0.01f){
 				stateContext.moveUp(stateContext, getId());
 			}
-			upDownValue = eventValue * multiplier;
+			upDownValue = eventValue;
 		}
 	}
 	

@@ -95,7 +95,7 @@ public class Player {
 	
 	public void update(){
 		Vector4f.add(playerDelta, new Vector4f(0, getJump(), getAcceleration(), 0), playerDelta); // Forward/Backward movement
-		Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-80f, 0), getKart().getRotation()); //Left/Right Movement
+		Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-20f, 0), getKart().getRotation()); //Left/Right Movement
 		
 		Matrix4f.transform(((DebugGraphicsComponent)getKart().graphicsComponent).getInvModelMat(), playerDelta, playerDelta);	
 		Vector3f.add(getKart().getPosition(), new Vector3f(playerDelta), getKart().getPosition());

@@ -13,14 +13,14 @@ public class ControllerMain {
 
 		public static void main(String[] args) throws Exception {
 			ControllerManager cm = new ControllerManager();
-			GameController gameController = cm.addController(ControllerType.KEYBOARD);
-			//GameController xboxController = cm.addController(ControllerType.XBOX);
+			//GameController gameController = cm.addController(ControllerType.KEYBOARD);
+			GameController gameController = cm.addController(ControllerType.XBOX);
 			EventManager em = new EventManager();
-			StateContext stateContext = new StateContext();
+			//StateContext stateContext = new StateContext();
 			Player player = new Player(gameController, null, null);
 			for(;;){
 				cm.poll();
-				em.handleEvents(cm.getEvents(), stateContext, null);
+				//em.handleEvents(cm.getEvents(), stateContext, null);
 			}
 		}
 }

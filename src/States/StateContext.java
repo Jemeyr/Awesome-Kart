@@ -30,6 +30,7 @@ public class StateContext {
 	private EventManager 		eventManager;
 	private GameState 			gameState;
 	private int 				lockedControllerId; // ID of Controller with "lock" (For Pausing and Such). 0 For Nobody
+	private float				offset; //player creation offset for start
 	
 	private List<Player>		playerList;
 	
@@ -39,6 +40,7 @@ public class StateContext {
 		controllerManager 	= new ControllerManager();
 		eventManager 		= new EventManager();
 		playerList 			= new ArrayList<Player>();
+		offset				= 0;
 		
 		loadModels();
 		
@@ -48,7 +50,8 @@ public class StateContext {
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
 		
-		addPlayer();
+		addPlayer(ControllerType.XBOX);
+		addPlayer(ControllerType.KEYBOARD);
 	}
 	
 	private void loadModels() {
@@ -60,17 +63,18 @@ public class StateContext {
 		renderMaster.loadModel("aktext");
 	}
 	
-	private void addPlayer(){
+	private void addPlayer(ControllerType controllerType){
 		// Stuff a Player Needs
-		GameController gameController = controllerManager.addController(ControllerType.KEYBOARD);
+		GameController gameController = controllerManager.addController(controllerType);
 		Kart kart = new Kart(renderMaster);
 		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, -22.5f, -300f + (10%4) * 150.0f);
 		kart.killme = 12340f;
 		Vector4f playerDelta = new Vector4f();
-		Vector3f.add(kart.position, new Vector3f(0f,-22.5f, 0f), kart.position);
+		Vector3f.add(kart.position, new Vector3f(offset,-22.5f, 0f), kart.position);
 
 		Player player = new Player(gameController, kart, playerDelta);
 		playerList.add(player);
+		offset += 40f;
 	}
 	
 	public GameState getState(){
