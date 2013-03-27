@@ -91,7 +91,7 @@ public class Game {
 		
 		le = renderMaster.addLight();
 		le.setRad(150.0f);
-		le.setPosition(new Vector3f(10,-20,0));
+		le.setPosition(new Vector3f(-30,-20,0));
 		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
 		
 		
