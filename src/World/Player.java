@@ -15,6 +15,7 @@ public class Player {
 	
 	private GameController 		gameController;
 	private Kart				kart;
+	private World				world;
 	private ListenerComponent 	listenerComponent; 
 	private Vector3f			playerDelta;
 	
@@ -33,6 +34,11 @@ public class Player {
 		direction 				= 0;
 		speed 					= 0f;
 		jump 					= 0f;
+	}
+	
+	public void setWorld(World w)
+	{
+		this.world =w;
 	}
 	
 	public GameController getGameController(){
@@ -91,6 +97,11 @@ public class Player {
 		}
 		
 		return 0f;
+	}
+	
+	public void useWeapon()
+	{
+		world.addRocket(new Vector3f(this.kart.position), new Vector3f(0,this.kart.getRotation().y,0));
 	}
 	
 	public void update(){

@@ -19,7 +19,7 @@ public class ControllerManager {
 	
 	public ControllerManager() {
 		this.gameControllers = new HashMap<Controller, GameController>();
-		currentId = 1;
+		currentId = 0;
 	}
 	
 	public GameController addController(ControllerType controllerType) {

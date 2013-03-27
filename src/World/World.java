@@ -97,9 +97,10 @@ public class World {
 	}
 	
 	
-	public void addRocket()
+	public void addRocket(Vector3f position, Vector3f rotation)
 	{
-		Rocket r = new Rocket(new Vector3f(),new Vector3f(), renderMaster);
+		Rocket r = new Rocket(position, rotation, renderMaster);
+	
 		this.rockets.add(r);
 	}
 
