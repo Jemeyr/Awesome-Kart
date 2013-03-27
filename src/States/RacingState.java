@@ -61,26 +61,14 @@ public class RacingState implements GameState {
 	
 	@Override
 	public void initialiseState() {
-		
 		ListenerComponent listenerComponent = null;
 
 		
 		
 		
-		// Add Cameras
-		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300,800,300));//TODO RPETTY Why do you keep a reference to these cameras but still refer to them by their position in the list? omg
-		Camera cam2 =((DebugRenderMaster)renderMaster).addView(new Rectangle(0,0,800,300));//
-		cameras.add(cam);
-		cameras.add(cam2);
-		
-
-		
 		// Add and start music
 		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/ACiv Battle 2.wav", true); 
 		musicComponent.playSound();
-		
-		// Set initial position?
-		cameras.get(0).setPosition(new Vector3f(-50,40,-30));
 	}
 	
 	@Override
@@ -138,17 +126,8 @@ public class RacingState implements GameState {
 		
 		this.world.update();
 		
-		int i = 0;
-		Vector3f camPos, targ; 
 		for(Player player: playerList){
-			//set the camera position
-			camPos = player.getKart().graphicsComponent.getTransformedVector(0.0f, 35.0f, -50f, true);
-			targ = player.getKart().graphicsComponent.getTransformedVector(0.0f, 1.0f, 0.0f, true);
-			
-			// Camera setting
-			cameras.get(i).setPosition(camPos);
-			cameras.get(i).setTarget(targ);
-			i++;
+			player.updateCamera();
 		}
 		
 		renderMaster.draw();
