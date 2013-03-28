@@ -111,23 +111,43 @@ public class World {
 		Light le;
 		le = renderMaster.addLight();
 		le.setRad(250.0f);
-		le.setPosition(new Vector3f(50,-20,0));
+		le.setPosition(new Vector3f(50,10,0));
 		le.setColor(new Vector3f(1.0f, 0.0f, 0.0f));
 		
 		le = renderMaster.addLight();
 		le.setRad(250.0f);
-		le.setPosition(new Vector3f(-30,-20,0));
+		le.setPosition(new Vector3f(-30,10,0));
 		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
 		
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(-1000, 100, -1000));
+		le.setColor(new Vector3f(1,0,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(1000, 100, -1000));
+		le.setColor(new Vector3f(1,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(1000, 100, 1000));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(-1000, 100, 1000));
+		le.setColor(new Vector3f(0,0,1));
+		/*
 		Random r = new Random();
 		
-		for(int h = 0; h < 40; h++)
+		for(int h = 0; h < 25; h++)
 		{
 			le = renderMaster.addLight();
-			le.setRad(100.0f);
+			le.setRad(200.0f);
 			le.setColor(new Vector3f(r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f));
-			le.setPosition(new Vector3f(200 - 100 * (h % 6), -10, 200 - 100 * h/6));
-		}
+			le.setPosition(new Vector3f(1000 - 400 * (h % 5), 30, 1000 - 400 * h/5));
+		}*/
 	}
 	
 	private void addTerrain(){

@@ -42,6 +42,11 @@ public class SoundMaster {
 	public static final int NUM_BUFFERS = 10;
 	public static final int NUM_SOURCES = 128;
 	
+	/**OpenAl engine configurations */
+	private static final float maxSourceDistance = 500;
+	private static final float refDistance = 25;
+	private static final float dopVel = 1024 ;
+	
 	/** indexes of soundfile names and their associated position within the soundbuffer*/
 	public Hashtable soundIndexes ;
 	
@@ -146,9 +151,9 @@ public class SoundMaster {
 		  AL10.alSourcei(sources.get(position), AL10.AL_LOOPING,  (toLoop ? AL10.AL_TRUE : AL10.AL_FALSE));
 		  
 		  
-		  AL10.alSourcef(sources.get(position), AL10.AL_REFERENCE_DISTANCE, 1024.0f);
+		  AL10.alSourcef(sources.get(position), AL10.AL_REFERENCE_DISTANCE, refDistance);
 		  AL10.alSourcef(sources.get(position), AL10.AL_ROLLOFF_FACTOR, 0.5f);
-		  AL10.alSourcef(sources.get(position), AL10.AL_MAX_DISTANCE,  50000f);
+		  AL10.alSourcef(sources.get(position), AL10.AL_MAX_DISTANCE,  maxSourceDistance);
 		  AL10.alSourcef(sources.get(position), AL10.AL_MIN_GAIN, 0.0f);
 		  
 		  if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
@@ -323,6 +328,11 @@ public class SoundMaster {
 	   * @param z
 	   */
 	  public void setListenerPosition(float x, float y , float z){
+		  if(z>500)
+		  {
+			z=z;  
+		  }
+		  
 		  listenerPos.put(0, x);
 		  listenerPos.put(1, y);
 		  listenerPos.put(2, z);
@@ -551,7 +561,7 @@ public class SoundMaster {
 			  
 			  //Set doppler settings
 			  AL10.alDopplerFactor(1.0f);
-			  AL10.alDopplerVelocity(1024.0f);
+			  AL10.alDopplerVelocity(dopVel);
 	  }
 	  
 	
