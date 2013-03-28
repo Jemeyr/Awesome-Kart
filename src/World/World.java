@@ -68,8 +68,7 @@ public class World {
 		
 		// Add Triforce to hit to make items
 		ItemCrate itemCrate = new ItemCrate(renderMaster, this);
-		itemCrate.setPosition(new Vector3f(-300f + 2f * 150.0f, -20.5f, -300f + 2f * 150.0f));
-		itemCrate.setRotation(new Vector3f(0,0,0));
+		itemCrate.setPosition(new Vector3f(0,0,0));
 		items.add(itemCrate);
 		
 

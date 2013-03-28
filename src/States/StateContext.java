@@ -67,6 +67,7 @@ public class StateContext {
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
 		renderMaster.loadModel("rocket");
+		renderMaster.loadModel("item");
 		renderMaster.loadModel("nightFactory");
 		
 	}
