@@ -46,6 +46,9 @@ public class World {
 		//add Terrain
 		addTerrain();
 		
+		//add wall
+		addCollisions();
+		
 		// Add Donut Karts
 		for(int i = 0; i < 16; i++)
 		{
@@ -218,7 +221,28 @@ public class World {
 	
 	private void addCollisions()
 	{
-	//	walls.add(new CollisionBox(new Vector3f()));
+		this.walls.add(new CollisionBox(new Vector3f(916.66f,0f,0f), new Vector3f(166.66f,9000f,2000f)));
+		this.walls.add(new CollisionBox(new Vector3f(-125f,0f,458.33f), new Vector3f(1416.66f,9000f,583.33f)));
+		this.walls.add(new CollisionBox(new Vector3f(-625f,0f,41.66f), new Vector3f(416.66f,9000f,250f)));
+		this.walls.add(new CollisionBox(new Vector3f(458.33f,0f,208.33f), new Vector3f(250f,9000f,750f)));
+		this.walls.add(new CollisionBox(new Vector3f(-583.33f,0f,-666.66f), new Vector3f(833.33f,9000f,666.66f)));
+		this.walls.add(new CollisionBox(new Vector3f(-41.66f,0f,-541.66f), new Vector3f(250f,9000f,916.66f)));
+
+		this.walls.add(new CollisionBox(new Vector3f(-1083.33f,0f,0f), new Vector3f(166.66f,9000f,2000f)));
+		this.walls.add(new CollisionBox(new Vector3f(0f,0f,1083.33f), new Vector3f(2000f,9000f,166.66f)));
+		
+		/*
+		 * 916.66,0 : 166.66,2000
+		 * -125 458.33:1416.66x583.33
+		 * -625,41.66: 416.66 x 250
+		 * 458.33, 208.33: 250,750
+		 * -583.33,-666.66:  833.33x666.66
+		 * -41.66, -541.66: 250, 916.66
+		 * -1083.33,0: 166.66, 2000
+		 * 0,1083.33: 2000,166.66
+		 * 
+		 */
+		
 	}
 	
 	
