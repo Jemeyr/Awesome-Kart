@@ -54,7 +54,7 @@ public class ControllerManager {
 			while(eq.getNextEvent(event)){
 				Event e2 = new Event();
 				e2.set(event);
-				System.out.println("event name bunkai '" + event.getComponent().getName() + "' event value " + event.getValue());
+				//System.out.println("event name bunkai '" + event.getComponent().getName() + "' event value " + event.getValue());
 				GameEvent gameEvent = new GameEvent(e2, entry.getValue());
 				gameEvents.add(gameEvent);
 			}
