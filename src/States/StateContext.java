@@ -103,7 +103,7 @@ public class StateContext {
 		Vector3f.add(kart.position, new Vector3f(8.5f*83.3f,0.0f, 0f), kart.position);
 		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300 - (int)(offset*7.5f),800,300));
 
-		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent(), cam);
+		Player player = new Player(renderMaster, gameController, kart, playerDelta, soundMaster.getListenerComponent(), cam);
 		player.setSounds(this.soundMaster.getSoundComponent("assets/sound/carIdle.wav", false), 
 				this.soundMaster.getSoundComponent("assets/sound/Car Accelerating.wav", false),
 				this.soundMaster.getSoundComponent("assets/sound/carMaxSpeed.wav", false),

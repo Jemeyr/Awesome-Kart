@@ -7,6 +7,8 @@ import org.lwjgl.util.vector.Vector3f;
 import Collision.CollisionBox;
 import Controller.GameController;
 import Graphics.Camera;
+import Graphics.GraphicsComponent;
+import Graphics.RenderMaster;
 import Sound.ListenerComponent;
 import Sound.SoundEmitter;
 import States.GameState;
@@ -20,7 +22,7 @@ public class Player {
 	private static final float ACCEL_SCALE_DOWN	= 0.97f;
 	private static Random gen = new Random();
 	
-	
+	private RenderMaster		renderMaster;
 	private GameController 		gameController;
 	private Kart				kart;
 	private World				world;
@@ -28,6 +30,7 @@ public class Player {
 	private Vector3f			playerDelta;
 	private Camera				camera;
 	private Persona				persona;
+	private GraphicsComponent	itemGraphic;
 	
 	private EntityType			heldItemType;
 	private GameState 			racingState;
@@ -56,7 +59,8 @@ public class Player {
 	protected SoundEmitter 		carMaxSpeed;
 	protected SoundEmitter 		carBrake;
 	
-	public Player(GameController gameController,Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent, Camera camera){
+	public Player(RenderMaster renderMaster, GameController gameController,Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent, Camera camera){
+		this.renderMaster		= renderMaster;
 		this.gameController 	= gameController;
 		this.kart 				= kart;
 		this.playerDelta		= playerDelta;
@@ -130,6 +134,11 @@ public class Player {
 		this.heldItemType 	= null;
 		this.ammo			= 0;
 		this.powerLevel		= 0;
+		
+		getKart().graphicsComponent.removeSubComponent(itemGraphic);
+		renderMaster.removeModel(itemGraphic);
+		
+		itemGraphic = null;
 	}
 	
 	/**
@@ -275,6 +284,31 @@ public class Player {
 	public void updateItem(EntityType itemType){
 		if(heldItemType == null){
 			setHeldItem(itemType);
+			
+			switch(itemType)
+			{
+				case ROCKET:
+				{
+					itemGraphic = renderMaster.addSubModel("rocket");
+					getKart().graphicsComponent.addAsSubComponent(itemGraphic);
+					itemGraphic.setPosition(new Vector3f(0, 15f, 0));
+					itemGraphic.setRotation(new Vector3f(0, 1.57f, 0));
+					
+					break;
+				}
+				case MINE:
+				{
+					itemGraphic = renderMaster.addSubModel("mine");
+					getKart().graphicsComponent.addAsSubComponent(itemGraphic);
+					itemGraphic.setPosition(new Vector3f(0, 15f, 0));
+					itemGraphic.setRotation(new Vector3f(1.57f, 0, 0));
+					break;
+				}
+				default:
+					break;
+			}
+
+			
 			powerLevel = 1;
 			ammo = 1;
 		} else {
