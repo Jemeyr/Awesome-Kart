@@ -65,6 +65,10 @@ public class Rocket implements Entity {
 		return light;
 	}
 	
+	public void destroySoundEmitters(){
+		missleLaunch.removeSound();
+	}
+	
 	@Override
 	public void update()
 	{

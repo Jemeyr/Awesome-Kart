@@ -28,7 +28,7 @@ public class World {
 	protected List<CollisionBox> walls,pits;
 	
 	private HashMap<String, GraphicsComponent>	otherGraphics;
-	
+	public int missleNum;
 	private int elec360power;
 	
 	public World(RenderMaster renderMaster,List<Player> playerList, SoundMaster soundMaster)
@@ -37,6 +37,7 @@ public class World {
 		this.players = playerList;
 		this.soundMaster = soundMaster;
 		
+		missleNum = 0;
 		elec360power = 0;
 		
 		donutKarts = new ArrayList<Kart>();
@@ -125,7 +126,9 @@ public class World {
 		}
 		for(Rocket r : Rocket.deadRockets)
 		{
+			r.destroySoundEmitters();
 			rockets.remove(r);
+			
 			renderMaster.removeModel(r.graphicsComponent);
 			renderMaster.removeLight(r.light);
 		}
@@ -155,6 +158,7 @@ public class World {
 	
 	public void addRocket(Vector3f position, Vector3f rotation, Player player)
 	{
+		missleNum++;
 		SoundEmitter missleLaunchSound = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
 		Rocket r = new Rocket(position, rotation, renderMaster, this, player, missleLaunchSound);
 	

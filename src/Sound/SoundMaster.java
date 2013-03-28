@@ -39,8 +39,8 @@ public class SoundMaster {
 	protected boolean listenerComponentExists = false;
 	
 	/** Maximum Data Buffers and emissions */
-	public static final int NUM_BUFFERS = 10;
-	public static final int NUM_SOURCES = 128;
+	public static final int NUM_BUFFERS = 32;
+	public static final int NUM_SOURCES = 256;
 	
 	/**OpenAl engine configurations */
 	private static final float maxSourceDistance = 500;
@@ -306,10 +306,22 @@ public class SoundMaster {
 	   */
 	  protected boolean removeSource(int soundCode)
 	  {
+		  int errCode;
 		  stopSource(soundCode);
 		  
-		  sourceIsFilled[soundCode] = false;
+		  /*AL10.alDeleteSources(sources.get(soundCode));
 		  
+		  if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+		  {
+			  
+			  
+			  System.out.println(getALErrorString(errCode));
+			  return false;
+		  }
+
+		  
+		  sourceIsFilled[soundCode] = false;
+		  */
 		  return true;
 		  
 	  }
@@ -328,6 +340,7 @@ public class SoundMaster {
 	    sources.position(0).limit(position);
 		
 	    AL10.alDeleteSources(sources);
+	    
 	    AL10.alDeleteBuffers(buffer);
 	    AL.destroy();
 	  }
