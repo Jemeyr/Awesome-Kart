@@ -28,18 +28,21 @@ public class Kart {
 	public CollisionBox collisionBox;
 	
 	public Vector3f position;
-	public Vector3f rotation;
+	private Vector3f rotation;
 	
 	public float turn;
 	public float speed;
 	public boolean sliding;
 	
+	private Persona persona;
+	
 	
 	//public heldweapon
 	
-	public Kart(RenderMaster renderer)
+	public Kart(RenderMaster renderer, Persona persona)
 	{	
-		this.graphicsComponent = renderer.addModel("kart");
+		this.graphicsComponent 	= renderer.addModel("kart");
+		this.persona			= persona;
 		
 		wheelFL = graphicsComponent.addSubComponent("wheel", renderer);
 		wheelFR = graphicsComponent.addSubComponent("wheel", renderer);
@@ -73,7 +76,7 @@ public class Kart {
 	public void killmenow(float e)
 	{
 		float elec360power = e/90f + killme;
-		Vector3f pos = new Vector3f(killmeVec.x + 10f * (float)Math.cos(elec360power), -22.5f,killmeVec.z +  10f * (float)Math.sin(elec360power));
+		Vector3f pos = new Vector3f(killmeVec.x + 10f * (float)Math.cos(elec360power), 0.0f,killmeVec.z +  10f * (float)Math.sin(elec360power));
 		Vector3f rot = new Vector3f(0,-(elec360power),0);
 		
 		this.position = pos;
@@ -87,7 +90,7 @@ public class Kart {
 		//get input
 		graphicsComponent.setPosition(this.position);
 		graphicsComponent.setRotation(this.rotation);
-
+		
 		collisionBox.setPosition(this.position);
 	}
 	

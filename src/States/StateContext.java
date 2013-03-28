@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -11,15 +12,19 @@ import Controller.ControllerManager;
 import Controller.ControllerType;
 import Controller.EventManager;
 import Controller.GameController;
+import Graphics.Camera;
+import Graphics.DebugRenderMaster;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
+import Sound.SoundEmitter;
 import Sound.SoundMaster;
 import World.Kart;
+import World.Persona;
 import World.Player;
 
 public class StateContext {
 	
-	private static final int DEFAULT_CONTROLLER_LOCK 	= 0;
+	private static final int DEFAULT_CONTROLLER_LOCK 	= -1;
 	
 	protected static GameState RACING_STATE; 
 	protected static GameState PAUSE_MENU_STATE;
@@ -43,15 +48,20 @@ public class StateContext {
 		offset				= 0;
 		
 		loadModels();
+		addPlayer(ControllerType.KEYBOARD);
+		addPlayer(ControllerType.XBOX);
 		
-		RACING_STATE 		= new RacingState(renderMaster, soundMaster);
+		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
+
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
+		SoundEmitter missleLaunchSound = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
+		SoundEmitter missleLaunchSound2 = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
 		
-		addPlayer(ControllerType.KEYBOARD);
-		//addPlayer(ControllerType.KEYBOARD);
+		missleLaunchSound.playSound();
+		missleLaunchSound2.playSound();
 	}
 	
 	private void loadModels() {
@@ -61,20 +71,31 @@ public class StateContext {
 		renderMaster.loadModel("hat");
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
+		renderMaster.loadModel("rocket");
+		renderMaster.loadModel("item");
+		renderMaster.loadModel("nightFactory");
+		
 	}
 	
 	private void addPlayer(ControllerType controllerType){
 		// Stuff a Player Needs
 		GameController gameController = controllerManager.addController(controllerType);
-		Kart kart = new Kart(renderMaster);
-		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, -22.5f, -300f + (10%4) * 150.0f);
+		Persona persona = new Persona(soundMaster);
+		Kart kart = new Kart(renderMaster, persona);
+		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, 0.0f, -300f + (10%4) * 150.0f);
 		kart.killme = 12340f;
 		Vector3f playerDelta = new Vector3f();
-		Vector3f.add(kart.position, new Vector3f(offset,-22.5f, 0f), kart.position);
+		Vector3f.add(kart.position, new Vector3f(8.5f*83.3f,0.0f, 0f), kart.position);
+		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300 - (int)(offset*7.5f),800,300));
 
-		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent());
+		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent(), cam);
 		playerList.add(player);
 		offset += 40f;
+	}
+	
+	public List<Player> getPlayerList()
+	{
+		return this.playerList;
 	}
 	
 	public GameState getState(){

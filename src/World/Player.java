@@ -2,8 +2,11 @@ package World;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import Collision.CollisionBox;
 import Controller.GameController;
+import Graphics.Camera;
 import Sound.ListenerComponent;
+import States.GameState;
 
 
 public class Player {
@@ -15,24 +18,60 @@ public class Player {
 	
 	private GameController 		gameController;
 	private Kart				kart;
+	private World				world;
 	private ListenerComponent 	listenerComponent; 
 	private Vector3f			playerDelta;
+	private Camera				camera;
+	private Persona				persona;
+	
+	private EntityType			heldItemType;
+	private GameState 			racingState;
+	private int					powerLevel;
+	private int					ammo;
 	
 	private float 				jump;
 	private float				speed;
 	private float				acceleration;
-	private int				direction; // 1 for forward, -1 for back, 0 for none
+	private int					direction; // 1 for forward, -1 for back, 0 for none
 	
-	public Player(GameController gameController, Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent ){
+	private boolean				isHit;
+	private int					spin;
+	
+	protected Checkpoint currCheckPoint = null;
+	protected Checkpoint nextCheckPoint = null;
+	
+	public int lapsCompleted = 0;
+	public boolean finishedRace = false;
+	public int playerID= 0;
+	
+	public Player(GameController gameController,Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent, Camera camera){
 		this.gameController 	= gameController;
 		this.kart 				= kart;
 		this.playerDelta		= playerDelta;
 		this.listenerComponent 	= listenerComponent;
+		this.camera				= camera;
+		this.heldItemType 		= null; // Start with no item
 		
+		playerID 				= this.gameController.getId()+1;
 		acceleration 			= DEFAULT_ACCEL;
 		direction 				= 0;
 		speed 					= 0f;
 		jump 					= 0f;
+		powerLevel				= 0;
+		ammo					= 0;
+		
+		isHit					= false;
+		spin					= 0;
+	}
+	
+	public void setRacingState(GameState racingState){
+		this.racingState = racingState;
+	}
+	
+	
+	public void setWorld(World w)
+	{
+		this.world = w;
 	}
 	
 	public GameController getGameController(){
@@ -49,6 +88,20 @@ public class Player {
 	
 	public void setPlayerDelta(Vector3f playerDelta){
 		this.playerDelta = playerDelta;
+	}
+	
+	public Camera getCamera(){
+		return camera;
+	}
+	
+	public void setHeldItem(EntityType heldItemType){
+		this.heldItemType = heldItemType; 
+	}
+	
+	public void clearItem(){
+		this.heldItemType 	= null;
+		this.ammo			= 0;
+		this.powerLevel		= 0;
 	}
 	
 	/**
@@ -79,11 +132,10 @@ public class Player {
 	}
 	
 	private float getJump(){
-		
 		float jumpValue = getGameController().getJumpValue();
 		if(jump > 0f || jumpValue == 1){
-			if (jump < 20f) {
-				return (jump++ < 10f) ? 1f : -1f;
+			if (jump < 40f) {
+				return (jump++ < 20f) ? 3f : -3f;
 			} else {
 				jump = 0f; 
 				return jump;
@@ -93,19 +145,102 @@ public class Player {
 		return 0f;
 	}
 	
+	public void useWeapon()
+	{
+		if(heldItemType != null){
+			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
+			switch(heldItemType){
+				case ROCKET: {
+					world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y,0), this);
+					if(--ammo == 0) clearItem();
+				}
+			}
+		}
+	}
+	
+	public void hitPlayer(){
+		isHit 	= true;
+		spin	= 8;
+	}
+	
+	public void updateItem(EntityType itemType){
+		if(heldItemType == null){
+			setHeldItem(itemType);
+			powerLevel = 1;
+			ammo = 1;
+		} else {
+			powerLevel = 2;
+			if(powerLevel == 2) ammo = 10;
+		}
+	}
+	
 	public void update(){
-		Vector3f.add(playerDelta, new Vector3f(0, getJump(), getAcceleration()), playerDelta); // Forward/Backward movement
-		Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-20f, 0), getKart().getRotation()); //Left/Right Movement
+		if(!isHit){
+			Vector3f.add(playerDelta, new Vector3f(0, getJump(), getAcceleration()), playerDelta); // Forward/Backward movement
+			Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-20f, 0), getKart().getRotation()); //Left/Right Movement
+			
+			playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
+			Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
+			getKart().update();
+			
+			Vector3f collide = new Vector3f();
+			for(CollisionBox other : world.walls)
+			{
+				collide = getKart().collisionBox.intersects(other); 
+				if(collide != null)
+				{
+					Vector3f.add(getKart().getPosition(), collide, getKart().getPosition());
+				}
+			}
+			
+			//Check CheckPoints
+			if(currCheckPoint!=null)
+			{
+				if(world.reachedCheckpoint(nextCheckPoint, getKart().getPosition()))
+				{
+					lapsCompleted++;
+					System.out.println("Player "+playerID+" has completed a lap");
+					
+					if (nextCheckPoint.isFinishLine) {
+						lapsCompleted++;
+						System.out.println("Player "+playerID+" has completed a lap");
+					}
+					
+					racingState.reportLapCompleted(this);
+					currCheckPoint = nextCheckPoint;
+					nextCheckPoint = world.getNextChekpoint(currCheckPoint);
+				}
+			}
+			
+			
+			//This will cause a null exception if used with ryan's ControllerMain test class
+			listenerComponent.setListenerPosition(getKart().getPosition());
+			playerDelta.set(0, 0, 0);
+		} else {
+			Vector3f.add(getKart().getRotation(), new Vector3f(0, spin/-4f, 0), getKart().getRotation()); 
+			playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
+			Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
+			getKart().update();
+			spin -= 0.01f;
+			if(spin == 0.0f) isHit = false;
+		}
+	}
+	
+	public void updateCamera(){
+		Vector3f camPos, targ; 
+		camPos = getKart().graphicsComponent.getTransformedVector(0.0f, 25.0f, -50f, true);
+		targ = getKart().graphicsComponent.getTransformedVector(0.0f, 1.0f, 0.0f, true);
 		
-		playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
-		Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
-		getKart().update();
+		getCamera().setPosition(camPos);
+		getCamera().setTarget(targ);
+	}
+	
+	@Override
+	public boolean equals(Object other){
+		if(!(other instanceof Player)) return false;
 		
-		
-		
-		//This will cause a null exception if used with ryan's ControllerMain test class
-		listenerComponent.setListenerPosition(getKart().getPosition());
-		playerDelta.set(0, 0, 0);
+		Player player = (Player)other;
+		return (this.playerID == player.playerID);
 	}
 
 }

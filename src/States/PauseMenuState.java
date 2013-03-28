@@ -84,4 +84,10 @@ public class PauseMenuState implements GameState {
 		
 	}
 
+	@Override
+	public void reportLapCompleted(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
