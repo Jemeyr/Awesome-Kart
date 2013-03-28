@@ -13,11 +13,14 @@ import Graphics.Light;
 import Graphics.RenderMaster;
 
 public class World {
+	private static final float checkpointThresholdSquared = 10000;
+	
 	private RenderMaster renderMaster;
 
 	protected List<Kart> donutKarts;
 	protected List<Rocket> rockets;
 	protected List<Player> players;
+	protected List<Checkpoint> checkpoints;
 	
 	private HashMap<String, GraphicsComponent>	otherGraphics;
 	
@@ -32,6 +35,7 @@ public class World {
 		
 		donutKarts = new ArrayList<Kart>();
 		rockets = new ArrayList<Rocket>();
+		checkpoints = new ArrayList<Checkpoint>();
 		
 		otherGraphics		= new HashMap<String, GraphicsComponent>();
 		
@@ -61,6 +65,22 @@ public class World {
 
 		// Add Lights
 		addLights();
+		
+		//Add the list of chekpoints
+		
+		//Set the last checkpoint in the list to be the finish checkpoint.
+		if(checkpoints.size()!=0){
+			checkpoints.get(checkpoints.size()).setFinishCheckpoint();
+			
+			for(int i =0; i< playerList.size();i++){
+				playerList.get(i).currCheckPoint = checkpoints.get(0);
+				playerList.get(i).nextCheckPoint = checkpoints.get(1);
+			}
+
+		}
+		
+		
+		
 	}
 	
 	public void update()
@@ -174,6 +194,41 @@ public class World {
 	
 	private void addTerrain(){
 		renderMaster.addModel("nightFactory");
+	}
+	
+	/**
+	 * Gets the next checkpoint in the list of checkpoints
+	 *  
+	 * @param curCkPt
+	 * @return the next checkpoint, or the first in the case curCkPt is Null or it is the finish checkpoint
+	 */
+	protected Checkpoint getNextChekpoint(Checkpoint curCkPt){
+		int retIndex;
+		//If the current checkpt is the last checkpoint in the list, ie the finish line, get the first checkpoint.
+		if( curCkPt.isFinishLine)
+		{
+			retIndex = 0;
+		}
+		else
+		{
+			retIndex = checkpoints.lastIndexOf(curCkPt)+1;
+		} 
+		
+		return checkpoints.get(retIndex);
+		
+	}
+	
+	protected boolean reachedCheckpoint(Checkpoint nextCkPt, Vector3f position)
+	{
+		boolean retBool = false;
+		Vector3f dist = new Vector3f();
+		Vector3f.sub(position, nextCkPt.post, dist);
+		
+		if(dist.lengthSquared() < checkpointThresholdSquared)
+		{
+			retBool = true;
+		}
+		return retBool;
 	}
 	
 	
