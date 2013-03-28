@@ -84,6 +84,8 @@ public class StateContext {
 		renderMaster.loadModel("item");
 		renderMaster.loadModel("nightFactory");
 		renderMaster.loadModel("sam");
+		renderMaster.loadModel("goop");
+		
 		
 		
 	}

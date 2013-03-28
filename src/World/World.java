@@ -20,7 +20,7 @@ public class World {
 	private RenderMaster renderMaster;
 	private SoundMaster soundMaster;
 
-	protected List<Kart> donutKarts;
+//	protected List<Kart> donutKarts;
 	protected List<Rocket> rockets;
 	protected List<Player> players;
 	protected List<ItemCrate> items;
@@ -40,7 +40,7 @@ public class World {
 		missleNum = 0;
 		elec360power = 0;
 		
-		donutKarts = new ArrayList<Kart>();
+//		donutKarts = new ArrayList<Kart>();
 		rockets = new ArrayList<Rocket>();
 		items = new ArrayList<ItemCrate>();
 		checkpoints = new ArrayList<Checkpoint>();
@@ -56,15 +56,15 @@ public class World {
 		//add wall
 		addCollisions();
 		
-		// Add Donut Karts
-		for(int i = 0; i < 16; i++)
+		// SUBTRACT Donut Karts
+		/*for(int i = 0; i < 16; i++)
 		{
 			if(i == 10) i++;
 			Kart k = new Kart(this.renderMaster, null);
 			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, 0.0f, -300f + (i%4) * 150.0f);
 			donutKarts.add(k);
 			k.killme = i*1234f;
-		}
+		}*/
 		
 		// Add Triforce
 		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("rocket");
@@ -106,11 +106,13 @@ public class World {
 	{
 		List<Rocket> toRemove = new ArrayList<Rocket>();
 		
-		// DO the donut karts
+		// DON'T the donut karts
+		/*
 		for(Kart k : donutKarts)
 		{ 
 			k.killmenow(elec360power);
 		}
+		*/
 		elec360power++;
 		
 		otherGraphics.get("Triforce").setRotation(new Vector3f(3.14f * (elec360power/100f),-3.14f * (elec360power/100f), 3.14f * (elec360power/100f)));

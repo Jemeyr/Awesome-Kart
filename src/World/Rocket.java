@@ -100,7 +100,7 @@ public class Rocket implements Entity {
 		light.setColor(new Vector3f(1,alternator,0));	
 		
 		//collision?
-		Kart toRemove = null;
+/*		Kart toRemove = null;
 		
 		for(Kart k : world.donutKarts)
 		{
@@ -115,6 +115,7 @@ public class Rocket implements Entity {
 			toRemove.graphicsComponent.setPosition(new Vector3f(0,2000,0));
 			world.donutKarts.remove(toRemove);
 		}
+	*/
 		
 		//remove if wall is hit
 		for(CollisionBox other : world.walls)
