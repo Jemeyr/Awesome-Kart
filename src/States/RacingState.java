@@ -20,7 +20,7 @@ import World.World;
 public class RacingState implements GameState {
 	
 	public static final boolean DEBUG = false;
-	private static final int lapsInRace = 3;
+	private static final int lapsInRace = 10;
 	
 	public boolean raceOver;
 	
