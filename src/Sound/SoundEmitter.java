@@ -70,6 +70,11 @@ public class SoundEmitter {
 		
 	}
 	
+	public boolean pauseSound(){
+		return soundMaster.pauseSource(soundCode);
+		
+	}
+	
 	/** Sets the Sound to loop
 	 * 
 	 * 
@@ -94,6 +99,19 @@ public class SoundEmitter {
 		
 	}
 	
+	/**
+	 * Sets the gain of a sound, 
+	 * 
+	 * min is 0 
+	 * 
+	 * default is 1
+	 * @return
+	 */
+	public void setSoundGain(float gain)
+	{
+		soundMaster.setSourceGain(soundCode, gain);
+		return ;
+	}
 	  /**
 	   *  Sets the position of the listener
 	   */

@@ -16,8 +16,10 @@ import Graphics.Camera;
 import Graphics.DebugRenderMaster;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
+import Sound.SoundEmitter;
 import Sound.SoundMaster;
 import World.Kart;
+import World.Persona;
 import World.Player;
 
 public class StateContext {
@@ -55,7 +57,11 @@ public class StateContext {
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
-
+		SoundEmitter missleLaunchSound = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
+		SoundEmitter missleLaunchSound2 = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
+		
+		missleLaunchSound.playSound();
+		missleLaunchSound2.playSound();
 	}
 	
 	private void loadModels() {
@@ -74,7 +80,8 @@ public class StateContext {
 	private void addPlayer(ControllerType controllerType){
 		// Stuff a Player Needs
 		GameController gameController = controllerManager.addController(controllerType);
-		Kart kart = new Kart(renderMaster);
+		Persona persona = new Persona(soundMaster);
+		Kart kart = new Kart(renderMaster, persona);
 		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, 0.0f, -300f + (10%4) * 150.0f);
 		kart.killme = 12340f;
 		Vector3f playerDelta = new Vector3f();
