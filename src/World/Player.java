@@ -114,8 +114,8 @@ public class Player {
 	private float getJump(){
 		float jumpValue = getGameController().getJumpValue();
 		if(jump > 0f || jumpValue == 1){
-			if (jump < 20f) {
-				return (jump++ < 10f) ? 1f : -1f;
+			if (jump < 40f) {
+				return (jump++ < 20f) ? 3f : -3f;
 			} else {
 				jump = 0f; 
 				return jump;

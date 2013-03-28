@@ -25,7 +25,7 @@ public class ItemCrate {
 		this.world 			= world;
 		
 		this.itemCrate		= renderMaster.addModel("item"); // TODO Replace with an actual item crate
-		this.collisionBox	= new CollisionBox(new Vector3f(), new Vector3f(8,8,8));
+		this.collisionBox	= new CollisionBox(new Vector3f(), new Vector3f(12,12,12));
 		this.position 		= initialPosition;
 		this.rotation 		= new Vector3f();
 		this.resetCounter	= 0;

@@ -66,11 +66,9 @@ public class World {
 		text.setPosition(new Vector3f(-200, 40, 100));
 		otherGraphics.put("AKText", text);
 		
-		// Add Triforce to hit to make items
-		ItemCrate itemCrate = new ItemCrate(renderMaster, this, new Vector3f(0,0,0));
-		items.add(itemCrate);
+		// Add Item Crates in places
+		addItemCrates();
 		
-
 		// Add Lights
 		addLights();
 		
@@ -208,6 +206,27 @@ public class World {
 		
 		
 		
+	}
+	
+	private void addItemCrates(){
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 7.5f,	0, 81.3f * -5f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 8.5f,	0, 81.3f * -5f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 9.5f,	0, 81.3f * -5f)));
+		
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 7.5f,	0, 81.3f * 7f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 8.5f,	0, 81.3f * 7f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 9.5f,	0, 81.3f * 7f)));
+		
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 4f,	0, 81.3f * 10f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 4f,	0, 81.3f * 11f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 4f,	0, 81.3f * 12f)));
+		
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -7f,	0, 81.3f * 10f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -7f,	0, 81.3f * 11f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -7f,	0, 81.3f * 12f)));
+		
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -11f,	0, 81.3f * 4f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -12f,	0, 81.3f * 4f)));
 	}
 	
 	private void addTerrain(){
