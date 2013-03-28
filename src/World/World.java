@@ -13,7 +13,7 @@ import Graphics.Light;
 import Graphics.RenderMaster;
 
 public class World {
-	private static final float checkpointThresholdSquared = 10000;
+	private static final float checkpointThresholdSquared = 7751;
 	
 	private RenderMaster renderMaster;
 
@@ -68,13 +68,15 @@ public class World {
 		
 		//Add the list of chekpoints
 		
+		createAllCheckpoints();
+		
 		//Set the last checkpoint in the list to be the finish checkpoint.
 		if(checkpoints.size()!=0){
 			checkpoints.get(checkpoints.size()).setFinishCheckpoint();
 			
 			for(int i =0; i< playerList.size();i++){
-				playerList.get(i).currCheckPoint = checkpoints.get(0);
-				playerList.get(i).nextCheckPoint = checkpoints.get(1);
+				playerList.get(i).currCheckPoint = checkpoints.get(checkpoints.size()-1);
+				playerList.get(i).nextCheckPoint = checkpoints.get(0);
 			}
 
 		}
@@ -154,6 +156,45 @@ public class World {
 		renderMaster.addModel("testTer");
 	}
 	
+	private void createAllCheckpoints(){
+		float squareLength = 2000/24;
+		int i = 0;
+		float x =0;
+		float z = 0;
+		
+		
+		x = 8.5f*squareLength;
+		z = 10.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 0f*squareLength;
+		z = 10.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = -10.5f*squareLength;
+		z = 10.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = -10.5f*squareLength;
+		z = -2.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = -3.5f*squareLength;
+		z = -2.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = -3.5f*squareLength;
+		z = 0.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 2.5f*squareLength;
+		z = 0.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 2.5f*squareLength;
+		z = -8.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 8.5f*squareLength;
+		z = -8.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 8.5f*squareLength;
+		z = 0f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+	}
+	
 	/**
 	 * Gets the next checkpoint in the list of checkpoints
 	 *  
@@ -182,8 +223,10 @@ public class World {
 		Vector3f dist = new Vector3f();
 		Vector3f.sub(position, nextCkPt.post, dist);
 		
+		
 		if(dist.lengthSquared() < checkpointThresholdSquared)
 		{
+			
 			retBool = true;
 		}
 		return retBool;
