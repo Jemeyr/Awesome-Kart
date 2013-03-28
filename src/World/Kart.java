@@ -34,12 +34,15 @@ public class Kart {
 	public float speed;
 	public boolean sliding;
 	
+	private Persona persona;
+	
 	
 	//public heldweapon
 	
-	public Kart(RenderMaster renderer)
+	public Kart(RenderMaster renderer, Persona persona)
 	{	
-		this.graphicsComponent = renderer.addModel("kart");
+		this.graphicsComponent 	= renderer.addModel("kart");
+		this.persona			= persona;
 		
 		wheelFL = graphicsComponent.addSubComponent("wheel", renderer);
 		wheelFR = graphicsComponent.addSubComponent("wheel", renderer);

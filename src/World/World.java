@@ -55,7 +55,7 @@ public class World {
 		for(int i = 0; i < 16; i++)
 		{
 			if(i == 10) i++;
-			Kart k = new Kart(this.renderMaster);
+			Kart k = new Kart(this.renderMaster, null);
 			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, 0.0f, -300f + (i%4) * 150.0f);
 			donutKarts.add(k);
 			k.killme = i*1234f;

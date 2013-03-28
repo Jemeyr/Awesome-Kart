@@ -7,7 +7,6 @@ import Controller.GameController;
 import Graphics.Camera;
 import Sound.ListenerComponent;
 import States.GameState;
-import States.RacingState;
 
 
 public class Player {
@@ -23,6 +22,7 @@ public class Player {
 	private ListenerComponent 	listenerComponent; 
 	private Vector3f			playerDelta;
 	private Camera				camera;
+	private Persona				persona;
 	
 	private EntityType			heldItemType;
 	private GameState 			racingState;

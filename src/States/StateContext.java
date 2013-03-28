@@ -18,6 +18,7 @@ import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
 import Sound.SoundMaster;
 import World.Kart;
+import World.Persona;
 import World.Player;
 
 public class StateContext {
@@ -74,7 +75,8 @@ public class StateContext {
 	private void addPlayer(ControllerType controllerType){
 		// Stuff a Player Needs
 		GameController gameController = controllerManager.addController(controllerType);
-		Kart kart = new Kart(renderMaster);
+		Persona persona = new Persona(soundMaster);
+		Kart kart = new Kart(renderMaster, persona);
 		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, 0.0f, -300f + (10%4) * 150.0f);
 		kart.killme = 12340f;
 		Vector3f playerDelta = new Vector3f();
