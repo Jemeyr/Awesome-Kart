@@ -25,7 +25,7 @@ public class RacingState implements GameState {
 	private SoundMaster									soundMaster;
 	private World										world;
 	private List<Camera>								cameras;
-	private int											elec360power;
+	private int										elec360power;
 		
 	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster, List<Player> playerList){
 		this.renderMaster 	= renderMaster;
@@ -56,7 +56,7 @@ public class RacingState implements GameState {
 		
 		// Add and start music
 		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/alarma.wav", true); 
-		musicComponent.playSound();
+		//musicComponent.playSound();
 	}
 	
 	@Override

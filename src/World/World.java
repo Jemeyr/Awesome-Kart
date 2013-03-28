@@ -3,10 +3,10 @@ package World;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import Collision.CollisionBox;
 import Graphics.DebugGraphicsComponent;
 import Graphics.GraphicsComponent;
 import Graphics.Light;
@@ -20,7 +20,9 @@ public class World {
 	protected List<Kart> donutKarts;
 	protected List<Rocket> rockets;
 	protected List<Player> players;
+	protected List<ItemCrate> items;
 	protected List<Checkpoint> checkpoints;
+	protected List<CollisionBox> walls;
 	
 	private HashMap<String, GraphicsComponent>	otherGraphics;
 	
@@ -35,7 +37,9 @@ public class World {
 		
 		donutKarts = new ArrayList<Kart>();
 		rockets = new ArrayList<Rocket>();
+		items = new ArrayList<ItemCrate>();
 		checkpoints = new ArrayList<Checkpoint>();
+		walls = new ArrayList<CollisionBox>();
 		
 		otherGraphics		= new HashMap<String, GraphicsComponent>();
 		
@@ -47,7 +51,7 @@ public class World {
 		{
 			if(i == 10) i++;
 			Kart k = new Kart(this.renderMaster);
-			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, -22.5f, -300f + (i%4) * 150.0f);
+			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, 0.0f, -300f + (i%4) * 150.0f);
 			donutKarts.add(k);
 			k.killme = i*1234f;
 		}
@@ -61,6 +65,12 @@ public class World {
 		GraphicsComponent text = renderMaster.addModel("aktext");
 		text.setPosition(new Vector3f(-200, 40, 100));
 		otherGraphics.put("AKText", text);
+		
+		// Add Triforce to hit to make items
+		ItemCrate itemCrate = new ItemCrate(renderMaster, this);
+		itemCrate.setPosition(new Vector3f(-300f + 2f * 150.0f, -20.5f, -300f + 2f * 150.0f));
+		itemCrate.setRotation(new Vector3f(0,0,0));
+		items.add(itemCrate);
 		
 
 		// Add Lights
@@ -115,6 +125,16 @@ public class World {
 			}
 		}
 		
+		for(Player player : players){
+			for(ItemCrate ic : items){
+				ic.update();
+				if(ic.collisionBox.bIntersects(player.getKart().collisionBox)){
+					player.setHeldItem(ic.generateItem());
+					ic.disappear();
+				}
+			}
+		}
+		
 		// Rotating Text
 		otherGraphics.get("AKText").setRotation(new Vector3f(0,elec360power/1500f, 0));
 		
@@ -133,27 +153,69 @@ public class World {
 		Light le;
 		le = renderMaster.addLight();
 		le.setRad(250.0f);
-		le.setPosition(new Vector3f(50,-20,0));
+		le.setPosition(new Vector3f(50,10,0));
 		le.setColor(new Vector3f(1.0f, 0.0f, 0.0f));
 		
 		le = renderMaster.addLight();
 		le.setRad(250.0f);
-		le.setPosition(new Vector3f(-30,-20,0));
+		le.setPosition(new Vector3f(-30,10,0));
 		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
 		
-		Random r = new Random();
-		/*
-		for(int h = 0; h < 40; h++)
-		{
-			le = renderMaster.addLight();
-			le.setRad(100.0f);
-			le.setColor(new Vector3f(r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f));
-			le.setPosition(new Vector3f(200 - 100 * (h % 6), -10, 200 - 100 * h/6));
-		}*/
+		//three big corner lights
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(-1000, 100, -320));
+		le.setColor(new Vector3f(1,0,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(840, 100, 1000));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(-1000, 100, 1000));
+		le.setColor(new Vector3f(0,0,1));
+		
+		//green pit lights
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(40, 100, -120));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(800, 100, -916));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(440, 100, -360));
+		le.setColor(new Vector3f(0,1,0));
+		
+		
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(800, 100, -240));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(880, 100, -880));
+		le.setColor(new Vector3f(0,1,0));
+
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(220, 100, -920));
+		le.setColor(new Vector3f(0,1,0));
+		
+		
+		
 	}
 	
 	private void addTerrain(){
-		renderMaster.addModel("testTer");
+		renderMaster.addModel("nightFactory");
 	}
 	
 	private void createAllCheckpoints(){
@@ -194,6 +256,12 @@ public class World {
 		z = 0f*squareLength;
 		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
 	}
+	
+	private void addCollisions()
+	{
+	//	walls.add(new CollisionBox(new Vector3f()));
+	}
+	
 	
 	/**
 	 * Gets the next checkpoint in the list of checkpoints
