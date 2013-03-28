@@ -1,5 +1,7 @@
 package World;
 
+import java.util.Random;
+
 import org.lwjgl.util.vector.Vector3f;
 
 import Collision.CollisionBox;
@@ -15,6 +17,8 @@ public class Player {
 	private static final float MAX_ACCEL		= 2.0f;
 	private static final float ACCEL_SCALE_UP	= 1.08f;
 	private static final float ACCEL_SCALE_DOWN	= 0.97f;
+	private static Random gen = new Random();
+	
 	
 	private GameController 		gameController;
 	private Kart				kart;
@@ -188,9 +192,14 @@ public class Player {
 	
 	public void useWeapon()
 	{
-		getKart().getPersona().getShootPerson().playSound();
 		
 		if(heldItemType != null){
+			
+			if(gen.nextInt(5) == 0)
+			{
+				getKart().getPersona().getShootPerson().playSound();
+			}
+			
 			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
 			switch(heldItemType){
 				case ROCKET: {
@@ -224,7 +233,7 @@ public class Player {
 			
 			playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
 			Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
-			getKart().update();
+			
 			
 			Vector3f collide = new Vector3f();
 			for(CollisionBox other : world.walls)
@@ -232,9 +241,18 @@ public class Player {
 				collide = getKart().collisionBox.intersects(other); 
 				if(collide != null)
 				{
+					
 					Vector3f.add(getKart().getPosition(), collide, getKart().getPosition());
+					this.acceleration *= 0.85;
+					if(this.acceleration < 0.1)
+					{
+						getKart().getPersona().getHit().playSound();
+						this.acceleration = 0.1f;
+					}
+					break;
 				}
 			}
+			getKart().update();
 			
 			//check if you fell
 			if(getKart().position.y <= -200.0f)
