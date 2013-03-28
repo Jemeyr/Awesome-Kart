@@ -303,6 +303,7 @@ public class Player {
 				this.inPit = false;
 				this.jump = 0;
 				this.ammo = ammo > 1 ? 1 : ammo;
+				getKart().getPersona().getHit().playSound();
 			}
 			
 			//Check CheckPoints
