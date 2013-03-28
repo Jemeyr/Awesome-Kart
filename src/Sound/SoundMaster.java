@@ -76,6 +76,11 @@ public class SoundMaster {
 	protected FloatBuffer listenerOri =
 	      BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f });
 	
+	/** Global Sound component*/
+	public SoundEmitter								musicComponent;
+	public SoundEmitter								cheerComponent;
+	public SoundEmitter 							pauseSound;
+	public SoundEmitter 							unPauseSound;
 	/**
 	 * Gets associated string with an OpenAl error code
 	 * 
@@ -199,8 +204,9 @@ public class SoundMaster {
 			 int errCode=0;
 			 if(gain > 0)
 			 {
+				 
 				 AL10.alSourcef(sources.get(soundID), AL10.AL_GAIN, gain);
-				 AL10.alSourcef(sources.get(soundID), AL10.AL_MAX_GAIN, gain);
+				 
 			 }
 			 
 			 if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
@@ -640,6 +646,14 @@ public class SoundMaster {
 			  //Set doppler settings
 			  AL10.alDopplerFactor(1.0f);
 			  AL10.alDopplerVelocity(dopVel);
+			  
+			  musicComponent = this.getSoundComponent("assets/sound/Race Musici.wav", true);
+				musicComponent.setSoundGain(0.5f);
+				cheerComponent = this.getSoundComponent("assets/sound/Victory!.wav", true);
+				pauseSound = this.getSoundComponent("assets/sound/Bleep 2.wav", false);
+				pauseSound.setSoundGain(200f);
+				this.unPauseSound = this.getSoundComponent("assets/sound/Bleep 1.wav", false);
+				unPauseSound.setSoundGain(200f);
 	  }
 	  
 	
