@@ -22,7 +22,7 @@ public class World {
 	protected List<Player> players;
 	protected List<ItemCrate> items;
 	protected List<Checkpoint> checkpoints;
-	protected List<CollisionBox> walls;
+	protected List<CollisionBox> walls,pits;
 	
 	private HashMap<String, GraphicsComponent>	otherGraphics;
 	
@@ -40,6 +40,8 @@ public class World {
 		items = new ArrayList<ItemCrate>();
 		checkpoints = new ArrayList<Checkpoint>();
 		walls = new ArrayList<CollisionBox>();
+		pits = new ArrayList<CollisionBox>();
+		
 		
 		otherGraphics		= new HashMap<String, GraphicsComponent>();
 		
@@ -221,6 +223,7 @@ public class World {
 	
 	private void addCollisions()
 	{
+		/*
 		this.walls.add(new CollisionBox(new Vector3f(-18.66f + 916.66f,0f,933.33f+8f), new Vector3f(166.66f,9000f,2200f)));
 		this.walls.add(new CollisionBox(new Vector3f(-125.00f - 8.5f,0,458.33f + 18f), new Vector3f(1416.66f + 17f,9000f,583.33f + 12f)));
 		this.walls.add(new CollisionBox(new Vector3f(-625f -12,0f,41.66f + 26), new Vector3f(416.66f + 16f,9000f,250f + 40f)));
@@ -230,6 +233,7 @@ public class World {
 
 		this.walls.add(new CollisionBox(new Vector3f(-1083.33f - 2f,0f,0f), new Vector3f(166.66f,9000f,2200f)));
 		this.walls.add(new CollisionBox(new Vector3f(0f,0f,1083.33f + 8.0f), new Vector3f(2200f,9000f,166.66f)));
+		*/
 		
 		/*
 		 * 916.66,0 : 166.66,2000
@@ -244,6 +248,20 @@ public class World {
 		 * 0,1083.33: 2000,166.66
 		 * 
 		 */
+		
+		
+		/*
+		 *5.5 -4.5: 3x5
+		 *
+		 *6,-11 :12x2
+		 *
+		 * 11, -6:2x8
+		 * .5, -4.5: 1x9
+		 */
+		this.pits.add(new CollisionBox(new Vector3f(-12f + 5.5f * 83.33f,0f,20f + -4.5f * 83.33f), new Vector3f( 3f * 83.33f,9000f,5f * 83.33f)));
+		this.pits.add(new CollisionBox(new Vector3f(6f * 83.33f,0f,16f + -11f * 83.33f), new Vector3f(12f * 83.33f,9000f,2f * 83.33f)));
+		this.pits.add(new CollisionBox(new Vector3f(-8f + 11f * 83.33f,0f,-6f * 83.33f), new Vector3f(2f * 83.33f,9000f,8f * 83.33f)));
+		this.pits.add(new CollisionBox(new Vector3f(-16f + 0.5f * 83.33f,0f,16 + -5.5f * 83.33f), new Vector3f(1f * 83.33f,9000f,9f * 83.33f)));
 		
 	}
 	
