@@ -22,7 +22,7 @@ import World.Player;
 
 public class StateContext {
 	
-	private static final int DEFAULT_CONTROLLER_LOCK 	= 0;
+	private static final int DEFAULT_CONTROLLER_LOCK 	= -1;
 	
 	protected static GameState RACING_STATE; 
 	protected static GameState PAUSE_MENU_STATE;
@@ -47,18 +47,16 @@ public class StateContext {
 		
 		loadModels();
 		
-
 		addPlayer(ControllerType.KEYBOARD);
 		//addPlayer(ControllerType.XBOX);
+
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
-		
-		
-		
+
 	}
 	
 	private void loadModels() {

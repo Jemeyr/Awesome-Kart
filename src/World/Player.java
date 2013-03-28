@@ -24,7 +24,7 @@ public class Player {
 	private float 				jump;
 	private float				speed;
 	private float				acceleration;
-	private int				direction; // 1 for forward, -1 for back, 0 for none
+	private int					direction; // 1 for forward, -1 for back, 0 for none
 	
 	
 	
@@ -102,7 +102,6 @@ public class Player {
 	}
 	
 	private float getJump(){
-		
 		float jumpValue = getGameController().getJumpValue();
 		if(jump > 0f || jumpValue == 1){
 			if (jump < 20f) {

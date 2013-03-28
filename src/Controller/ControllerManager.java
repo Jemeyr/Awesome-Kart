@@ -2,10 +2,8 @@ package Controller;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
-import States.StateContext;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Event;
@@ -20,14 +18,13 @@ public class ControllerManager {
 	public ControllerManager() {
 		this.gameControllers 	= new HashMap<Controller, GameController>();
 		this.gameEvents 		= new HashSet<GameEvent>();
-		currentId 				= 1;
+		currentId 				= 0;
 	}
 	
 	public GameController addController(ControllerType controllerType) {
 		GameController gameController = null;
 		if(ControllerEnvironment.getDefaultEnvironment().getControllers().length > gameControllers.size()){
 			for(Controller c : ControllerEnvironment.getDefaultEnvironment().getControllers()){
-				//System.out.println(c.getName());
 				if(gameControllers.get(c) == null && 
 							c.getName().toLowerCase().contains(controllerType.getName())){
 						switch(controllerType){
@@ -53,9 +50,15 @@ public class ControllerManager {
 			c.poll();
 			EventQueue eq = c.getEventQueue();
 			Event event = new Event();
+			boolean breakout;
 			while(eq.getNextEvent(event)){
 				//System.out.println("event name bunkai " + event.getComponent() + " event value " + event.getValue());
-				gameEvents.add(new GameEvent(event, entry.getValue()));
+				breakout = false;
+				GameEvent gameEvent = new GameEvent(event, entry.getValue());
+				for(GameEvent ge : gameEvents){
+					if(ge.equals(gameEvent)) breakout = true; break;
+				}
+				if(!breakout) gameEvents.add(gameEvent);
 			}
 		}
 	}
