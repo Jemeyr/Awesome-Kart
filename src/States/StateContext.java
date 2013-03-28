@@ -16,6 +16,7 @@ import Graphics.Camera;
 import Graphics.DebugRenderMaster;
 import Graphics.RenderMaster;
 import Graphics.RenderMasterFactory;
+import Sound.SoundEmitter;
 import Sound.SoundMaster;
 import World.Kart;
 import World.Persona;
@@ -56,7 +57,11 @@ public class StateContext {
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
-
+		SoundEmitter missleLaunchSound = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
+		SoundEmitter missleLaunchSound2 = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
+		
+		missleLaunchSound.playSound();
+		missleLaunchSound2.playSound();
 	}
 	
 	private void loadModels() {

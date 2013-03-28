@@ -39,8 +39,8 @@ public class SoundMaster {
 	protected boolean listenerComponentExists = false;
 	
 	/** Maximum Data Buffers and emissions */
-	public static final int NUM_BUFFERS = 10;
-	public static final int NUM_SOURCES = 128;
+	public static final int NUM_BUFFERS = 32;
+	public static final int NUM_SOURCES = 256;
 	
 	/**OpenAl engine configurations */
 	private static final float maxSourceDistance = 500;
@@ -99,19 +99,7 @@ public class SoundMaster {
 	    }
 	  }
 	 
-	 protected void setRefDistance(int soundID, float refDistance)
-	 {
-		 
-		 int errCode=0;
-		 AL10.alSourcef(sources.get(soundID), AL10.AL_REFERENCE_DISTANCE, refDistance);
-		  
-		 if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
-		  {
-			  System.out.println(getALErrorString(errCode));
-			  
-			  
-		  }
-	 }
+
 	  
 	  /**
 	   * Adds a source to the sources buffer and configures its properties, such as position and velocity
@@ -188,6 +176,36 @@ public class SoundMaster {
 	  
 	  }
 	  
+		 protected void setRefDistance(int soundID, float refDistance)
+		 {
+			 
+			 int errCode=0;
+			 AL10.alSourcef(sources.get(soundID), AL10.AL_REFERENCE_DISTANCE, refDistance);
+			  
+			 if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+			  {
+				  System.out.println(getALErrorString(errCode));
+				  
+				  
+			  }
+		 }
+		 
+		 protected void setSourceGain(int soundID, float gain){
+			 
+			 int errCode=0;
+			 if(gain > 0)
+			 {
+			 AL10.alSourcef(sources.get(soundID), AL10.AL_REFERENCE_DISTANCE, gain);
+			 }
+			 
+			 if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+			  {
+				  System.out.println(getALErrorString(errCode));
+				  
+				  
+			  } 
+		 }
+	  
 	  /**
 	   * Plays a source
 	   * 
@@ -222,6 +240,33 @@ public class SoundMaster {
 
 	  }
 	  
+	  protected boolean pauseSource(int soundCode)
+	  {
+		  int state = AL10.alGetSourcei(sources.get(soundCode), AL10.AL_SOURCE_STATE);
+		  String errorString;
+		  int errCode;
+			
+		  
+		  if(state == AL10.AL_PLAYING)
+		  {
+			  AL10.alSourcePause(sources.get(soundCode));
+			 
+		  }
+		  
+		  if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+		  {
+			  
+			  errorString= getALErrorString(errCode);
+			  System.out.println(errorString);
+			  return false;
+		  }
+		  
+		  return true;
+		  
+		  
+		  
+	  }
+	  
 	  /**
 	   * Stops the playing of a source
 	   * 
@@ -234,6 +279,7 @@ public class SoundMaster {
 		  String errorString;
 		  int errCode;
 			
+		  
 		  if(state == AL10.AL_PLAYING)
 		  {
 			  AL10.alSourceStop(sources.get(soundCode));
@@ -260,10 +306,22 @@ public class SoundMaster {
 	   */
 	  protected boolean removeSource(int soundCode)
 	  {
+		  int errCode;
 		  stopSource(soundCode);
 		  
-		  sourceIsFilled[soundCode] = false;
+		  /*AL10.alDeleteSources(sources.get(soundCode));
 		  
+		  if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
+		  {
+			  
+			  
+			  System.out.println(getALErrorString(errCode));
+			  return false;
+		  }
+
+		  
+		  sourceIsFilled[soundCode] = false;
+		  */
 		  return true;
 		  
 	  }
@@ -282,6 +340,7 @@ public class SoundMaster {
 	    sources.position(0).limit(position);
 		
 	    AL10.alDeleteSources(sources);
+	    
 	    AL10.alDeleteBuffers(buffer);
 	    AL.destroy();
 	  }
@@ -498,6 +557,7 @@ public class SoundMaster {
 			soundIndexes.put("assets/sound/piano2.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/FancyPants.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/alarma.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Missle_Launch_Mono.wav", new Integer(i++));
 			
 			
 			String errorString;

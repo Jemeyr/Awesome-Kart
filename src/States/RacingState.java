@@ -40,7 +40,7 @@ public class RacingState implements GameState {
 		raceOver = false;
 		elec360power		= 0;
 		
-		this.world = /*A whole*/ new World(renderMaster, playerList);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
+		this.world = /*A whole*/ new World(renderMaster, playerList, this.soundMaster);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
 		
 		initialiseState();
 		
