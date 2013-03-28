@@ -6,6 +6,8 @@ import Collision.CollisionBox;
 import Controller.GameController;
 import Graphics.Camera;
 import Sound.ListenerComponent;
+import States.GameState;
+import States.RacingState;
 
 
 public class Player {
@@ -22,6 +24,7 @@ public class Player {
 	private Vector3f			playerDelta;
 	private Camera				camera;
 	private EntityType			heldItemType;
+	private GameState 		racingState;
 	
 	private float 				jump;
 	private float				speed;
@@ -37,7 +40,7 @@ public class Player {
 	public boolean finishedRace = false;
 	public int playerID= 0;
 	
-	public Player(GameController gameController, Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent, Camera camera){
+	public Player(GameController gameController,Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent, Camera camera){
 		this.gameController 	= gameController;
 		this.kart 				= kart;
 		this.playerDelta		= playerDelta;
@@ -45,11 +48,17 @@ public class Player {
 		this.camera				= camera;
 		this.heldItemType 		= null; // Start with no item
 		
-		playerID = this.gameController.getBackValue()+1;
+		playerID = this.gameController.getId()+1;
 		acceleration 			= DEFAULT_ACCEL;
 		direction 				= 0;
 		speed 					= 0f;
 		jump 					= 0f;
+	}
+	
+	public void setRacingState(GameState racingState)
+	{
+		this.racingState 			= racingState;
+		
 	}
 	
 	public void setWorld(World w)
@@ -115,8 +124,8 @@ public class Player {
 	private float getJump(){
 		float jumpValue = getGameController().getJumpValue();
 		if(jump > 0f || jumpValue == 1){
-			if (jump < 20f) {
-				return (jump++ < 10f) ? 1f : -1f;
+			if (jump < 40f) {
+				return (jump++ < 20f) ? 3f : -3f;
 			} else {
 				jump = 0f; 
 				return jump;
@@ -167,6 +176,8 @@ public class Player {
 				{
 					lapsCompleted++;
 					System.out.println("Player "+playerID+" has completed a lap");
+					
+					racingState.reportLapCompleted(this);
 				}
 				
 				currCheckPoint = nextCheckPoint;

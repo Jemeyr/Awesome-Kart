@@ -46,13 +46,16 @@ public class StateContext {
 		offset				= 0;
 		
 		loadModels();
-		
 		addPlayer(ControllerType.KEYBOARD);
-	//	addPlayer(ControllerType.XBOX);
-
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
+		
+		
+		//addPlayer(ControllerType.XBOX);
+
+		
+
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
@@ -67,6 +70,7 @@ public class StateContext {
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
 		renderMaster.loadModel("rocket");
+		renderMaster.loadModel("item");
 		renderMaster.loadModel("nightFactory");
 		
 	}
@@ -78,7 +82,7 @@ public class StateContext {
 		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, 0.0f, -300f + (10%4) * 150.0f);
 		kart.killme = 12340f;
 		Vector3f playerDelta = new Vector3f();
-		Vector3f.add(kart.position, new Vector3f(offset,0.0f, 0f), kart.position);
+		Vector3f.add(kart.position, new Vector3f(8.5f*83.3f,0.0f, 0f), kart.position);
 		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300 - (int)(offset*7.5f),800,300));
 
 		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent(), cam);

@@ -20,20 +20,24 @@ import World.World;
 public class RacingState implements GameState {
 	
 	public static final boolean DEBUG = false;
+	private static final int lapsInRace = 1;
+	
+	public boolean raceOver;
 	
 	private RenderMaster 								renderMaster;
 	private SoundMaster									soundMaster;
 	private World										world;
 	private List<Camera>								cameras;
 	private int										elec360power;
-		
+	
+	
 	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster, List<Player> playerList){
 		this.renderMaster 	= renderMaster;
 		this.soundMaster	= soundMaster;
 		cameras 			= new ArrayList<Camera>();
 
 
-		
+		raceOver = false;
 		elec360power		= 0;
 		
 		this.world = /*A whole*/ new World(renderMaster, playerList);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
@@ -42,7 +46,21 @@ public class RacingState implements GameState {
 		
 		for(Player player : playerList)
 		{
+			player.setRacingState(this);
 			player.setWorld(this.world);
+			
+		}
+		
+	}
+	
+	@Override
+	public void reportLapCompleted(Player player){
+		
+		//A player is the first to win
+		if(!raceOver && player.lapsCompleted==lapsInRace){
+			raceOver = true;
+			System.out.println("Player "+player.playerID+" Has Won the Race");
+			
 		}
 		
 	}

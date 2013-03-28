@@ -13,7 +13,7 @@ import Graphics.Light;
 import Graphics.RenderMaster;
 
 public class World {
-	private static final float checkpointThresholdSquared = 10000;
+	private static final float checkpointThresholdSquared = 31250;
 	
 	private RenderMaster renderMaster;
 
@@ -71,25 +71,23 @@ public class World {
 		text.setPosition(new Vector3f(-200, 40, 100));
 		otherGraphics.put("AKText", text);
 		
-		// Add Triforce to hit to make items
-		ItemCrate itemCrate = new ItemCrate(renderMaster, this);
-		itemCrate.setPosition(new Vector3f(-300f + 2f * 150.0f, -20.5f, -300f + 2f * 150.0f));
-		itemCrate.setRotation(new Vector3f(0,0,0));
-		items.add(itemCrate);
+		// Add Item Crates in places
+		addItemCrates();
 		
-
 		// Add Lights
 		addLights();
 		
 		//Add the list of chekpoints
 		
+		createAllCheckpoints();
+		
 		//Set the last checkpoint in the list to be the finish checkpoint.
 		if(checkpoints.size()!=0){
-			checkpoints.get(checkpoints.size()).setFinishCheckpoint();
+			checkpoints.get(checkpoints.size()-1).setFinishCheckpoint();
 			
 			for(int i =0; i< playerList.size();i++){
-				playerList.get(i).currCheckPoint = checkpoints.get(0);
-				playerList.get(i).nextCheckPoint = checkpoints.get(1);
+				playerList.get(i).currCheckPoint = checkpoints.get(checkpoints.size()-1);
+				playerList.get(i).nextCheckPoint = checkpoints.get(0);
 			}
 
 		}
@@ -217,8 +215,68 @@ public class World {
 		
 	}
 	
+	private void addItemCrates(){
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 7.5f,	0, 81.3f * -5f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 8.5f,	0, 81.3f * -5f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 9.5f,	0, 81.3f * -5f)));
+		
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 7.5f,	0, 81.3f * 7f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 8.5f,	0, 81.3f * 7f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 9.5f,	0, 81.3f * 7f)));
+		
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 4f,	0, 81.3f * 10f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 4f,	0, 81.3f * 11f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * 4f,	0, 81.3f * 12f)));
+		
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -7f,	0, 81.3f * 10f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -7f,	0, 81.3f * 11f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -7f,	0, 81.3f * 12f)));
+		
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -11f,	0, 81.3f * 4f)));
+		items.add(new ItemCrate(renderMaster, this, new Vector3f(81.3f * -12f,	0, 81.3f * 4f)));
+	}
+	
 	private void addTerrain(){
 		renderMaster.addModel("nightFactory");
+	}
+	
+	private void createAllCheckpoints(){
+		float squareLength = 2000/24;
+		int i = 0;
+		float x =0;
+		float z = 0;
+		
+		
+		x = 8.5f*squareLength;
+		z = 10.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 0f*squareLength;
+		z = 10.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = -10.5f*squareLength;
+		z = 10.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = -10.5f*squareLength;
+		z = -2.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = -3.5f*squareLength;
+		z = -2.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = -3.5f*squareLength;
+		z = 0.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 2.5f*squareLength;
+		z = 0.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 2.5f*squareLength;
+		z = -8.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 8.5f*squareLength;
+		z = -8.5f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		x = 8.5f*squareLength;
+		z = 0f*squareLength;
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
 	}
 	
 	private void addCollisions()
@@ -294,8 +352,10 @@ public class World {
 		Vector3f dist = new Vector3f();
 		Vector3f.sub(position, nextCkPt.post, dist);
 		
-		if(dist.lengthSquared() < checkpointThresholdSquared)
+		
+		if((dist.lengthSquared()) < checkpointThresholdSquared)
 		{
+			
 			retBool = true;
 		}
 		return retBool;
