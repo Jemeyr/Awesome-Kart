@@ -14,7 +14,7 @@ public class PauseMenuState implements GameState {
 	private SoundMaster soundMaster;
 	
 	
-	private SoundEmitter unPauseSound;
+	
 	
 	public PauseMenuState(SoundMaster soundMaster){
 		this.soundMaster = soundMaster;
@@ -33,7 +33,7 @@ public class PauseMenuState implements GameState {
 	public void useBackButton(StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId) {
 		// Back out of pause menu
 		if(DEBUG) System.out.println(invokingId + ": Returning to Game");
-		this.unPauseSound.playSound();
+
 		stateContext.setState(StateContext.RACING_STATE);
 		stateContext.resetControllerLock();
 	}
@@ -47,6 +47,9 @@ public class PauseMenuState implements GameState {
 	@Override
 	public void pause(StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId) {
 		// Effectively unpauses the game
+		
+		this.soundMaster.unPauseSound.playSound();
+		this.soundMaster.musicComponent.playSound();
 		if(DEBUG) System.out.println(invokingId + ": In the Pause Menu, going back to Race");
 		stateContext.setState(StateContext.RACING_STATE);
 		stateContext.resetControllerLock();
@@ -88,8 +91,7 @@ public class PauseMenuState implements GameState {
 
 	@Override
 	public void initialiseState() {
-		this.unPauseSound = this.soundMaster.getSoundComponent("assets/sound/Bleep 1.wav", false);
-		unPauseSound.setSoundGain(200f);
+
 		
 	}
 
