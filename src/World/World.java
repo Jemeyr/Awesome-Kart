@@ -98,8 +98,8 @@ public class World {
 	
 	public void update()
 	{
+		List<Rocket> toRemove = new ArrayList<Rocket>();
 		
-
 		// DO the donut karts
 		for(Kart k : donutKarts)
 		{ 
@@ -117,12 +117,16 @@ public class World {
 		otherGraphics.get("Triforce").setPosition(tempRocket);
 		
 		
-		for(Rocket r : rockets)
-		{
-			r.update();
-			if(r.position.lengthSquared() > 320000)
-			{
-				//kill
+		for(Rocket rocket : rockets){
+			rocket.update();
+			for(Player player : players){
+				if(player.getKart().collisionBox.bIntersects(rocket.collisionBox) && !player.equals(rocket.getOwner())){
+					player.hitPlayer();
+					toRemove.add(rocket);
+				}
+			}
+			if(rocket.position.lengthSquared() > 320000){
+				//toRemove.add(rocket);
 			}
 		}
 		
@@ -130,11 +134,18 @@ public class World {
 			for(ItemCrate ic : items){
 				ic.update();
 				if(ic.collisionBox.bIntersects(player.getKart().collisionBox)){
-					player.setHeldItem(ic.generateItem());
+					player.updateItem(ic.generateItem());
 					ic.disappear();
 				}
 			}
 		}
+		
+		// Remove Rockets
+		for(Rocket rocket : toRemove){
+			rocket.getGraphicsComponent().setPosition(new Vector3f(0,2000,0));
+			rocket.getLight().setPosition(new Vector3f(0,2000,0));
+		}
+		rockets.removeAll(toRemove);
 		
 		// Rotating Text
 		otherGraphics.get("AKText").setRotation(new Vector3f(0,elec360power/1500f, 0));
@@ -142,9 +153,9 @@ public class World {
 	}
 	
 	
-	public void addRocket(Vector3f position, Vector3f rotation)
+	public void addRocket(Vector3f position, Vector3f rotation, Player player)
 	{
-		Rocket r = new Rocket(position, rotation, renderMaster, this);
+		Rocket r = new Rocket(position, rotation, renderMaster, this, player);
 	
 		this.rockets.add(r);
 	}

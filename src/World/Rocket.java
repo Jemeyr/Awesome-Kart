@@ -22,9 +22,10 @@ public class Rocket implements Entity {
 	
 	public CollisionBox collisionBox;
 	
-	public Rocket(Vector3f position, Vector3f rotation, RenderMaster renderMaster, World world)
+	public Rocket(Vector3f position, Vector3f rotation, RenderMaster renderMaster, World world, Player player)
 	{
 		this.world = world;
+		this.owner = player;
 		
 		this.position = position;
 		this.rotation = rotation;
@@ -38,8 +39,20 @@ public class Rocket implements Entity {
 		light.setColor(new Vector3f(1,alternator,0));
 		light.setRad(100);
 		
-		this.collisionBox = new CollisionBox(this.position, new Vector3f(2,2,2));
+		this.collisionBox = new CollisionBox(this.position, new Vector3f(12,12,12));
 		
+	}
+	
+	public Player getOwner(){
+		return owner;
+	}
+	
+	public GraphicsComponent getGraphicsComponent(){
+		return graphicsComponent;
+	}
+	
+	public Light getLight(){
+		return light;
 	}
 	
 	@Override
@@ -78,6 +91,7 @@ public class Rocket implements Entity {
 			if (this.collisionBox.bIntersects(k.collisionBox))
 			{
 				toRemove = k;
+				break;
 			}
 		}
 		if(toRemove != null)
