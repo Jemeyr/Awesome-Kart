@@ -64,15 +64,14 @@ public class Player {
 		spin					= 0;
 	}
 	
-	public void setRacingState(GameState racingState)
-	{
-		this.racingState 			= racingState;
-		
+	public void setRacingState(GameState racingState){
+		this.racingState = racingState;
 	}
+	
 	
 	public void setWorld(World w)
 	{
-		this.world =w;
+		this.world = w;
 	}
 	
 	public GameController getGameController(){
@@ -202,13 +201,12 @@ public class Player {
 					lapsCompleted++;
 					System.out.println("Player "+playerID+" has completed a lap");
 					
-					racingState.reportLapCompleted(this);
-					if (nextCheckPoint.isFinishLine)
-					{
+					if (nextCheckPoint.isFinishLine) {
 						lapsCompleted++;
 						System.out.println("Player "+playerID+" has completed a lap");
 					}
 					
+					racingState.reportLapCompleted(this);
 					currCheckPoint = nextCheckPoint;
 					nextCheckPoint = world.getNextChekpoint(currCheckPoint);
 				}
