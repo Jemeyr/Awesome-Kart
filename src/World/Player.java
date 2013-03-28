@@ -251,6 +251,7 @@ public class Player {
 	public void hitPlayer(){
 		isHit 	= true;
 		spin	= 8;
+		getKart().getPersona().getHit().playSound();
 	}
 	
 	public void updateItem(EntityType itemType){

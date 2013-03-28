@@ -649,7 +649,7 @@ public class SoundMaster {
 			  
 			  musicComponent = this.getSoundComponent("assets/sound/Race Musici.wav", true);
 				musicComponent.setSoundGain(0.5f);
-				cheerComponent = this.getSoundComponent("assets/sound/Victory!.wav", true);
+				cheerComponent = this.getSoundComponent("assets/sound/Victory!.wav", false);
 				pauseSound = this.getSoundComponent("assets/sound/Bleep 2.wav", false);
 				pauseSound.setSoundGain(200f);
 				this.unPauseSound = this.getSoundComponent("assets/sound/Bleep 1.wav", false);

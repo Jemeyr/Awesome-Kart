@@ -71,12 +71,15 @@ public class XboxController implements GameController {
 			pauseButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(JOYSTICK_X_DIR.equals(eventComponentString)){
-			if(eventValue < -0.01f){
+			if(eventValue < -0.2f){
 				stateContext.moveLeft(stateContext, getId());
-			} else if (eventValue > 0.01f){
+				leftRightValue = eventValue;
+			} else if (eventValue > 0.2f){
 				stateContext.moveRight(stateContext, getId());
+				leftRightValue = eventValue;
+			} else {
+				leftRightValue = 0f;
 			}
-			leftRightValue = eventValue;
 		}
 		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
 			if(eventValue > 0.01f){
