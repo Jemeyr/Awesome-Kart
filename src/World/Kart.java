@@ -66,7 +66,10 @@ public class Kart {
 		wheelBR.setPosition(new Vector3f(-wheelSideOffset, wheelHeightOffset, -wheelBackOffset));
 		
 		rider.setPosition(new Vector3f(0,4,0));
-		hat.setPosition(new Vector3f(0,2,-0.35f));
+		
+		Vector3f hatPos = new Vector3f(0,2,-0.35f);
+		Vector3f.add(hatPos, persona.hatOffset, hatPos);
+		hat.setPosition(hatPos);
 		
 		this.collisionBox = new CollisionBox(new Vector3f(), new Vector3f(4,4,4));
 		
