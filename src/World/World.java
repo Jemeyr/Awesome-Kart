@@ -119,35 +119,57 @@ public class World {
 		le.setPosition(new Vector3f(-30,10,0));
 		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
 		
+		//three big corner lights
 		le = renderMaster.addLight();
 		le.setRad(3000f);
-		le.setPosition(new Vector3f(-1000, 100, -1000));
+		le.setPosition(new Vector3f(-1000, 100, -320));
 		le.setColor(new Vector3f(1,0,0));
 		
 		le = renderMaster.addLight();
 		le.setRad(3000f);
-		le.setPosition(new Vector3f(1000, 100, -1000));
-		le.setColor(new Vector3f(1,1,0));
-		
-		le = renderMaster.addLight();
-		le.setRad(3000f);
-		le.setPosition(new Vector3f(1000, 100, 1000));
+		le.setPosition(new Vector3f(840, 100, 1000));
 		le.setColor(new Vector3f(0,1,0));
 		
 		le = renderMaster.addLight();
 		le.setRad(3000f);
 		le.setPosition(new Vector3f(-1000, 100, 1000));
 		le.setColor(new Vector3f(0,0,1));
-		/*
-		Random r = new Random();
 		
-		for(int h = 0; h < 25; h++)
-		{
-			le = renderMaster.addLight();
-			le.setRad(200.0f);
-			le.setColor(new Vector3f(r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f));
-			le.setPosition(new Vector3f(1000 - 400 * (h % 5), 30, 1000 - 400 * h/5));
-		}*/
+		//green pit lights
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(40, 100, -120));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(800, 100, -916));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(440, 100, -360));
+		le.setColor(new Vector3f(0,1,0));
+		
+		
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(800, 100, -240));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(880, 100, -880));
+		le.setColor(new Vector3f(0,1,0));
+
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(220, 100, -920));
+		le.setColor(new Vector3f(0,1,0));
+		
+		
+		
 	}
 	
 	private void addTerrain(){
