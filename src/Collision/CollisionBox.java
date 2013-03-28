@@ -80,7 +80,6 @@ public class CollisionBox {
 								diff.y * Math.signum(-diffPos.y),
 								diff.z * Math.signum(-diffPos.z));
 		
-		System.out.println("ret old " + ret);
 		if(Math.abs(ret.x) > Math.abs(ret.z))
 		{
 			ret.x = 0;

@@ -6,11 +6,13 @@ public class Checkpoint {
 	protected Vector3f post;
 	protected boolean isFinishLine  = false;
 	public int pointNum = 0;
+	public float rotation;
 	
-	public Checkpoint(Vector3f post, int num)
+	public Checkpoint(Vector3f post, int num, float rot)
 	{
 		this.post =  post;
 		pointNum = num;
+		this.rotation = rot;
 		
 	}
 	
