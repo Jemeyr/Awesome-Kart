@@ -7,7 +7,7 @@ import Graphics.GraphicsComponent;
 import Graphics.Light;
 import Graphics.RenderMaster;
 
-public class Rocket {
+public class Rocket implements Entity {
 	public Player owner;
 	public World world;
 	
@@ -42,6 +42,7 @@ public class Rocket {
 		
 	}
 	
+	@Override
 	public void update()
 	{
 		Vector3f delta = this.graphicsComponent.getTransformedVector(0, 0, 5, false);

@@ -20,6 +20,7 @@ public class World {
 	protected List<Kart> donutKarts;
 	protected List<Rocket> rockets;
 	protected List<Player> players;
+	protected List<ItemCrate> items;
 	protected List<Checkpoint> checkpoints;
 	
 	private HashMap<String, GraphicsComponent>	otherGraphics;
@@ -35,6 +36,7 @@ public class World {
 		
 		donutKarts = new ArrayList<Kart>();
 		rockets = new ArrayList<Rocket>();
+		items = new ArrayList<ItemCrate>();
 		checkpoints = new ArrayList<Checkpoint>();
 		
 		otherGraphics		= new HashMap<String, GraphicsComponent>();
@@ -61,6 +63,12 @@ public class World {
 		GraphicsComponent text = renderMaster.addModel("aktext");
 		text.setPosition(new Vector3f(-200, 40, 100));
 		otherGraphics.put("AKText", text);
+		
+		// Add Triforce to hit to make items
+		ItemCrate itemCrate = new ItemCrate(renderMaster, this);
+		itemCrate.setPosition(new Vector3f(-300f + 2f * 150.0f, -20.5f, -300f + 2f * 150.0f));
+		itemCrate.setRotation(new Vector3f(0,0,0));
+		items.add(itemCrate);
 		
 
 		// Add Lights
@@ -110,6 +118,16 @@ public class World {
 			if(r.position.lengthSquared() > 320000)
 			{
 				//kill
+			}
+		}
+		
+		for(Player player : players){
+			for(ItemCrate ic : items){
+				ic.update();
+				if(ic.collisionBox.bIntersects(player.getKart().collisionBox)){
+					player.setHeldItem(ic.generateItem());
+					ic.disappear();
+				}
 			}
 		}
 		

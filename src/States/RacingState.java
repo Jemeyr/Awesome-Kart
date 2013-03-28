@@ -56,7 +56,7 @@ public class RacingState implements GameState {
 		
 		// Add and start music
 		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/alarma.wav", true); 
-		musicComponent.playSound();
+		//musicComponent.playSound();
 	}
 	
 	@Override
