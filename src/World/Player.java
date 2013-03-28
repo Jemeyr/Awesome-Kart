@@ -88,6 +88,12 @@ public class Player {
 		this.carAcc = carAcc;
 		this.carMaxSpeed= carMaxSpeed;
 		this.carBrake = carBrake;
+		
+		this.carIdle.setSoundGain(5f);
+		this.carAcc.setSoundGain(5f);
+		this.carMaxSpeed.setSoundGain(5f);
+		this.carBrake.setSoundGain(5f);
+		
 	}
 	
 	
@@ -138,30 +144,35 @@ public class Player {
 			
 			if(forwardBackValue >= direction){
 				acceleration *= ACCEL_SCALE_UP;
-				this.carAcc.playSound();
-				this.carIdle.stopSound();
-				this.carMaxSpeed.stopSound();
-				this.carBrake.stopSound();
+
+				
 			} else {
 				acceleration = DEFAULT_ACCEL;
 				direction = (forwardBackValue > 0) ? 1 : -1;
-				this.carMaxSpeed.playSound();
-				this.carIdle.stopSound();
-				this.carAcc.stopSound();
-				this.carBrake.stopSound();
+			
 			}
 			 
 		}
+		
 		
 		//play brake sound?
 		if(forwardBackValue != 0){
 			speed = forwardBackValue * acceleration;
 			
-			this.carBrake.playSound();
-			this.carIdle.stopSound();
-			this.carAcc.stopSound();
-			this.carBrake.stopSound();
-			this.carMaxSpeed.stopSound();
+			
+			if(speed<MAX_ACCEL){
+				this.carAcc.playSound();
+				this.carIdle.stopSound();
+				this.carMaxSpeed.stopSound();
+				this.carBrake.stopSound();
+			}
+			else if (speed >= MAX_ACCEL){
+				this.carMaxSpeed.playSound();
+				this.carIdle.stopSound();
+				this.carAcc.stopSound();
+				this.carBrake.stopSound();
+			}
+		
 		} 
 		//play idle sound
 		else {
