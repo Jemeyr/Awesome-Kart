@@ -49,7 +49,7 @@ public class StateContext {
 		
 		loadModels();
 		addPlayer(ControllerType.KEYBOARD);
-		addPlayer(ControllerType.XBOX);
+		//addPlayer(ControllerType.XBOX);
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
@@ -57,11 +57,6 @@ public class StateContext {
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
-		SoundEmitter missleLaunchSound = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
-		SoundEmitter missleLaunchSound2 = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
-		
-		missleLaunchSound.playSound();
-		missleLaunchSound2.playSound();
 	}
 	
 	private void loadModels() {

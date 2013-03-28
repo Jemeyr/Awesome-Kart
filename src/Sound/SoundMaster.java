@@ -562,6 +562,20 @@ public class SoundMaster {
 			soundIndexes.put("assets/sound/FancyPants.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/alarma.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/Missle_Launch_Mono.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Bleep 1.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Bleep 2.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Bunkai - Bunkai.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/FancyPants.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Angry Grunt - Sam.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/I gotcha now - Sam.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/I'll get you - Da Conti.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Look out for - Michael.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Oh Noo - Michael.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Race Musici.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Soske - Bunkai.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Victory!.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Take that - Da Conti.wav", new Integer(i++));
+			
 			
 			
 			String errorString;
