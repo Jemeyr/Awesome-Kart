@@ -31,30 +31,34 @@ public class Persona {
 			case 1:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Bunkai - Bunkai.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Soske - Bunkai.wav", false);
+				this.model = renderMaster.addModel("sam");
 				break;
 			}
 			case 2:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Angry Grunt - Sam.wav", false);
+				this.model = renderMaster.addModel("test");
 				break;
 			}
 			case 3:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Look out for - Michael.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Oh Noo - Michael.wav", false);
+				this.model = renderMaster.addModel("michael");
 				break;
 			}
 			case 4:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Take that - Da Conti.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/I'll get you - Da Conti.wav", false);
+				this.model = renderMaster.addModel("sam");
 				break;
 			}
 			default:{ // Justin Kaice
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Take that - Da Conti.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
+				this.model = renderMaster.addModel("goop");
 			}
 		}
 
-		this.model = renderMaster.addModel("sam");
 	}
 	
 	public GraphicsComponent getModel()

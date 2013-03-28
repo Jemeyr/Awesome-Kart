@@ -73,7 +73,6 @@ public class RacingState implements GameState {
 	public void initialiseState() {
 		ListenerComponent listenerComponent = null;
 		
-		
 		this.soundMaster.musicComponent.playSound();
 	}
 	

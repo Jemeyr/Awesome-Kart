@@ -39,6 +39,7 @@ public class Rocket implements Entity {
 		
 		this.missleLaunch = missleLaunch;
 		missleLaunch.setSoundPosition(position);
+		this.missleLaunch.setSoundGain(0.4f);
 		this.graphicsComponent = renderMaster.addModel("rocket");
 		this.light = renderMaster.addLight();
 		
