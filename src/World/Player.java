@@ -23,15 +23,19 @@ public class Player {
 	private ListenerComponent 	listenerComponent; 
 	private Vector3f			playerDelta;
 	private Camera				camera;
+	
 	private EntityType			heldItemType;
-	private GameState 		racingState;
+	private GameState 			racingState;
+	private int					powerLevel;
+	private int					ammo;
 	
 	private float 				jump;
 	private float				speed;
 	private float				acceleration;
 	private int					direction; // 1 for forward, -1 for back, 0 for none
 	
-	
+	private boolean				isHit;
+	private int					spin;
 	
 	protected Checkpoint currCheckPoint = null;
 	protected Checkpoint nextCheckPoint = null;
@@ -48,22 +52,26 @@ public class Player {
 		this.camera				= camera;
 		this.heldItemType 		= null; // Start with no item
 		
-		playerID = this.gameController.getId()+1;
+		playerID 				= this.gameController.getId()+1;
 		acceleration 			= DEFAULT_ACCEL;
 		direction 				= 0;
 		speed 					= 0f;
 		jump 					= 0f;
+		powerLevel				= 0;
+		ammo					= 0;
+		
+		isHit					= false;
+		spin					= 0;
 	}
 	
-	public void setRacingState(GameState racingState)
-	{
-		this.racingState 			= racingState;
-		
+	public void setRacingState(GameState racingState){
+		this.racingState = racingState;
 	}
+	
 	
 	public void setWorld(World w)
 	{
-		this.world =w;
+		this.world = w;
 	}
 	
 	public GameController getGameController(){
@@ -91,7 +99,9 @@ public class Player {
 	}
 	
 	public void clearItem(){
-		this.heldItemType = null;
+		this.heldItemType 	= null;
+		this.ammo			= 0;
+		this.powerLevel		= 0;
 	}
 	
 	/**
@@ -141,55 +151,79 @@ public class Player {
 			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
 			switch(heldItemType){
 				case ROCKET: {
-					world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y,0));
+					world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y,0), this);
+					if(--ammo == 0) clearItem();
 				}
 			}
-			clearItem(); // Now has no item
+		}
+	}
+	
+	public void hitPlayer(){
+		isHit 	= true;
+		spin	= 8;
+	}
+	
+	public void updateItem(EntityType itemType){
+		if(heldItemType == null){
+			setHeldItem(itemType);
+			powerLevel = 1;
+			ammo = 1;
+		} else {
+			powerLevel = 2;
+			if(powerLevel == 2) ammo = 10;
 		}
 	}
 	
 	public void update(){
-		Vector3f.add(playerDelta, new Vector3f(0, getJump(), getAcceleration()), playerDelta); // Forward/Backward movement
-		Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-20f, 0), getKart().getRotation()); //Left/Right Movement
-		
-		playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
-		Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
-		getKart().update();
-		
-		Vector3f collide = new Vector3f();
-		for(CollisionBox other : world.walls)
-		{
-			collide = getKart().collisionBox.intersects(other); 
-			if(collide != null)
+		if(!isHit){
+			Vector3f.add(playerDelta, new Vector3f(0, getJump(), getAcceleration()), playerDelta); // Forward/Backward movement
+			Vector3f.add(getKart().getRotation(), new Vector3f(0, getGameController().getLeftRightValue()/-20f, 0), getKart().getRotation()); //Left/Right Movement
+			
+			playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
+			Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
+			getKart().update();
+			
+			Vector3f collide = new Vector3f();
+			for(CollisionBox other : world.walls)
 			{
-				
-				Vector3f.add(getKart().getPosition(), collide, getKart().getPosition());
+				collide = getKart().collisionBox.intersects(other); 
+				if(collide != null)
+				{
+					Vector3f.add(getKart().getPosition(), collide, getKart().getPosition());
+				}
 			}
-		}
-		
-		//Check CheckPoints
-		if(currCheckPoint!=null)
-		{
-			if(world.reachedCheckpoint(nextCheckPoint, getKart().getPosition()))
+			
+			//Check CheckPoints
+			if(currCheckPoint!=null)
 			{
-				if (nextCheckPoint.isFinishLine)
+				if(world.reachedCheckpoint(nextCheckPoint, getKart().getPosition()))
 				{
 					lapsCompleted++;
 					System.out.println("Player "+playerID+" has completed a lap");
 					
+					if (nextCheckPoint.isFinishLine) {
+						lapsCompleted++;
+						System.out.println("Player "+playerID+" has completed a lap");
+					}
+					
 					racingState.reportLapCompleted(this);
+					currCheckPoint = nextCheckPoint;
+					nextCheckPoint = world.getNextChekpoint(currCheckPoint);
 				}
-				
-				currCheckPoint = nextCheckPoint;
-				nextCheckPoint = world.getNextChekpoint(currCheckPoint);
-				
 			}
+			
+			
+			//This will cause a null exception if used with ryan's ControllerMain test class
+			listenerComponent.setListenerPosition(getKart().getPosition());
+			playerDelta.set(0, 0, 0);
+		} else {
+			Vector3f.add(getKart().getRotation(), new Vector3f(0, spin/-4f, 0), getKart().getRotation()); 
+			playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
+			Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
+			getKart().update();
+			spin -= 0.01f;
+			if(spin == 0.0f) isHit = false;
 		}
-		
-		
-		//This will cause a null exception if used with ryan's ControllerMain test class
-		listenerComponent.setListenerPosition(getKart().getPosition());
-		playerDelta.set(0, 0, 0);
 	}
 	
 	public void updateCamera(){
@@ -199,6 +233,14 @@ public class Player {
 		
 		getCamera().setPosition(camPos);
 		getCamera().setTarget(targ);
+	}
+	
+	@Override
+	public boolean equals(Object other){
+		if(!(other instanceof Player)) return false;
+		
+		Player player = (Player)other;
+		return (this.playerID == player.playerID);
 	}
 
 }

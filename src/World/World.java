@@ -98,8 +98,8 @@ public class World {
 	
 	public void update()
 	{
+		List<Rocket> toRemove = new ArrayList<Rocket>();
 		
-
 		// DO the donut karts
 		for(Kart k : donutKarts)
 		{ 
@@ -114,6 +114,7 @@ public class World {
 		tempRocket.z = (float) (tempRocket.z * 0.97 + 0.03 * players.get(0).getKart().position.z);
 		otherGraphics.get("Triforce").setPosition(tempRocket);
 		
+
 		for(Rocket r : rockets)
 		{
 			r.update();
@@ -123,18 +124,24 @@ public class World {
 			rockets.remove(r);
 			renderMaster.removeModel(r.graphicsComponent);
 			renderMaster.removeLight(r.light);
-			
 		}
 		
 		for(Player player : players){
 			for(ItemCrate ic : items){
 				ic.update();
 				if(ic.collisionBox.bIntersects(player.getKart().collisionBox)){
-					player.setHeldItem(ic.generateItem());
+					player.updateItem(ic.generateItem());
 					ic.disappear();
 				}
 			}
 		}
+		
+		// Remove Rockets
+		for(Rocket rocket : toRemove){
+			rocket.getGraphicsComponent().setPosition(new Vector3f(0,2000,0));
+			rocket.getLight().setPosition(new Vector3f(0,2000,0));
+		}
+		rockets.removeAll(toRemove);
 		
 		// Rotating Text
 		otherGraphics.get("AKText").setRotation(new Vector3f(0,elec360power/1500f, 0));
@@ -142,9 +149,9 @@ public class World {
 	}
 	
 	
-	public void addRocket(Vector3f position, Vector3f rotation)
+	public void addRocket(Vector3f position, Vector3f rotation, Player player)
 	{
-		Rocket r = new Rocket(position, rotation, renderMaster, this);
+		Rocket r = new Rocket(position, rotation, renderMaster, this, player);
 	
 		this.rockets.add(r);
 	}
@@ -239,6 +246,27 @@ public class World {
 		renderMaster.addModel("nightFactory");
 	}
 	
+	private void addCollisions()
+	{
+		//fucking nummers
+		this.walls.add(new CollisionBox(new Vector3f(-18.66f + 916.66f,0f,933.33f+8f), new Vector3f(166.66f,9000f,2200f)));
+		this.walls.add(new CollisionBox(new Vector3f(-125.00f - 8.5f,0,458.33f + 18f), new Vector3f(1416.66f + 17f,9000f,583.33f + 12f)));
+		this.walls.add(new CollisionBox(new Vector3f(-625f -12,0f,41.66f + 26), new Vector3f(416.66f + 16f,9000f,250f + 40f)));
+		this.walls.add(new CollisionBox(new Vector3f(458.33f - 12f,0f,208.33f + 12f), new Vector3f(250f + 16f,9000f,750f)));
+		this.walls.add(new CollisionBox(new Vector3f(-583.33f,0f,-666.66f + 32f), new Vector3f(833.33f + 60f,9000f,666.66f)));
+		this.walls.add(new CollisionBox(new Vector3f(-83.33f -12f,0f,-541.66f + 32f), new Vector3f(166.66f + 16f,9000f,916.66f)));
+
+		this.walls.add(new CollisionBox(new Vector3f(-1083.33f - 2f,0f,0f), new Vector3f(166.66f,9000f,2200f)));
+		this.walls.add(new CollisionBox(new Vector3f(0f,0f,1083.33f + 8.0f), new Vector3f(2200f,9000f,166.66f)));
+		
+		this.pits.add(new CollisionBox(new Vector3f(-12f + 5.5f * 83.33f,0f,20f + -4.5f * 83.33f), new Vector3f( 3f * 83.33f,9000f,5f * 83.33f)));
+		this.pits.add(new CollisionBox(new Vector3f(6f * 83.33f,0f,16f + -11f * 83.33f), new Vector3f(12f * 83.33f,9000f,2f * 83.33f)));
+		this.pits.add(new CollisionBox(new Vector3f(-8f + 11f * 83.33f,0f,-6f * 83.33f), new Vector3f(2f * 83.33f,9000f,8f * 83.33f)));
+		this.pits.add(new CollisionBox(new Vector3f(-16f + 0.5f * 83.33f,0f,16 + -5.5f * 83.33f), new Vector3f(1f * 83.33f,9000f,9f * 83.33f)));
+		
+	}
+	
+	
 	private void createAllCheckpoints(){
 		float squareLength = 2000/24;
 		int i = 0;
@@ -277,27 +305,6 @@ public class World {
 		z = 0f*squareLength;
 		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
 	}
-	
-	private void addCollisions()
-	{
-		//fucking nummers
-		this.walls.add(new CollisionBox(new Vector3f(-18.66f + 916.66f,0f,933.33f+8f), new Vector3f(166.66f,9000f,2200f)));
-		this.walls.add(new CollisionBox(new Vector3f(-125.00f - 8.5f,0,458.33f + 18f), new Vector3f(1416.66f + 17f,9000f,583.33f + 12f)));
-		this.walls.add(new CollisionBox(new Vector3f(-625f -12,0f,41.66f + 26), new Vector3f(416.66f + 16f,9000f,250f + 40f)));
-		this.walls.add(new CollisionBox(new Vector3f(458.33f - 12f,0f,208.33f + 12f), new Vector3f(250f + 16f,9000f,750f)));
-		this.walls.add(new CollisionBox(new Vector3f(-583.33f,0f,-666.66f + 32f), new Vector3f(833.33f + 60f,9000f,666.66f)));
-		this.walls.add(new CollisionBox(new Vector3f(-83.33f -12f,0f,-541.66f + 32f), new Vector3f(166.66f + 16f,9000f,916.66f)));
-
-		this.walls.add(new CollisionBox(new Vector3f(-1083.33f - 2f,0f,0f), new Vector3f(166.66f,9000f,2200f)));
-		this.walls.add(new CollisionBox(new Vector3f(0f,0f,1083.33f + 8.0f), new Vector3f(2200f,9000f,166.66f)));
-		
-		this.pits.add(new CollisionBox(new Vector3f(-12f + 5.5f * 83.33f,0f,20f + -4.5f * 83.33f), new Vector3f( 3f * 83.33f,9000f,5f * 83.33f)));
-		this.pits.add(new CollisionBox(new Vector3f(6f * 83.33f,0f,16f + -11f * 83.33f), new Vector3f(12f * 83.33f,9000f,2f * 83.33f)));
-		this.pits.add(new CollisionBox(new Vector3f(-8f + 11f * 83.33f,0f,-6f * 83.33f), new Vector3f(2f * 83.33f,9000f,8f * 83.33f)));
-		this.pits.add(new CollisionBox(new Vector3f(-16f + 0.5f * 83.33f,0f,16 + -5.5f * 83.33f), new Vector3f(1f * 83.33f,9000f,9f * 83.33f)));
-		
-	}
-	
 	
 	/**
 	 * Gets the next checkpoint in the list of checkpoints
