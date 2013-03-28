@@ -20,13 +20,13 @@ public class ItemCrate {
 	
 	private int	resetCounter;
 	
-	public ItemCrate(RenderMaster renderMaster, World world){
+	public ItemCrate(RenderMaster renderMaster, World world, Vector3f initialPosition){
 		this.renderMaster 	= renderMaster;
 		this.world 			= world;
 		
 		this.itemCrate		= renderMaster.addModel("item"); // TODO Replace with an actual item crate
-		this.collisionBox	= new CollisionBox(new Vector3f(), new Vector3f(4,4,4));
-		this.position 		= new Vector3f();
+		this.collisionBox	= new CollisionBox(new Vector3f(), new Vector3f(8,8,8));
+		this.position 		= initialPosition;
 		this.rotation 		= new Vector3f();
 		this.resetCounter	= 0;
 	}

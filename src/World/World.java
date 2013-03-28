@@ -67,8 +67,7 @@ public class World {
 		otherGraphics.put("AKText", text);
 		
 		// Add Triforce to hit to make items
-		ItemCrate itemCrate = new ItemCrate(renderMaster, this);
-		itemCrate.setPosition(new Vector3f(0,0,0));
+		ItemCrate itemCrate = new ItemCrate(renderMaster, this, new Vector3f(0,0,0));
 		items.add(itemCrate);
 		
 
