@@ -3,6 +3,7 @@ package States;
 import java.util.List;
 
 import Graphics.RenderMaster;
+import Sound.SoundEmitter;
 import Sound.SoundMaster;
 import World.Player;
 
@@ -10,8 +11,13 @@ import World.Player;
 public class PauseMenuState implements GameState {
 
 	public static final boolean DEBUG = true;
+	private SoundMaster soundMaster;
 	
-	public PauseMenuState(){
+	
+	private SoundEmitter unPauseSound;
+	
+	public PauseMenuState(SoundMaster soundMaster){
+		this.soundMaster = soundMaster;
 		initialiseState();
 	}
 	
@@ -27,6 +33,7 @@ public class PauseMenuState implements GameState {
 	public void useBackButton(StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId) {
 		// Back out of pause menu
 		if(DEBUG) System.out.println(invokingId + ": Returning to Game");
+		this.unPauseSound.playSound();
 		stateContext.setState(StateContext.RACING_STATE);
 		stateContext.resetControllerLock();
 	}
@@ -81,6 +88,8 @@ public class PauseMenuState implements GameState {
 
 	@Override
 	public void initialiseState() {
+		this.unPauseSound = this.soundMaster.getSoundComponent("assets/sound/Bleep 1.wav", false);
+		unPauseSound.setSoundGain(200f);
 		
 	}
 

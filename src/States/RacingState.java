@@ -31,6 +31,7 @@ public class RacingState implements GameState {
 	private int											elec360power;
 	private SoundEmitter								musicComponent;
 	private SoundEmitter								cheerComponent;
+	private SoundEmitter 								pauseSound;
 	
 	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster, List<Player> playerList){
 		this.renderMaster 	= renderMaster;
@@ -63,7 +64,7 @@ public class RacingState implements GameState {
 		if(!raceOver && player.lapsCompleted==lapsInRace){
 			raceOver = true;
 			System.out.println("Player "+player.playerID+" Has Won the Race");
-			cheerComponent = this.soundMaster.getSoundComponent("assets/sound/Victory!.wav", true);
+			
 			cheerComponent.playSound();
 			musicComponent.stopSound();
 		}
@@ -75,6 +76,11 @@ public class RacingState implements GameState {
 		ListenerComponent listenerComponent = null;
 		// Add and start music
 		musicComponent = this.soundMaster.getSoundComponent("assets/sound/Race Musici.wav", true);
+		musicComponent.setSoundGain(0.5f);
+		cheerComponent = this.soundMaster.getSoundComponent("assets/sound/Victory!.wav", true);
+		pauseSound = this.soundMaster.getSoundComponent("assets/sound/Bleep 2.wav", false);
+		pauseSound.setSoundGain(200f);
+		
 		musicComponent.playSound();
 	}
 	
@@ -101,6 +107,9 @@ public class RacingState implements GameState {
 	@Override
 	public void pause(StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId) {
 		if(DEBUG) System.out.println(invokingId + ": About to pause the race.");
+		pauseSound.playSound();
+		//should pause sound here, but when do we resume?
+		//musicComponent.pauseSound();
 		stateContext.setState(StateContext.PAUSE_MENU_STATE);
 		stateContext.setLockedControllerId(invokingId);
 	}

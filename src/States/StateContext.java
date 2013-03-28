@@ -54,11 +54,23 @@ public class StateContext {
 		//addPlayer(ControllerType.XBOX);
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
-		PAUSE_MENU_STATE 	= new PauseMenuState();
+		PAUSE_MENU_STATE 	= new PauseMenuState( soundMaster);
 
 		setState(RACING_STATE);
 		
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
+		
+
+	
+		
+		/*
+		SoundEmitter sound1 = this.soundMaster.getSoundComponent("assets/sound/carIdle.wav", false);
+		SoundEmitter sound2 = this.soundMaster.getSoundComponent("assets/sound/carMaxSpeed.wav", false);
+		sound1.setSoundGain(.5f);
+		sound2.setSoundGain(.5f);
+		sound1.playSound();
+		sound2.playSound();*/
+		
 	}
 	
 	private void loadModels() {
@@ -89,6 +101,10 @@ public class StateContext {
 		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300 - (int)(offset*7.5f),800,300));
 
 		Player player = new Player(gameController, kart, playerDelta, soundMaster.getListenerComponent(), cam);
+		player.setSounds(this.soundMaster.getSoundComponent("assets/sound/carIdle.wav", false), 
+				this.soundMaster.getSoundComponent("assets/sound/Car Accelerating.wav", false),
+				this.soundMaster.getSoundComponent("assets/sound/carMaxSpeed.wav", false),
+				this.soundMaster.getSoundComponent("assets/sound/car-brake.wav", false));
 		playerList.add(player);
 		offset += 40f;
 	}

@@ -199,7 +199,8 @@ public class SoundMaster {
 			 int errCode=0;
 			 if(gain > 0)
 			 {
-			 AL10.alSourcef(sources.get(soundID), AL10.AL_REFERENCE_DISTANCE, gain);
+				 AL10.alSourcef(sources.get(soundID), AL10.AL_GAIN, gain);
+				 AL10.alSourcef(sources.get(soundID), AL10.AL_MAX_GAIN, gain);
 			 }
 			 
 			 if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
@@ -464,8 +465,10 @@ public class SoundMaster {
 		  Set soundFileNames =  soundIndexes.keySet();
 		  
 		  for(Iterator<String> it = soundFileNames.iterator(); it.hasNext(); ){
+			  fileName = it.next();
+			  
 			  try {
-					fileName = it.next();
+					
 					is = new FileInputStream(fileName);
 					bufferedIs = new BufferedInputStream(is);
 					waveFile = null;
@@ -476,6 +479,7 @@ public class SoundMaster {
 				
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
+					System.out.println("Failed to load file: "+fileName );
 					e.printStackTrace();
 					
 				}
@@ -575,8 +579,9 @@ public class SoundMaster {
 			soundIndexes.put("assets/sound/Soske - Bunkai.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/Victory!.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/Take that - Da Conti.wav", new Integer(i++));
-			
-			
+			soundIndexes.put("assets/sound/carIdle.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/carMaxSpeed.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/car-brake.wav", new Integer(i++));
 			String errorString;
 			int errCode;
 			// Initialize the buffers for audio data
