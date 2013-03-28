@@ -6,6 +6,7 @@ import Collision.CollisionBox;
 import Graphics.GraphicsComponent;
 import Graphics.Light;
 import Graphics.RenderMaster;
+import Sound.SoundEmitter;
 
 public class Rocket implements Entity {
 	public Player owner;
@@ -17,12 +18,13 @@ public class Rocket implements Entity {
 	private GraphicsComponent graphicsComponent;
 	private Light light;
 	
+	
 	private float alternator;
 	private boolean inc;
 	
 	public CollisionBox collisionBox;
-	
-	public Rocket(Vector3f position, Vector3f rotation, RenderMaster renderMaster, World world, Player player)
+	public SoundEmitter missleLaunch;
+	public Rocket(Vector3f position, Vector3f rotation, RenderMaster renderMaster, World world, Player player, SoundEmitter missleLaunch)
 	{
 		this.world = world;
 		this.owner = player;
@@ -30,7 +32,8 @@ public class Rocket implements Entity {
 		this.position = position;
 		this.rotation = rotation;
 		
-		
+		this.missleLaunch = missleLaunch;
+		missleLaunch.setSoundPosition(position);
 		this.graphicsComponent = renderMaster.addModel("rocket");
 		this.light = renderMaster.addLight();
 		
@@ -40,6 +43,8 @@ public class Rocket implements Entity {
 		light.setRad(100);
 		
 		this.collisionBox = new CollisionBox(this.position, new Vector3f(12,12,12));
+		
+		missleLaunch.playSound();
 		
 	}
 	
@@ -65,6 +70,8 @@ public class Rocket implements Entity {
 		this.graphicsComponent.setPosition(position);
 
 		this.graphicsComponent.setRotation(rotation);
+		
+		this.missleLaunch.setSoundPosition(this.position);
 
 		//cute flashy light
 		if(inc)

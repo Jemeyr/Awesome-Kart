@@ -11,11 +11,14 @@ import Graphics.DebugGraphicsComponent;
 import Graphics.GraphicsComponent;
 import Graphics.Light;
 import Graphics.RenderMaster;
+import Sound.SoundEmitter;
+import Sound.SoundMaster;
 
 public class World {
 	private static final float checkpointThresholdSquared = 31250;
 	
 	private RenderMaster renderMaster;
+	private SoundMaster soundMaster;
 
 	protected List<Kart> donutKarts;
 	protected List<Rocket> rockets;
@@ -28,10 +31,11 @@ public class World {
 	
 	private int elec360power;
 	
-	public World(RenderMaster renderMaster,List<Player> playerList)
+	public World(RenderMaster renderMaster,List<Player> playerList, SoundMaster soundMaster)
 	{
 		this.renderMaster = renderMaster;
 		this.players = playerList;
+		this.soundMaster = soundMaster;
 		
 		elec360power = 0;
 		
@@ -155,7 +159,8 @@ public class World {
 	
 	public void addRocket(Vector3f position, Vector3f rotation, Player player)
 	{
-		Rocket r = new Rocket(position, rotation, renderMaster, this, player);
+		SoundEmitter missleLaunchSound = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
+		Rocket r = new Rocket(position, rotation, renderMaster, this, player, missleLaunchSound);
 	
 		this.rockets.add(r);
 	}
