@@ -14,7 +14,7 @@ public class EventManager {
 			//System.out.println("Game Events: "+ gameEvents.size());
 			for(GameEvent gameEvent : gameEvents){
 				//System.out.println(gameEvent.getEvent().getComponent().getName() + " " + gameEvent.getGameController().getId());
-				if(lockedControllerId == 0 || lockedControllerId == gameEvent.getGameController().getId()){
+				if(lockedControllerId == -1 || lockedControllerId == gameEvent.getGameController().getId()){
 					gameEvent.getGameController().handleEvent(gameEvent.getEvent(), stateContext, renderMaster);
 				}
 			}

@@ -56,7 +56,7 @@ public class XboxController implements GameController {
 			bButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(X_BUTTON.equals(eventComponentString)){
-			xButtonValue = intEventValue * MULTIPLIER;
+			xButtonValue = intEventValue;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
 			if(intEventValue == 1){
