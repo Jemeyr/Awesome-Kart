@@ -76,7 +76,7 @@ public class RacingState implements GameState {
 		ListenerComponent listenerComponent = null;
 		// Add and start music
 		musicComponent = this.soundMaster.getSoundComponent("assets/sound/Race Musici.wav", true);
-		musicComponent.setSoundGain(0.5f);
+		musicComponent.setSoundGain(0.4f);
 		cheerComponent = this.soundMaster.getSoundComponent("assets/sound/Victory!.wav", true);
 		pauseSound = this.soundMaster.getSoundComponent("assets/sound/Bleep 2.wav", false);
 		pauseSound.setSoundGain(200f);

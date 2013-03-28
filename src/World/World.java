@@ -66,10 +66,11 @@ public class World {
 			k.killme = i*1234f;
 		}*/
 		
-		// Add Triforce
-		DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("rocket");
+		// No more Triforce
+		/*DebugGraphicsComponent triforce = (DebugGraphicsComponent)renderMaster.addModel("rocket");
 		triforce.setPosition(new Vector3f(0,0.4f,0));
 		otherGraphics.put("Triforce", triforce);
+		*/
 		
 		// Add Awesome Kart Text
 		GraphicsComponent text = renderMaster.addModel("aktext");
@@ -119,13 +120,14 @@ public class World {
 		*/
 		elec360power++;
 		
-		otherGraphics.get("Triforce").setRotation(new Vector3f(3.14f * (elec360power/100f),-3.14f * (elec360power/100f), 3.14f * (elec360power/100f)));
+		//no more tracking rocket
+		/*otherGraphics.get("Triforce").setRotation(new Vector3f(3.14f * (elec360power/100f),-3.14f * (elec360power/100f), 3.14f * (elec360power/100f)));
 		Vector3f tempRocket = otherGraphics.get("Triforce").getTransformedVector(0, 0, 0, true);
 		tempRocket.x = (float) (tempRocket.x * 0.97 + 0.03 * players.get(0).getKart().position.x);
 		tempRocket.y = (float) (tempRocket.y * 0.97 + 0.03 * (players.get(0).getKart().position.y + 10));
 		tempRocket.z = (float) (tempRocket.z * 0.97 + 0.03 * players.get(0).getKart().position.z);
 		otherGraphics.get("Triforce").setPosition(tempRocket);
-		
+		*/
 
 		for(Rocket r : rockets)
 		{
