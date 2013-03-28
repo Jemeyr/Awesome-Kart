@@ -7,6 +7,7 @@ import Graphics.GraphicsComponent;
 import Graphics.RenderMaster;
 
 public class Kart {
+	private static int startOffset = 0;
 	
 	//some statics which help initialize the graphics
 	private static float wheelFrontOffset = 5.0f;
@@ -79,6 +80,7 @@ public class Kart {
 		this.turn = 0f;
 		this.speed = 0f;
 		this.sliding = false;
+		this.position = new Vector3f(40.0f * (startOffset++), 0f, 0f);
 		
 	}
 	
