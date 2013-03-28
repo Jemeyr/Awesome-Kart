@@ -28,8 +28,9 @@ public class RacingState implements GameState {
 	private SoundMaster									soundMaster;
 	private World										world;
 	private List<Camera>								cameras;
-	private int										elec360power;
-	
+	private int											elec360power;
+	private SoundEmitter								musicComponent;
+	private SoundEmitter								cheerComponent;
 	
 	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster, List<Player> playerList){
 		this.renderMaster 	= renderMaster;
@@ -41,6 +42,8 @@ public class RacingState implements GameState {
 		elec360power		= 0;
 		
 		this.world = /*A whole*/ new World(renderMaster, playerList, this.soundMaster);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
+
+		
 		
 		initialiseState();
 		
@@ -60,7 +63,9 @@ public class RacingState implements GameState {
 		if(!raceOver && player.lapsCompleted==lapsInRace){
 			raceOver = true;
 			System.out.println("Player "+player.playerID+" Has Won the Race");
-			
+			cheerComponent = this.soundMaster.getSoundComponent("assets/sound/Victory!.wav", true);
+			cheerComponent.playSound();
+			musicComponent.stopSound();
 		}
 		
 	}
@@ -68,12 +73,8 @@ public class RacingState implements GameState {
 	@Override
 	public void initialiseState() {
 		ListenerComponent listenerComponent = null;
-
-		
-		
-		
 		// Add and start music
-		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/alarma.wav", true); 
+		musicComponent = this.soundMaster.getSoundComponent("assets/sound/Race Musici.wav", true);
 		musicComponent.playSound();
 	}
 	

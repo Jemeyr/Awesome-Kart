@@ -37,6 +37,8 @@ public class StateContext {
 	private int 				lockedControllerId; // ID of Controller with "lock" (For Pausing and Such). 0 For Nobody
 	private float				offset; //player creation offset for start
 	
+	
+	
 	private List<Player>		playerList;
 	
 	public StateContext() {
@@ -54,8 +56,8 @@ public class StateContext {
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
 
-		
 		setState(RACING_STATE);
+		
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
 	}
 	

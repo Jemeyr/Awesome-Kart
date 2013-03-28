@@ -577,16 +577,6 @@ public class SoundMaster {
 			soundIndexes.put("assets/sound/Take that - Da Conti.wav", new Integer(i++));
 			
 			
-			soundIndexes.put("assets/sound/I'll get you - Da Conti.wav", new Integer(i++));
-			soundIndexes.put("assets/sound/Take that - Da Conti.wav", new Integer(i++));
-			soundIndexes.put("assets/sound/Look out for  - Michael.wav", new Integer(i++));
-			soundIndexes.put("assets/sound/Oh Noo - Michael.wav", new Integer(i++));
-			soundIndexes.put("assets/sound/Soske - Bunkai.wav", new Integer(i++));
-			soundIndexes.put("assets/sound/Bunkai - Bunkai.wav", new Integer(i++));
-			soundIndexes.put("assets/sound/I gotcha now - Sam.wav", new Integer(i++));
-			soundIndexes.put("assets/sound/I gotcha now - Sam copy.wav", new Integer(i++));
-			
-			
 			String errorString;
 			int errCode;
 			// Initialize the buffers for audio data
