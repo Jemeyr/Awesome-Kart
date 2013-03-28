@@ -295,7 +295,7 @@ public class World {
 		
 		this.pits.add(new CollisionBox(new Vector3f(-12f + 5.5f * 83.33f,0f,20f + -4.5f * 83.33f), new Vector3f( 3f * 83.33f,9000f,5f * 83.33f)));
 		this.pits.add(new CollisionBox(new Vector3f(6f * 83.33f,0f,16f + -11f * 83.33f), new Vector3f(12f * 83.33f,9000f,2f * 83.33f)));
-		this.pits.add(new CollisionBox(new Vector3f(-8f + 11f * 83.33f,0f,-6f * 83.33f), new Vector3f(2f * 83.33f,9000f,8f * 83.33f)));
+		this.pits.add(new CollisionBox(new Vector3f(-8f + 11f * 83.33f,0f,-6f * 83.33f), new Vector3f(2f * 83.33f,9000f,10f * 83.33f)));
 		this.pits.add(new CollisionBox(new Vector3f(-16f + 0.5f * 83.33f,0f,16 + -5.5f * 83.33f), new Vector3f(1f * 83.33f,9000f,9f * 83.33f)));
 		
 	}
