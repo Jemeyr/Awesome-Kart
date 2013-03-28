@@ -50,8 +50,8 @@ public class StateContext {
 		offset				= 0;
 		
 		loadModels();
-		addPlayer(ControllerType.XBOX);
-		addPlayer(ControllerType.XBOX);
+		addPlayer(ControllerType.KEYBOARD);
+		//addPlayer(ControllerType.XBOX);
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState( soundMaster);
@@ -88,9 +88,6 @@ public class StateContext {
 		renderMaster.loadModel("michael");
 		renderMaster.loadModel("pizza");
 		renderMaster.loadModel("mine");
-		
-		
-		
 	}
 	
 	private void addPlayer(ControllerType controllerType){

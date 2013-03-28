@@ -1,5 +1,7 @@
 package World;
 
+import java.util.Random;
+
 import org.lwjgl.util.vector.Vector3f;
 
 import Collision.CollisionBox;
@@ -24,6 +26,8 @@ public class ItemCrate {
 	
 	private int	resetCounter;
 	
+	Random random;
+	
 	public ItemCrate(RenderMaster renderMaster, World world, Vector3f initialPosition){
 		this.renderMaster 	= renderMaster;
 		this.world 			= world;
@@ -40,6 +44,8 @@ public class ItemCrate {
 		
 		light.setColor(new Vector3f(1,alternator,0));
 		light.setRad(50);
+		
+		this.random = new Random();
 	}
 	
 	public void update() {
@@ -95,6 +101,7 @@ public class ItemCrate {
 	}
 	
 	public EntityType generateItem(){
-		return EntityType.ROCKET;
+		if(random.nextBoolean()) return EntityType.ROCKET;
+		else return EntityType.MINE;
 	}
 }
