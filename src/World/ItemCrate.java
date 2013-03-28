@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import Collision.CollisionBox;
 import Graphics.GraphicsComponent;
+import Graphics.Light;
 import Graphics.RenderMaster;
 
 public class ItemCrate {
@@ -12,11 +13,14 @@ public class ItemCrate {
 	public World		world;
 
 	public GraphicsComponent itemCrate;
-	
 	public CollisionBox collisionBox;
 	
 	private Vector3f position;
 	private Vector3f rotation;
+	
+	private Light light;
+	private float alternator;
+	private boolean inc;
 	
 	private int	resetCounter;
 	
@@ -29,6 +33,13 @@ public class ItemCrate {
 		this.position 		= initialPosition;
 		this.rotation 		= new Vector3f();
 		this.resetCounter	= 0;
+		
+		this.light 			= renderMaster.addLight();
+		this.alternator 	= 0.0f;
+		this.inc 			= true;
+		
+		light.setColor(new Vector3f(1,alternator,0));
+		light.setRad(50);
 	}
 	
 	public void update() {
@@ -37,11 +48,26 @@ public class ItemCrate {
 			position.y += 50f;
 			resetCounter--;
 			itemCrate.setPosition(position);
+			light.setPosition(position);
 		} else {
 			itemCrate.setPosition(this.position);
 			itemCrate.setRotation(this.rotation);
 		
 			collisionBox.setPosition(this.position);
+			
+			if(inc){
+				this.alternator += 0.1f;
+			}
+			else {
+				this.alternator -= 0.1f;
+			}
+			
+			if(alternator >1.0f || alternator < 0.0f) {
+				inc = !inc;
+			}
+			
+			this.light.setPosition(new Vector3f(position.x, position.y + 20, position.z));
+			light.setColor(new Vector3f(1,alternator,0));	
 		}
 	}
 	
@@ -65,6 +91,7 @@ public class ItemCrate {
 		resetCounter = 300;
 		position.y -= 50f;
 		itemCrate.setPosition(position);
+		light.setPosition(position);
 	}
 	
 	public EntityType generateItem(){
