@@ -188,6 +188,9 @@ public class Player {
 	
 	public void useWeapon()
 	{
+		getKart().getRotation().y = currCheckPoint.rotation;
+		getKart().update();
+		
 		if(heldItemType != null){
 			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
 			switch(heldItemType){
@@ -238,7 +241,9 @@ public class Player {
 			if(getKart().position.y <= -200.0f)
 			{
 				getKart().position = new Vector3f(currCheckPoint.post);
+				getKart().getRotation().y = currCheckPoint.rotation;
 				getKart().update();
+				
 				this.onGround = true;
 				this.inPit = false;
 				this.jump = 0;

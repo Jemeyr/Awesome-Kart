@@ -280,34 +280,34 @@ public class World {
 		
 		x = 8.5f*squareLength;
 		z = 10.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,1.571f));
 		x = 0f*squareLength;
 		z = 10.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,1.571f));
 		x = -10.5f*squareLength;
 		z = 10.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,3.142f));
 		x = -10.5f*squareLength;
 		z = -2.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,-1.571f));
 		x = -3.5f*squareLength;
 		z = -2.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,0f));
 		x = -3.5f*squareLength;
 		z = 0.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,-1.571f));
 		x = 2.5f*squareLength;
 		z = 0.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,3.142f));
 		x = 2.5f*squareLength;
 		z = -8.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,-1.571f));
 		x = 8.5f*squareLength;
 		z = -8.5f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,0f));
 		x = 8.5f*squareLength;
 		z = 0f*squareLength;
-		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++));
+		checkpoints.add(new Checkpoint(new Vector3f(x, 0f, z), i++,0f));
 	}
 	
 	/**
