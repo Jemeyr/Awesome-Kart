@@ -193,6 +193,16 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 		// TODO Auto-generated method stub
 		return new Vector3f(vec4.x,vec4.y,vec4.z);
 	}
+
+
+
+	@Override
+	public void removeSubComponent(GraphicsComponent gc) {
+		// TODO Auto-generated method stub
+		this.subComponents.remove(gc);
+		
+		
+	}
 	
 	
 }
