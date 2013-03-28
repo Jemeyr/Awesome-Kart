@@ -30,11 +30,13 @@ public class Player {
 	private int					ammo;
 	
 	private float 				jump;
+	private boolean			onGround;
 	private float				speed;
 	private float				acceleration;
 	private int					direction; // 1 for forward, -1 for back, 0 for none
 	
 	private boolean				isHit;
+	private boolean				inPit;
 	private int					spin;
 	
 	protected Checkpoint currCheckPoint = null;
@@ -57,6 +59,8 @@ public class Player {
 		direction 				= 0;
 		speed 					= 0f;
 		jump 					= 0f;
+		onGround				= true;
+		inPit 					= false;
 		powerLevel				= 0;
 		ammo					= 0;
 		
@@ -133,16 +137,53 @@ public class Player {
 	
 	private float getJump(){
 		float jumpValue = getGameController().getJumpValue();
-		if(jump > 0f || jumpValue == 1){
-			if (jump < 40f) {
-				return (jump++ < 20f) ? 3f : -3f;
-			} else {
-				jump = 0f; 
-				return jump;
-			} 
+
+		inPit = false;
+		for(CollisionBox other : world.pits)
+		{
+			if(this.getKart().collisionBox.bIntersects(other))
+			{
+				inPit = true;
+				onGround = false;
+				break;
+			}
+		}
+	
+		
+		//if you're in the air
+		if(!onGround)
+		{
+			//if you're above the respective min height
+			if((!inPit && this.getKart().position.y + jump <= 0.0f  &&this.getKart().position.y + jump >= -10.0f) || (inPit && this.getKart().position.y + jump <= -240.0f))
+			{
+				//set to min height and stop falling
+				jump = 0;
+				if(inPit)
+				{
+					this.getKart().position.y = -240f;	
+				}
+				else if (this.getKart().position.y > -5f) 
+				{
+					this.getKart().position.y = 0f;
+				}
+				onGround = true;
+			}
+			else
+			{
+				jump -= 0.2f;
+			}
 		}
 		
-		return 0f;
+		
+		if(jumpValue == 1 && onGround)
+		{
+			jump = 2.5f;
+			onGround = false;
+			//initial velocity up
+		}
+		
+		
+		return jump;
 	}
 	
 	public void useWeapon()
@@ -191,6 +232,16 @@ public class Player {
 				{
 					Vector3f.add(getKart().getPosition(), collide, getKart().getPosition());
 				}
+			}
+			
+			//check if you fell
+			if(getKart().position.y <= -200.0f)
+			{
+				getKart().position = new Vector3f(currCheckPoint.post);
+				getKart().update();
+				this.onGround = true;
+				this.inPit = false;
+				this.jump = 0;
 			}
 			
 			//Check CheckPoints
