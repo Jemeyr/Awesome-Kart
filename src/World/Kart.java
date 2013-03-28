@@ -55,7 +55,7 @@ public class Kart {
 		}
 		else
 		{
-			rider = graphicsComponent.addSubComponent("test", renderer);
+			rider = graphicsComponent.addSubComponent("kart", renderer);
 		}
 		hat = rider.addSubComponent("hat", renderer);
 

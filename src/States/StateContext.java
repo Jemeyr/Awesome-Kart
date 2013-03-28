@@ -77,7 +77,7 @@ public class StateContext {
 	private void addPlayer(ControllerType controllerType){
 		// Stuff a Player Needs
 		GameController gameController = controllerManager.addController(controllerType);
-		System.out.println("perosna add");
+		
 		Persona persona = new Persona(soundMaster, renderMaster);
 		Kart kart = new Kart(renderMaster, persona);
 		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, 0.0f, -300f + (10%4) * 150.0f);
