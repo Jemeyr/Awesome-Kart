@@ -44,27 +44,25 @@ public class ControllerManager {
 	}
 	
 	public void poll(){
+		gameEvents.clear();
 		gameEvents = new HashSet<GameEvent>();
 		for(Map.Entry<Controller, GameController> entry : getControllersMap().entrySet()){
 			Controller c = entry.getKey();
 			c.poll();
 			EventQueue eq = c.getEventQueue();
 			Event event = new Event();
-			boolean breakout;
 			while(eq.getNextEvent(event)){
-				//System.out.println("event name bunkai " + event.getComponent() + " event value " + event.getValue());
-				breakout = false;
-				GameEvent gameEvent = new GameEvent(event, entry.getValue());
-				for(GameEvent ge : gameEvents){
-					if(ge.equals(gameEvent)) breakout = true; break;
-				}
-				if(!breakout) gameEvents.add(gameEvent);
+				Event e2 = new Event();
+				e2.set(event);
+				//System.out.println("event name bunkai '" + event.getComponent().getName() + "' event value " + event.getValue());
+				GameEvent gameEvent = new GameEvent(e2, entry.getValue());
+				gameEvents.add(gameEvent);
 			}
 		}
 	}
 	
 	public HashSet<GameEvent> getEvents(){
-		return gameEvents;
+		return new HashSet<GameEvent>(gameEvents);
 	}
 	
 	public HashMap<Controller, GameController> getControllersMap(){

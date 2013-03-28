@@ -76,7 +76,7 @@ public class XboxController implements GameController {
 			} else if (eventValue > 0.01f){
 				stateContext.moveRight(stateContext, getId());
 			}
-			leftRightValue = eventValue * MULTIPLIER;
+			leftRightValue = eventValue;
 		}
 		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
 			if(eventValue > 0.01f){

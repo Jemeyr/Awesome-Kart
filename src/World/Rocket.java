@@ -126,6 +126,14 @@ public class Rocket implements Entity {
 			}
 		}
 		
+		//remove if player is hit
+		for(Player player : world.players){
+			if(this.collisionBox.bIntersects(player.getKart().collisionBox) && !this.getOwner().equals(player)){
+				player.hitPlayer();
+				Rocket.deadRockets.add(this);				
+			}
+		}
+		
 		
 	}
 	
