@@ -76,10 +76,6 @@ public class CollisionBox {
 			return null;
 		}
 		
-		System.out.println("this: " + this.position + ":" + this.dimensions);
-		System.out.println("other: " + other.position + ":" + other.dimensions);
-		
-		
 		Vector3f ret = new Vector3f(	diff.x * Math.signum(-diffPos.x),
 								diff.y * Math.signum(-diffPos.y),
 								diff.z * Math.signum(-diffPos.z));
@@ -94,11 +90,6 @@ public class CollisionBox {
 			ret.z = 0;
 		}
 		ret.y = 0;
-		
-		System.out.println("ret new " + ret);
-		//System.out.println("diffpos " + diffPos);
-		//System.out.println("diffsize " + diffSize);
-		
 		
 		return ret;
 	}
