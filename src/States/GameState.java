@@ -16,6 +16,7 @@ public interface GameState {
 	void moveDown(final StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId);
 	void moveLeft(final StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId);
 	void moveRight(final StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId);
+	void reportLapCompleted(Player player);	
 	void execute(List<Player> playerList); //Could be renamed, whatever
 	void initialiseState(); //Call to initialise everything at the start of the state.
 	
