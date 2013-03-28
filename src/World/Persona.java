@@ -27,15 +27,20 @@ public class Persona {
 		Random generator = new Random(); 
 		id = generator.nextInt(4) + 1;
 
+
+		this.model = renderMaster.addModel("sam");
+		
 		switch(id){
 			case 1:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Bunkai - Bunkai.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Soske - Bunkai.wav", false);
+				this.model = renderMaster.addModel("sam");
 				break;
 			}
 			case 2:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Angry Grunt - Sam.wav", false);
+				this.model = renderMaster.addModel("test");
 				break;
 			}
 			case 3:{
@@ -54,7 +59,6 @@ public class Persona {
 			}
 		}
 
-		this.model = renderMaster.addModel("sam");
 	}
 	
 	public GraphicsComponent getModel()
