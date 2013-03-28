@@ -130,7 +130,7 @@ public class Player {
 	
 	public void updateCamera(){
 		Vector3f camPos, targ; 
-		camPos = getKart().graphicsComponent.getTransformedVector(0.0f, 35.0f, -50f, true);
+		camPos = getKart().graphicsComponent.getTransformedVector(0.0f, 25.0f, -50f, true);
 		targ = getKart().graphicsComponent.getTransformedVector(0.0f, 1.0f, 0.0f, true);
 		
 		getCamera().setPosition(camPos);

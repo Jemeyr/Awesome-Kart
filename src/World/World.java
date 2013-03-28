@@ -43,7 +43,7 @@ public class World {
 		{
 			if(i == 10) i++;
 			Kart k = new Kart(this.renderMaster);
-			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, -22.5f, -300f + (i%4) * 150.0f);
+			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, 0.0f, -300f + (i%4) * 150.0f);
 			donutKarts.add(k);
 			k.killme = i*1234f;
 		}
@@ -131,7 +131,7 @@ public class World {
 	}
 	
 	private void addTerrain(){
-		renderMaster.addModel("testTer");
+		renderMaster.addModel("nightFactory");
 	}
 	
 	
