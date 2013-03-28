@@ -3,10 +3,10 @@ package World;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import Collision.CollisionBox;
 import Graphics.DebugGraphicsComponent;
 import Graphics.GraphicsComponent;
 import Graphics.Light;
@@ -22,6 +22,7 @@ public class World {
 	protected List<Player> players;
 	protected List<ItemCrate> items;
 	protected List<Checkpoint> checkpoints;
+	protected List<CollisionBox> walls;
 	
 	private HashMap<String, GraphicsComponent>	otherGraphics;
 	
@@ -38,6 +39,7 @@ public class World {
 		rockets = new ArrayList<Rocket>();
 		items = new ArrayList<ItemCrate>();
 		checkpoints = new ArrayList<Checkpoint>();
+		walls = new ArrayList<CollisionBox>();
 		
 		otherGraphics		= new HashMap<String, GraphicsComponent>();
 		
@@ -213,6 +215,12 @@ public class World {
 	private void addTerrain(){
 		renderMaster.addModel("nightFactory");
 	}
+	
+	private void addCollisions()
+	{
+	//	walls.add(new CollisionBox(new Vector3f()));
+	}
+	
 	
 	/**
 	 * Gets the next checkpoint in the list of checkpoints
