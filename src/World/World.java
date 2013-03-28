@@ -120,14 +120,14 @@ public class World {
 		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
 		
 		Random r = new Random();
-		
+		/*
 		for(int h = 0; h < 40; h++)
 		{
 			le = renderMaster.addLight();
 			le.setRad(100.0f);
 			le.setColor(new Vector3f(r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f));
 			le.setPosition(new Vector3f(200 - 100 * (h % 6), -10, 200 - 100 * h/6));
-		}
+		}*/
 	}
 	
 	private void addTerrain(){
