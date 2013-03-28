@@ -76,6 +76,10 @@ public class World {
 		text.setPosition(new Vector3f(-200, 40, 100));
 		otherGraphics.put("AKText", text);
 		
+		GraphicsComponent goop = renderMaster.addModel("goop");
+		goop.setPosition(new Vector3f(500f,-150.0f, -600f));
+		otherGraphics.put("goop", goop);
+		
 		// Add Item Crates in places
 		addItemCrates();
 		
@@ -155,7 +159,7 @@ public class World {
 		
 		// Rotating Text
 		otherGraphics.get("AKText").setRotation(new Vector3f(0,elec360power/1500f, 0));
-		
+		otherGraphics.get("goop").setRotation(new Vector3f(0, elec360power * 0.001f, 0));
 	}
 	
 	
