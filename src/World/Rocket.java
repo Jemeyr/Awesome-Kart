@@ -73,7 +73,7 @@ public class Rocket implements Entity {
 	@Override
 	public void update()
 	{
-		Vector3f delta = this.graphicsComponent.getTransformedVector(0, 0, 5, false);
+		Vector3f delta = this.graphicsComponent.getTransformedVector(0, 0, 7f, false);//was 5
 		
 		Vector3f.add(delta, this.position, this.position);
 
