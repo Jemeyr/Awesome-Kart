@@ -47,6 +47,8 @@ public class SoundMaster {
 	private static final float refDistance = 25;
 	private static final float dopVel = 1024 ;
 	
+	private static final float rolloffFactor = 0.5f;
+	
 	/** indexes of soundfile names and their associated position within the soundbuffer*/
 	public Hashtable soundIndexes ;
 	
@@ -139,9 +141,11 @@ public class SoundMaster {
 		  AL10.alSourcei(sources.get(position), AL10.AL_LOOPING,  (toLoop ? AL10.AL_TRUE : AL10.AL_FALSE));
 		  
 		  
+
 		  AL10.alSourcef(sources.get(position), AL10.AL_REFERENCE_DISTANCE, refDistance);
 		  AL10.alSourcef(sources.get(position), AL10.AL_ROLLOFF_FACTOR, 0.5f);
 		  AL10.alSourcef(sources.get(position), AL10.AL_MAX_DISTANCE,  maxSourceDistance);
+
 		  AL10.alSourcef(sources.get(position), AL10.AL_MIN_GAIN, 0.0f);
 		  
 		  if ((errCode=AL10.alGetError()) != AL10.AL_NO_ERROR)
@@ -558,6 +562,20 @@ public class SoundMaster {
 			soundIndexes.put("assets/sound/FancyPants.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/alarma.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/Missle_Launch_Mono.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Bleep 1.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Bleep 2.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Bunkai - Bunkai.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/FancyPants.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Angry Grunt - Sam.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/I gotcha now - Sam.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/I'll get you - Da Conti.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Look out for - Michael.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Oh Noo - Michael.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Race Musici.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Soske - Bunkai.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Victory!.wav", new Integer(i++));
+			soundIndexes.put("assets/sound/Take that - Da Conti.wav", new Integer(i++));
+			
 			
 			soundIndexes.put("assets/sound/I'll get you - Da Conti.wav", new Integer(i++));
 			soundIndexes.put("assets/sound/Take that - Da Conti.wav", new Integer(i++));
