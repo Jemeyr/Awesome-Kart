@@ -94,6 +94,11 @@ public class Kart {
 		collisionBox.setPosition(this.position);
 	}
 	
+	public Persona getPersona()
+	{
+		return this.persona;
+	}
+	
 	public Vector3f getRotation() {
 		return rotation;
 	}

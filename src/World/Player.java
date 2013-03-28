@@ -188,6 +188,7 @@ public class Player {
 	
 	public void useWeapon()
 	{
+		getKart().getPersona().getShootPerson().playSound();
 		
 		if(heldItemType != null){
 			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);

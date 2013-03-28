@@ -14,31 +14,36 @@ public class Persona {
 	
 	private int	id;
 	
+	
 	public Persona(SoundMaster soundMaster){
 		this.soundMaster = soundMaster;
 		
 		Random generator = new Random(); 
 		id = generator.nextInt(4) + 1;
-		
+
 		switch(id){
 			case 1:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Bunkai - Bunkai.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Soske - Bunkai.wav", false);
+				break;
 			}
 			case 2:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam copy.wav", false);
+				break;
 			}
 			case 3:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Look out for  - Michael.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Oh Noo - Michael.wav", false);
+				break;
 			}
 			case 4:{
 				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Take that - Da Conti.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/I'll get you - Da Conti.wav", false);
+				break;
 			}
 			default:{ // Justin Kaice
-				shootPerson = this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam.wav", false);
+				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Take that - Da Conti.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
 			}
 		}

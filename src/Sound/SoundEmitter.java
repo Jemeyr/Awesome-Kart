@@ -35,7 +35,7 @@ public class SoundEmitter {
 
 		int x  = (Integer)soundMaster.soundIndexes.get(fileName);
 		soundCode = soundMaster.addSource((Integer) soundMaster.soundIndexes.get(fileName), toLoop);
-
+		
 		//no failures while adding the source
 		if(soundCode!= -1)
 		{
