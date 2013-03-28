@@ -87,6 +87,7 @@ public class StateContext {
 		renderMaster.loadModel("goop");
 		renderMaster.loadModel("michael");
 		renderMaster.loadModel("pizza");
+		renderMaster.loadModel("mine");
 		
 		
 		

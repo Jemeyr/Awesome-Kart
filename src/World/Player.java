@@ -89,10 +89,10 @@ public class Player {
 		this.carMaxSpeed= carMaxSpeed;
 		this.carBrake = carBrake;
 		
-		this.carIdle.setSoundGain(5f);
-		this.carAcc.setSoundGain(5f);
-		this.carMaxSpeed.setSoundGain(5f);
-		this.carBrake.setSoundGain(5f);
+		this.carIdle.setSoundGain(1f);
+		this.carAcc.setSoundGain(0.2f);
+		this.carMaxSpeed.setSoundGain(0.125f);
+		this.carBrake.setSoundGain(1f);
 		
 	}
 	
