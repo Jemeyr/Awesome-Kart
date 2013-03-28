@@ -2,6 +2,7 @@ package World;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import Collision.CollisionBox;
 import Controller.GameController;
 import Graphics.Camera;
 import Sound.ListenerComponent;
@@ -114,8 +115,8 @@ public class Player {
 	private float getJump(){
 		float jumpValue = getGameController().getJumpValue();
 		if(jump > 0f || jumpValue == 1){
-			if (jump < 20f) {
-				return (jump++ < 10f) ? 1f : -1f;
+			if (jump < 40f) {
+				return (jump++ < 20f) ? 3f : -3f;
 			} else {
 				jump = 0f; 
 				return jump;
@@ -145,6 +146,17 @@ public class Player {
 		playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
 		Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
 		getKart().update();
+		
+		Vector3f collide = new Vector3f();
+		for(CollisionBox other : world.walls)
+		{
+			collide = getKart().collisionBox.intersects(other); 
+			if(collide != null)
+			{
+				
+				Vector3f.add(getKart().getPosition(), collide, getKart().getPosition());
+			}
+		}
 		
 		//Check CheckPoints
 		if(currCheckPoint!=null)

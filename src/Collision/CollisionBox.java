@@ -50,10 +50,6 @@ public class CollisionBox {
 			return false;
 		}
 		
-		System.out.println("diffpos " + diffPos);
-		System.out.println("diffsize " + diffSize);
-		
-		
 		return true;
 	}
 	
@@ -69,7 +65,7 @@ public class CollisionBox {
 		}
 		
 		diff.z = (Math.abs(diffPos.z) - diffSize.z);
-		if(diff.x >=0)
+		if(diff.z >=0)
 		{
 			return null;
 		}
@@ -80,12 +76,31 @@ public class CollisionBox {
 			return null;
 		}
 		
+		System.out.println("this: " + this.position + ":" + this.dimensions);
+		System.out.println("other: " + other.position + ":" + other.dimensions);
 		
 		
-		return new Vector3f(	diff.x * Math.signum(-diffPos.x),
+		Vector3f ret = new Vector3f(	diff.x * Math.signum(-diffPos.x),
 								diff.y * Math.signum(-diffPos.y),
 								diff.z * Math.signum(-diffPos.z));
 		
+		System.out.println("ret old " + ret);
+		if(Math.abs(ret.x) > Math.abs(ret.z))
+		{
+			ret.x = 0;
+		}
+		else
+		{
+			ret.z = 0;
+		}
+		ret.y = 0;
+		
+		System.out.println("ret new " + ret);
+		//System.out.println("diffpos " + diffPos);
+		//System.out.println("diffsize " + diffSize);
+		
+		
+		return ret;
 	}
 	
 	

@@ -48,7 +48,7 @@ public class StateContext {
 		loadModels();
 		
 		addPlayer(ControllerType.KEYBOARD);
-	//	addPlayer(ControllerType.XBOX);
+		addPlayer(ControllerType.XBOX);
 
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
@@ -67,6 +67,7 @@ public class StateContext {
 		renderMaster.loadModel("wheel");
 		renderMaster.loadModel("aktext");
 		renderMaster.loadModel("rocket");
+		renderMaster.loadModel("item");
 		renderMaster.loadModel("nightFactory");
 		
 	}
