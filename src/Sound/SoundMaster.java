@@ -328,10 +328,6 @@ public class SoundMaster {
 	   * @param z
 	   */
 	  public void setListenerPosition(float x, float y , float z){
-		  if(z>500)
-		  {
-			z=z;  
-		  }
 		  
 		  listenerPos.put(0, x);
 		  listenerPos.put(1, y);
