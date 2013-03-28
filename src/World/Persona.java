@@ -12,31 +12,33 @@ public class Persona {
 	private SoundEmitter shootPerson;
 	private SoundEmitter getHit;
 	
+	private int	id;
+	
 	public Persona(SoundMaster soundMaster){
 		this.soundMaster = soundMaster;
 		
 		Random generator = new Random(); 
-		int person = generator.nextInt(4) + 1;
+		id = generator.nextInt(4) + 1;
 		
-		switch(person){
+		switch(id){
 			case 1:{
-				shootPerson = this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
-				getHit		= this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
+				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Bunkai - Bunkai.wav", false);
+				getHit		= this.soundMaster.getSoundComponent("assets/sound/Soske - Bunkai.wav", false);
 			}
 			case 2:{
-				shootPerson = this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
-				getHit		= this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
+				shootPerson = this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam.wav", false);
+				getHit		= this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam copy.wav", false);
 			}
 			case 3:{
-				shootPerson = this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
-				getHit		= this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
+				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Look out for - Michael.wav", false);
+				getHit		= this.soundMaster.getSoundComponent("assets/sound/Oh Noo - Michael.wav", false);
 			}
 			case 4:{
-				shootPerson = this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
-				getHit		= this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
+				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Take that - Da Conti.wav", false);
+				getHit		= this.soundMaster.getSoundComponent("assets/sound/I'll get you - Da Conti.wav", false);
 			}
-			default :{
-				shootPerson = this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
+			default:{ // Justin Kaice
+				shootPerson = this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
 			}
 		}
@@ -49,5 +51,9 @@ public class Persona {
 	
 	public SoundEmitter getHit(){
 		return getHit;
+	}
+	
+	public int getId(){
+		return id;
 	}
 }
