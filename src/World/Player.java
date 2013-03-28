@@ -189,6 +189,7 @@ public class Player {
 	public void useWeapon()
 	{
 		getKart().getRotation().y = currCheckPoint.rotation;
+		System.out.println("curr rot " + currCheckPoint.rotation + " at pont " + currCheckPoint.pointNum);
 		getKart().update();
 		
 		if(heldItemType != null){
@@ -254,6 +255,7 @@ public class Player {
 			{
 				if(world.reachedCheckpoint(nextCheckPoint, getKart().getPosition()))
 				{
+					System.out.println("CHECKPOINT ID " + currCheckPoint.pointNum + ", " + currCheckPoint.rotation);
 					lapsCompleted++;
 					System.out.println("Player "+playerID+" has completed a lap");
 					
