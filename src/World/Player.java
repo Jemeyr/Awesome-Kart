@@ -6,6 +6,7 @@ import Collision.CollisionBox;
 import Controller.GameController;
 import Graphics.Camera;
 import Sound.ListenerComponent;
+import States.RacingState;
 
 
 public class Player {
@@ -22,6 +23,7 @@ public class Player {
 	private Vector3f			playerDelta;
 	private Camera				camera;
 	private EntityType			heldItemType;
+	private RacingState 		raceState;
 	
 	private float 				jump;
 	private float				speed;
@@ -45,7 +47,7 @@ public class Player {
 		this.camera				= camera;
 		this.heldItemType 		= null; // Start with no item
 		
-		playerID = this.gameController.getBackValue()+1;
+		playerID = this.gameController.getId()+1;
 		acceleration 			= DEFAULT_ACCEL;
 		direction 				= 0;
 		speed 					= 0f;
@@ -167,6 +169,8 @@ public class Player {
 				{
 					lapsCompleted++;
 					System.out.println("Player "+playerID+" has completed a lap");
+					
+					raceState.reportLapCompleted(this);
 				}
 				
 				currCheckPoint = nextCheckPoint;
