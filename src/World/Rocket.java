@@ -1,5 +1,8 @@
 package World;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.util.vector.Vector3f;
 
 import Collision.CollisionBox;
@@ -11,11 +14,13 @@ public class Rocket implements Entity {
 	public Player owner;
 	public World world;
 	
+	protected static List<Rocket> deadRockets = new ArrayList<Rocket>();
+	
 	public Vector3f position;
 	public Vector3f rotation;
 	
-	private GraphicsComponent graphicsComponent;
-	private Light light;
+	protected GraphicsComponent graphicsComponent;
+	protected Light light;
 	
 	private float alternator;
 	private boolean inc;
@@ -85,6 +90,17 @@ public class Rocket implements Entity {
 			toRemove.graphicsComponent.setPosition(new Vector3f(0,2000,0));
 			world.donutKarts.remove(toRemove);
 		}
+		
+		//remove if wall is hit
+		for(CollisionBox other : world.walls)
+		{
+			if(this.collisionBox.bIntersects(other))
+			{
+				Rocket.deadRockets.add(this);
+				break;
+			}
+		}
+		
 		
 	}
 	

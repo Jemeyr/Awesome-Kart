@@ -107,23 +107,23 @@ public class World {
 		}
 		elec360power++;
 		
-		//triforce that rotates and flies away
 		otherGraphics.get("Triforce").setRotation(new Vector3f(3.14f * (elec360power/100f),-3.14f * (elec360power/100f), 3.14f * (elec360power/100f)));
-		//otherGraphics.get("Triforce").setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 		Vector3f tempRocket = otherGraphics.get("Triforce").getTransformedVector(0, 0, 0, true);
 		tempRocket.x = (float) (tempRocket.x * 0.97 + 0.03 * players.get(0).getKart().position.x);
 		tempRocket.y = (float) (tempRocket.y * 0.97 + 0.03 * (players.get(0).getKart().position.y + 10));
 		tempRocket.z = (float) (tempRocket.z * 0.97 + 0.03 * players.get(0).getKart().position.z);
 		otherGraphics.get("Triforce").setPosition(tempRocket);
 		
-		
 		for(Rocket r : rockets)
 		{
 			r.update();
-			if(r.position.lengthSquared() > 320000)
-			{
-				//kill
-			}
+		}
+		for(Rocket r : Rocket.deadRockets)
+		{
+			rockets.remove(r);
+			renderMaster.removeModel(r.graphicsComponent);
+			renderMaster.removeLight(r.light);
+			
 		}
 		
 		for(Player player : players){
@@ -193,7 +193,6 @@ public class World {
 		le.setRad(600f);
 		le.setPosition(new Vector3f(440, 100, -360));
 		le.setColor(new Vector3f(0,1,0));
-		
 		
 		
 		le = renderMaster.addLight();
