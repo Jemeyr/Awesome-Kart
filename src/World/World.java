@@ -13,7 +13,7 @@ import Graphics.Light;
 import Graphics.RenderMaster;
 
 public class World {
-	private static final float checkpointThresholdSquared = 31250;
+	private static final float checkpointThresholdSquared = 62500;
 	
 	private RenderMaster renderMaster;
 
