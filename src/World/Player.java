@@ -260,7 +260,7 @@ public class Player {
 			ammo = 1;
 		} else {
 			powerLevel = 2;
-			if(powerLevel == 2) ammo = 10;
+			if(powerLevel == 2) ammo = 3;
 		}
 	}
 	
@@ -302,6 +302,7 @@ public class Player {
 				this.onGround = true;
 				this.inPit = false;
 				this.jump = 0;
+				this.ammo = ammo > 1 ? 1 : ammo;
 			}
 			
 			//Check CheckPoints
