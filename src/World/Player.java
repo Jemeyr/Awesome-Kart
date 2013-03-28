@@ -27,6 +27,15 @@ public class Player {
 	private float				acceleration;
 	private int					direction; // 1 for forward, -1 for back, 0 for none
 	
+	
+	
+	protected Checkpoint currCheckPoint = null;
+	protected Checkpoint nextCheckPoint = null;
+	
+	public int lapsCompleted = 0;
+	public boolean finishedRace = false;
+	public int playerID= 0;
+	
 	public Player(GameController gameController, Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent, Camera camera){
 		this.gameController 	= gameController;
 		this.kart 				= kart;
@@ -35,6 +44,7 @@ public class Player {
 		this.camera				= camera;
 		this.heldItemType 		= null; // Start with no item
 		
+		playerID = this.gameController.getBackValue()+1;
 		acceleration 			= DEFAULT_ACCEL;
 		direction 				= 0;
 		speed 					= 0f;
@@ -136,6 +146,22 @@ public class Player {
 		Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
 		getKart().update();
 		
+		//Check CheckPoints
+		if(currCheckPoint!=null)
+		{
+			if(world.reachedCheckpoint(nextCheckPoint, getKart().getPosition()))
+			{
+				if (nextCheckPoint.isFinishLine)
+				{
+					lapsCompleted++;
+					System.out.println("Player "+playerID+" has completed a lap");
+				}
+				
+				currCheckPoint = nextCheckPoint;
+				nextCheckPoint = world.getNextChekpoint(currCheckPoint);
+				
+			}
+		}
 		
 		
 		//This will cause a null exception if used with ryan's ControllerMain test class
@@ -145,7 +171,7 @@ public class Player {
 	
 	public void updateCamera(){
 		Vector3f camPos, targ; 
-		camPos = getKart().graphicsComponent.getTransformedVector(0.0f, 35.0f, -50f, true);
+		camPos = getKart().graphicsComponent.getTransformedVector(0.0f, 25.0f, -50f, true);
 		targ = getKart().graphicsComponent.getTransformedVector(0.0f, 1.0f, 0.0f, true);
 		
 		getCamera().setPosition(camPos);

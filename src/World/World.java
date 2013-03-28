@@ -13,12 +13,15 @@ import Graphics.Light;
 import Graphics.RenderMaster;
 
 public class World {
+	private static final float checkpointThresholdSquared = 10000;
+	
 	private RenderMaster renderMaster;
 
 	protected List<Kart> donutKarts;
 	protected List<Rocket> rockets;
 	protected List<Player> players;
 	protected List<ItemCrate> items;
+	protected List<Checkpoint> checkpoints;
 	
 	private HashMap<String, GraphicsComponent>	otherGraphics;
 	
@@ -34,6 +37,7 @@ public class World {
 		donutKarts = new ArrayList<Kart>();
 		rockets = new ArrayList<Rocket>();
 		items = new ArrayList<ItemCrate>();
+		checkpoints = new ArrayList<Checkpoint>();
 		
 		otherGraphics		= new HashMap<String, GraphicsComponent>();
 		
@@ -45,7 +49,7 @@ public class World {
 		{
 			if(i == 10) i++;
 			Kart k = new Kart(this.renderMaster);
-			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, -22.5f, -300f + (i%4) * 150.0f);
+			k.killmeVec = new Vector3f(-300f + (i/4) * 150.0f, 0.0f, -300f + (i%4) * 150.0f);
 			donutKarts.add(k);
 			k.killme = i*1234f;
 		}
@@ -69,6 +73,22 @@ public class World {
 
 		// Add Lights
 		addLights();
+		
+		//Add the list of chekpoints
+		
+		//Set the last checkpoint in the list to be the finish checkpoint.
+		if(checkpoints.size()!=0){
+			checkpoints.get(checkpoints.size()).setFinishCheckpoint();
+			
+			for(int i =0; i< playerList.size();i++){
+				playerList.get(i).currCheckPoint = checkpoints.get(0);
+				playerList.get(i).nextCheckPoint = checkpoints.get(1);
+			}
+
+		}
+		
+		
+		
 	}
 	
 	public void update()
@@ -129,27 +149,104 @@ public class World {
 		Light le;
 		le = renderMaster.addLight();
 		le.setRad(250.0f);
-		le.setPosition(new Vector3f(50,-20,0));
+		le.setPosition(new Vector3f(50,10,0));
 		le.setColor(new Vector3f(1.0f, 0.0f, 0.0f));
 		
 		le = renderMaster.addLight();
 		le.setRad(250.0f);
-		le.setPosition(new Vector3f(-30,-20,0));
+		le.setPosition(new Vector3f(-30,10,0));
 		le.setColor(new Vector3f(0.0f, 0.0f, 1.0f));
 		
-		Random r = new Random();
-		/*
-		for(int h = 0; h < 40; h++)
-		{
-			le = renderMaster.addLight();
-			le.setRad(100.0f);
-			le.setColor(new Vector3f(r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f,r.nextBoolean()?1.0f:0.0f));
-			le.setPosition(new Vector3f(200 - 100 * (h % 6), -10, 200 - 100 * h/6));
-		}*/
+		//three big corner lights
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(-1000, 100, -320));
+		le.setColor(new Vector3f(1,0,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(840, 100, 1000));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(3000f);
+		le.setPosition(new Vector3f(-1000, 100, 1000));
+		le.setColor(new Vector3f(0,0,1));
+		
+		//green pit lights
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(40, 100, -120));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(800, 100, -916));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(440, 100, -360));
+		le.setColor(new Vector3f(0,1,0));
+		
+		
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(800, 100, -240));
+		le.setColor(new Vector3f(0,1,0));
+		
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(880, 100, -880));
+		le.setColor(new Vector3f(0,1,0));
+
+		le = renderMaster.addLight();
+		le.setRad(600f);
+		le.setPosition(new Vector3f(220, 100, -920));
+		le.setColor(new Vector3f(0,1,0));
+		
+		
+		
 	}
 	
 	private void addTerrain(){
-		renderMaster.addModel("testTer");
+		renderMaster.addModel("nightFactory");
+	}
+	
+	/**
+	 * Gets the next checkpoint in the list of checkpoints
+	 *  
+	 * @param curCkPt
+	 * @return the next checkpoint, or the first in the case curCkPt is Null or it is the finish checkpoint
+	 */
+	protected Checkpoint getNextChekpoint(Checkpoint curCkPt){
+		int retIndex;
+		//If the current checkpt is the last checkpoint in the list, ie the finish line, get the first checkpoint.
+		if( curCkPt.isFinishLine)
+		{
+			retIndex = 0;
+		}
+		else
+		{
+			retIndex = checkpoints.lastIndexOf(curCkPt)+1;
+		} 
+		
+		return checkpoints.get(retIndex);
+		
+	}
+	
+	protected boolean reachedCheckpoint(Checkpoint nextCkPt, Vector3f position)
+	{
+		boolean retBool = false;
+		Vector3f dist = new Vector3f();
+		Vector3f.sub(position, nextCkPt.post, dist);
+		
+		if(dist.lengthSquared() < checkpointThresholdSquared)
+		{
+			retBool = true;
+		}
+		return retBool;
 	}
 	
 	
