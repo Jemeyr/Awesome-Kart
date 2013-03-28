@@ -1,7 +1,7 @@
 package World;
 
 public enum EntityType {
-	ROCKET("rocket");
+	ROCKET("rocket"), MINE("mine");
 	
 	private String name;
 	

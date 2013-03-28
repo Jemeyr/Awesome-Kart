@@ -21,7 +21,8 @@ public class World {
 	private SoundMaster soundMaster;
 
 //	protected List<Kart> donutKarts;
-	protected List<Rocket> rockets;
+	protected List<Entity> entities;
+	
 	protected List<Player> players;
 	protected List<ItemCrate> items;
 	protected List<Checkpoint> checkpoints;
@@ -41,7 +42,7 @@ public class World {
 		elec360power = 0;
 		
 //		donutKarts = new ArrayList<Kart>();
-		rockets = new ArrayList<Rocket>();
+		entities = new ArrayList<Entity>();
 		items = new ArrayList<ItemCrate>();
 		checkpoints = new ArrayList<Checkpoint>();
 		walls = new ArrayList<CollisionBox>();
@@ -109,7 +110,7 @@ public class World {
 	
 	public void update()
 	{
-		List<Rocket> toRemove = new ArrayList<Rocket>();
+		List<Entity> toRemove = new ArrayList<Entity>();
 		
 		// DON'T the donut karts
 		/*
@@ -129,17 +130,22 @@ public class World {
 		otherGraphics.get("Triforce").setPosition(tempRocket);
 		*/
 
-		for(Rocket r : rockets)
+		for(Entity r : entities)
 		{
 			r.update();
 		}
 		for(Rocket r : Rocket.deadRockets)
 		{
 			r.destroySoundEmitters();
-			rockets.remove(r);
+			entities.remove(r);
 			
 			renderMaster.removeModel(r.graphicsComponent);
 			renderMaster.removeLight(r.light);
+		}
+		for(Mine m : Mine.deadMines){
+			entities.remove(m);
+			renderMaster.removeModel(m.getGraphicsComponent());
+			renderMaster.removeLight(m.getLight());
 		}
 		
 		for(Player player : players){
@@ -153,11 +159,11 @@ public class World {
 		}
 		
 		// Remove Rockets
-		for(Rocket rocket : toRemove){
-			rocket.getGraphicsComponent().setPosition(new Vector3f(0,2000,0));
-			rocket.getLight().setPosition(new Vector3f(0,2000,0));
+		for(Entity entity : toRemove){
+			entity.getGraphicsComponent().setPosition(new Vector3f(0,2000,0));
+			entity.getLight().setPosition(new Vector3f(0,2000,0));
 		}
-		rockets.removeAll(toRemove);
+		entities.removeAll(toRemove);
 		
 		// Rotating Text
 		otherGraphics.get("AKText").setRotation(new Vector3f(0,elec360power/1500f, 0));
@@ -171,7 +177,13 @@ public class World {
 		SoundEmitter missleLaunchSound = this.soundMaster.getSoundComponent("assets/sound/Missle_Launch_Mono.wav", false);
 		Rocket r = new Rocket(position, rotation, renderMaster, this, player, missleLaunchSound);
 	
-		this.rockets.add(r);
+		this.entities.add(r);
+	}
+	
+	public void addMine(Vector3f position, Vector3f rotation, Player player){
+		Mine m = new Mine(position, rotation, renderMaster, this, player);
+		
+		this.entities.add(m);
 	}
 
 	private void addLights()

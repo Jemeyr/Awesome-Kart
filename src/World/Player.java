@@ -254,6 +254,13 @@ public class Player {
 				case ROCKET: {
 					world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y,0), this);
 					if(--ammo == 0) clearItem();
+					break;
+				}
+				case MINE: {
+					Vector3f dropPosition = this.kart.graphicsComponent.getTransformedVector(0,0,-15, true);
+					world.addMine(dropPosition, new Vector3f(0, this.kart.getRotation().y,0), this);
+					if(--ammo == 0) clearItem();
+					break;
 				}
 			}
 		}
