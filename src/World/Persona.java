@@ -30,7 +30,7 @@ public class Persona {
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/I gotcha now - Sam copy.wav", false);
 			}
 			case 3:{
-				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Look out for - Michael.wav", false);
+				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Look out for  - Michael.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Oh Noo - Michael.wav", false);
 			}
 			case 4:{

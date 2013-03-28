@@ -188,9 +188,6 @@ public class Player {
 	
 	public void useWeapon()
 	{
-		getKart().getRotation().y = currCheckPoint.rotation;
-		System.out.println("curr rot " + currCheckPoint.rotation + " at pont " + currCheckPoint.pointNum);
-		getKart().update();
 		
 		if(heldItemType != null){
 			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
