@@ -2,21 +2,27 @@ package World;
 
 import java.util.Random;
 
+import Graphics.GraphicsComponent;
+import Graphics.RenderMaster;
 import Sound.SoundEmitter;
 import Sound.SoundMaster;
 
 public class Persona {
 
 	private SoundMaster soundMaster;
+	private RenderMaster renderMaster;
+	
 	
 	private SoundEmitter shootPerson;
 	private SoundEmitter getHit;
+	private GraphicsComponent model;
 	
 	private int	id;
 	
 	
-	public Persona(SoundMaster soundMaster){
+	public Persona(SoundMaster soundMaster, RenderMaster renderMaster){
 		this.soundMaster = soundMaster;
+		this.renderMaster = renderMaster;
 		
 		Random generator = new Random(); 
 		id = generator.nextInt(4) + 1;
@@ -47,7 +53,13 @@ public class Persona {
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/alarma.wav", false);
 			}
 		}
-		
+
+		this.model = renderMaster.addModel("sam");
+	}
+	
+	public GraphicsComponent getModel()
+	{
+		return this.model;
 	}
 	
 	public SoundEmitter getShootPerson(){

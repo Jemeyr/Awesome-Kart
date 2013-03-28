@@ -49,8 +49,14 @@ public class Kart {
 		wheelBL = graphicsComponent.addSubComponent("wheel", renderer);
 		wheelBR = graphicsComponent.addSubComponent("wheel", renderer);
 		
-		rider = graphicsComponent.addSubComponent("test", renderer);
-		
+		if(persona != null)
+		{
+			rider = graphicsComponent.addAsSubComponent(persona.getModel());
+		}
+		else
+		{
+			rider = graphicsComponent.addSubComponent("test", renderer);
+		}
 		hat = rider.addSubComponent("hat", renderer);
 
 		wheelFL.setPosition(new Vector3f(wheelSideOffset, wheelHeightOffset, wheelFrontOffset));
