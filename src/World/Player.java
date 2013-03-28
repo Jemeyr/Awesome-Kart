@@ -89,7 +89,7 @@ public class Player {
 		this.carMaxSpeed= carMaxSpeed;
 		this.carBrake = carBrake;
 		
-		this.carIdle.setSoundGain(1f);
+		this.carIdle.setSoundGain(0.5f);
 		this.carAcc.setSoundGain(0.2f);
 		this.carMaxSpeed.setSoundGain(0.125f);
 		this.carBrake.setSoundGain(1f);
@@ -299,7 +299,7 @@ public class Player {
 						getKart().getPersona().getHit().playSound();
 						this.acceleration = 0.1f;
 					}
-					break;
+					//break;
 				}
 			}
 			getKart().update();
