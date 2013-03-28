@@ -28,8 +28,10 @@ public class RacingState implements GameState {
 	private SoundMaster									soundMaster;
 	private World										world;
 	private List<Camera>								cameras;
-	private int										elec360power;
-	
+	private int											elec360power;
+	private SoundEmitter								musicComponent;
+	private SoundEmitter								cheerComponent;
+	private SoundEmitter 								pauseSound;
 	
 	public RacingState(RenderMaster renderMaster, SoundMaster soundMaster, List<Player> playerList){
 		this.renderMaster 	= renderMaster;
@@ -41,6 +43,8 @@ public class RacingState implements GameState {
 		elec360power		= 0;
 		
 		this.world = /*A whole*/ new World(renderMaster, playerList, this.soundMaster);// A new fantastic point of view/No one to tell us no or where to go/Or say we're only dreaming
+
+		
 		
 		initialiseState();
 		
@@ -61,6 +65,8 @@ public class RacingState implements GameState {
 			raceOver = true;
 			System.out.println("Player "+player.playerID+" Has Won the Race");
 			
+			cheerComponent.playSound();
+			musicComponent.stopSound();
 		}
 		
 	}
@@ -68,12 +74,13 @@ public class RacingState implements GameState {
 	@Override
 	public void initialiseState() {
 		ListenerComponent listenerComponent = null;
-
-		
-		
-		
 		// Add and start music
-		SoundEmitter musicComponent=this.soundMaster.getSoundComponent("assets/sound/alarma.wav", true); 
+		musicComponent = this.soundMaster.getSoundComponent("assets/sound/Race Musici.wav", true);
+		musicComponent.setSoundGain(0.5f);
+		cheerComponent = this.soundMaster.getSoundComponent("assets/sound/Victory!.wav", true);
+		pauseSound = this.soundMaster.getSoundComponent("assets/sound/Bleep 2.wav", false);
+		pauseSound.setSoundGain(200f);
+		
 		musicComponent.playSound();
 	}
 	
@@ -100,6 +107,9 @@ public class RacingState implements GameState {
 	@Override
 	public void pause(StateContext stateContext, RenderMaster renderMaster, SoundMaster soundMaster, int invokingId) {
 		if(DEBUG) System.out.println(invokingId + ": About to pause the race.");
+		pauseSound.playSound();
+		//should pause sound here, but when do we resume?
+		//musicComponent.pauseSound();
 		stateContext.setState(StateContext.PAUSE_MENU_STATE);
 		stateContext.setLockedControllerId(invokingId);
 	}

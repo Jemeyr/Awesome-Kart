@@ -39,7 +39,7 @@ public class Persona {
 				break;
 			}
 			case 3:{
-				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Look out for  - Michael.wav", false);
+				shootPerson = this.soundMaster.getSoundComponent("assets/sound/Look out for - Michael.wav", false);
 				getHit		= this.soundMaster.getSoundComponent("assets/sound/Oh Noo - Michael.wav", false);
 				break;
 			}

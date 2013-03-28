@@ -8,6 +8,7 @@ import Collision.CollisionBox;
 import Controller.GameController;
 import Graphics.Camera;
 import Sound.ListenerComponent;
+import Sound.SoundEmitter;
 import States.GameState;
 
 
@@ -50,6 +51,11 @@ public class Player {
 	public boolean finishedRace = false;
 	public int playerID= 0;
 	
+	protected SoundEmitter 		carIdle;
+	protected SoundEmitter 		carAcc;
+	protected SoundEmitter 		carMaxSpeed;
+	protected SoundEmitter 		carBrake;
+	
 	public Player(GameController gameController,Kart kart, Vector3f playerDelta, ListenerComponent listenerComponent, Camera camera){
 		this.gameController 	= gameController;
 		this.kart 				= kart;
@@ -74,6 +80,14 @@ public class Player {
 	
 	public void setRacingState(GameState racingState){
 		this.racingState = racingState;
+	}
+	
+	public void setSounds(SoundEmitter carIdle, SoundEmitter carAcc,SoundEmitter carMaxSpeed, SoundEmitter carBrake)
+	{
+		this.carIdle = carIdle;
+		this.carAcc = carAcc;
+		this.carMaxSpeed= carMaxSpeed;
+		this.carBrake = carBrake;
 	}
 	
 	
@@ -121,18 +135,42 @@ public class Player {
 	private float getAcceleration(){
 		float forwardBackValue = getGameController().getForwardBackValue();
 		if(forwardBackValue != 0 && acceleration <= MAX_ACCEL){
+			
 			if(forwardBackValue >= direction){
 				acceleration *= ACCEL_SCALE_UP;
+				this.carAcc.playSound();
+				this.carIdle.stopSound();
+				this.carMaxSpeed.stopSound();
+				this.carBrake.stopSound();
 			} else {
 				acceleration = DEFAULT_ACCEL;
 				direction = (forwardBackValue > 0) ? 1 : -1;
+				this.carMaxSpeed.playSound();
+				this.carIdle.stopSound();
+				this.carAcc.stopSound();
+				this.carBrake.stopSound();
 			}
 			 
 		}
 		
+		//play brake sound?
 		if(forwardBackValue != 0){
 			speed = forwardBackValue * acceleration;
-		} else {
+			
+			this.carBrake.playSound();
+			this.carIdle.stopSound();
+			this.carAcc.stopSound();
+			this.carBrake.stopSound();
+			this.carMaxSpeed.stopSound();
+		} 
+		//play idle sound
+		else {
+			
+			this.carIdle.playSound();
+			
+			this.carAcc.stopSound();
+			this.carMaxSpeed.stopSound();
+			this.carBrake.stopSound();
 			speed *= ACCEL_SCALE_DOWN;
 		}
 		
