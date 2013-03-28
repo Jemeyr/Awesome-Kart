@@ -13,7 +13,6 @@ public class Checkpoint {
 		this.post =  post;
 		pointNum = num;
 		this.rotation = rot;
-		
 	}
 	
 	//Sets this checkpint to be the finish checkpoint

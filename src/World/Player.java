@@ -309,18 +309,21 @@ public class Player {
 			{
 				if(world.reachedCheckpoint(nextCheckPoint, getKart().getPosition()))
 				{
-					System.out.println("CHECKPOINT ID " + currCheckPoint.pointNum + ", " + currCheckPoint.rotation);
-					lapsCompleted++;
-					System.out.println("Player "+playerID+" has completed a lap");
 					
 					if (nextCheckPoint.isFinishLine) {
-						lapsCompleted++;
-						System.out.println("Player "+playerID+" has completed a lap");
-					}
 					
-					racingState.reportLapCompleted(this);
+						lapsCompleted++;
+						System.out.println("Player "+playerID+" has completed a lap " + nextCheckPoint.pointNum);
+					
+
+						racingState.reportLapCompleted(this);
+						
+						
+					}
+
 					currCheckPoint = nextCheckPoint;
 					nextCheckPoint = world.getNextChekpoint(currCheckPoint);
+					
 				}
 			}
 			

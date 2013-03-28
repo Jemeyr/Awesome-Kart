@@ -89,6 +89,7 @@ public class World {
 		//Set the last checkpoint in the list to be the finish checkpoint.
 		if(checkpoints.size()!=0){
 			checkpoints.get(checkpoints.size()-1).setFinishCheckpoint();
+			System.out.println("setting as finish " + checkpoints.get(checkpoints.size()-1).pointNum);//it's a fucking id.
 			
 			for(int i =0; i< playerList.size();i++){
 				playerList.get(i).currCheckPoint = checkpoints.get(checkpoints.size()-1);
