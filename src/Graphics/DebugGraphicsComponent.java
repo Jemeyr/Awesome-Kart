@@ -148,7 +148,11 @@ public class DebugGraphicsComponent implements GraphicsComponent {
 	}
 
 
-
+	public GraphicsComponent addAsSubComponent(GraphicsComponent gc)
+	{
+		this.subComponents.add((DebugGraphicsComponent)gc);
+		return gc;
+	}
 	
 	public GraphicsComponent addSubComponent(String s, RenderMaster r) {
 		

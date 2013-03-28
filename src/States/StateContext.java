@@ -71,13 +71,16 @@ public class StateContext {
 		renderMaster.loadModel("rocket");
 		renderMaster.loadModel("item");
 		renderMaster.loadModel("nightFactory");
+		renderMaster.loadModel("sam");
+		
 		
 	}
 	
 	private void addPlayer(ControllerType controllerType){
 		// Stuff a Player Needs
 		GameController gameController = controllerManager.addController(controllerType);
-		Persona persona = new Persona(soundMaster);
+		System.out.println("perosna add");
+		Persona persona = new Persona(soundMaster, renderMaster);
 		Kart kart = new Kart(renderMaster, persona);
 		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, 0.0f, -300f + (10%4) * 150.0f);
 		kart.killme = 12340f;
