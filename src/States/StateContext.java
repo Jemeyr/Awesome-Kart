@@ -47,15 +47,10 @@ public class StateContext {
 		
 		loadModels();
 		addPlayer(ControllerType.KEYBOARD);
-		addPlayer(ControllerType.XBOX);
+		//addPlayer(ControllerType.XBOX);
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
-		
-		
-		//addPlayer(ControllerType.XBOX);
-
-		
 
 		
 		setState(RACING_STATE);

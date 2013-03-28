@@ -111,27 +111,23 @@ public class World {
 		}
 		elec360power++;
 		
-		//triforce that rotates and flies away
 		otherGraphics.get("Triforce").setRotation(new Vector3f(3.14f * (elec360power/100f),-3.14f * (elec360power/100f), 3.14f * (elec360power/100f)));
-		//otherGraphics.get("Triforce").setPosition(new Vector3f(-30f + 60*elec360power/450f, 0, 0));
 		Vector3f tempRocket = otherGraphics.get("Triforce").getTransformedVector(0, 0, 0, true);
 		tempRocket.x = (float) (tempRocket.x * 0.97 + 0.03 * players.get(0).getKart().position.x);
 		tempRocket.y = (float) (tempRocket.y * 0.97 + 0.03 * (players.get(0).getKart().position.y + 10));
 		tempRocket.z = (float) (tempRocket.z * 0.97 + 0.03 * players.get(0).getKart().position.z);
 		otherGraphics.get("Triforce").setPosition(tempRocket);
 		
-		
-		for(Rocket rocket : rockets){
-			rocket.update();
-			for(Player player : players){
-				if(player.getKart().collisionBox.bIntersects(rocket.collisionBox) && !player.equals(rocket.getOwner())){
-					player.hitPlayer();
-					toRemove.add(rocket);
-				}
-			}
-			if(rocket.position.lengthSquared() > 320000){
-				//toRemove.add(rocket);
-			}
+
+		for(Rocket r : rockets)
+		{
+			r.update();
+		}
+		for(Rocket r : Rocket.deadRockets)
+		{
+			rockets.remove(r);
+			renderMaster.removeModel(r.graphicsComponent);
+			renderMaster.removeLight(r.light);
 		}
 		
 		for(Player player : players){
@@ -211,7 +207,6 @@ public class World {
 		le.setColor(new Vector3f(0,1,0));
 		
 		
-		
 		le = renderMaster.addLight();
 		le.setRad(600f);
 		le.setPosition(new Vector3f(800, 100, -240));
@@ -268,6 +263,10 @@ public class World {
 
 		this.walls.add(new CollisionBox(new Vector3f(-1083.33f - 2f,0f,0f), new Vector3f(166.66f,9000f,2200f)));
 		this.walls.add(new CollisionBox(new Vector3f(0f,0f,1083.33f + 8.0f), new Vector3f(2200f,9000f,166.66f)));
+		
+		this.walls.add(new CollisionBox(new Vector3f(0f,0f,-1083.33f+32f), new Vector3f(2200f,9000f,166.66f)));
+		
+		
 		
 		this.pits.add(new CollisionBox(new Vector3f(-12f + 5.5f * 83.33f,0f,20f + -4.5f * 83.33f), new Vector3f( 3f * 83.33f,9000f,5f * 83.33f)));
 		this.pits.add(new CollisionBox(new Vector3f(6f * 83.33f,0f,16f + -11f * 83.33f), new Vector3f(12f * 83.33f,9000f,2f * 83.33f)));
