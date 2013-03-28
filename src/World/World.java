@@ -13,7 +13,7 @@ import Graphics.Light;
 import Graphics.RenderMaster;
 
 public class World {
-	private static final float checkpointThresholdSquared = 7751;
+	private static final float checkpointThresholdSquared = 31250;
 	
 	private RenderMaster renderMaster;
 
@@ -81,7 +81,7 @@ public class World {
 		
 		//Set the last checkpoint in the list to be the finish checkpoint.
 		if(checkpoints.size()!=0){
-			checkpoints.get(checkpoints.size()).setFinishCheckpoint();
+			checkpoints.get(checkpoints.size()-1).setFinishCheckpoint();
 			
 			for(int i =0; i< playerList.size();i++){
 				playerList.get(i).currCheckPoint = checkpoints.get(checkpoints.size()-1);
@@ -333,7 +333,7 @@ public class World {
 		Vector3f.sub(position, nextCkPt.post, dist);
 		
 		
-		if(dist.lengthSquared() < checkpointThresholdSquared)
+		if((dist.lengthSquared()) < checkpointThresholdSquared)
 		{
 			
 			retBool = true;

@@ -163,7 +163,6 @@ public class Player {
 		{
 			if(world.reachedCheckpoint(nextCheckPoint, getKart().getPosition()))
 			{
-				System.out.println("Player "+playerID+" has reached checkpoint: "+nextCheckPoint.pointNum);
 				if (nextCheckPoint.isFinishLine)
 				{
 					lapsCompleted++;
