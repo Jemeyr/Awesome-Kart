@@ -46,11 +46,14 @@ public class RacingState implements GameState {
 		
 		for(Player player : playerList)
 		{
+			player.setRacingState(this);
 			player.setWorld(this.world);
+			
 		}
 		
 	}
 	
+	@Override
 	public void reportLapCompleted(Player player){
 		
 		//A player is the first to win

@@ -46,13 +46,16 @@ public class StateContext {
 		offset				= 0;
 		
 		loadModels();
-		
 		addPlayer(ControllerType.KEYBOARD);
-		//addPlayer(ControllerType.XBOX);
-
 		
 		RACING_STATE 		= new RacingState(renderMaster, soundMaster, playerList);
 		PAUSE_MENU_STATE 	= new PauseMenuState();
+		
+		
+		//addPlayer(ControllerType.XBOX);
+
+		
+
 		
 		setState(RACING_STATE);
 		setLockedControllerId(DEFAULT_CONTROLLER_LOCK);
