@@ -39,7 +39,7 @@ public class XboxController implements GameController {
 	@Override
 	public void handleEvent(Event event, StateContext stateContext, RenderMaster renderMaster) {
 		float eventValue = event.getValue();
-		//System.out.println("My event is '" + event.getComponent().getName() + "' and value is '" + event.getValue() + "'");
+		System.out.println("My event is '" + event.getComponent().getName() + "' and value is '" + event.getValue() + "'");
 		
 		int intEventValue = (int)eventValue;
 		String eventComponentString = event.getComponent().toString();
@@ -59,6 +59,7 @@ public class XboxController implements GameController {
 			xButtonValue = intEventValue;
 		}
 		else if(RIGHT_THUMB_BUTTON.equals(eventComponentString)){
+			System.out.println("My event is '" + event.getComponent().getName() + "' and value is '" + event.getValue() + "'");
 			if(intEventValue == 1){
 				stateContext.useWeapon(stateContext, getId());
 			}
@@ -71,20 +72,20 @@ public class XboxController implements GameController {
 			pauseButtonValue = intEventValue * MULTIPLIER;
 		}
 		else if(JOYSTICK_X_DIR.equals(eventComponentString)){
-			if(eventValue < -0.01f){
+			/*if(eventValue < -0.01f){
 				stateContext.moveLeft(stateContext, getId());
 			} else if (eventValue > 0.01f){
 				stateContext.moveRight(stateContext, getId());
-			}
-			leftRightValue = eventValue * MULTIPLIER;
+			}*/
+			leftRightValue = eventValue;// * MULTIPLIER;
 		}
 		else if(JOYSTICK_Y_DIR.equals(eventComponentString)){
-			if(eventValue > 0.01f){
+			/*if(eventValue > 0.01f){
 				stateContext.moveDown(stateContext, getId());
 			} else if(eventValue < -0.01f){
 				stateContext.moveUp(stateContext, getId());
-			}
-			upDownValue = eventValue * MULTIPLIER;
+			}*/
+			upDownValue = eventValue; //* MULTIPLIER;
 		}
 	}
 	
