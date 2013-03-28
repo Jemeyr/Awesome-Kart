@@ -20,6 +20,7 @@ public class Player {
 	private ListenerComponent 	listenerComponent; 
 	private Vector3f			playerDelta;
 	private Camera				camera;
+	private EntityType			heldItemType;
 	
 	private float 				jump;
 	private float				speed;
@@ -32,6 +33,7 @@ public class Player {
 		this.playerDelta		= playerDelta;
 		this.listenerComponent 	= listenerComponent;
 		this.camera				= camera;
+		this.heldItemType 		= null; // Start with no item
 		
 		acceleration 			= DEFAULT_ACCEL;
 		direction 				= 0;
@@ -62,6 +64,14 @@ public class Player {
 	
 	public Camera getCamera(){
 		return camera;
+	}
+	
+	public void setHeldItem(EntityType heldItemType){
+		this.heldItemType = heldItemType; 
+	}
+	
+	public void clearItem(){
+		this.heldItemType = null;
 	}
 	
 	/**
@@ -107,9 +117,15 @@ public class Player {
 	
 	public void useWeapon()
 	{
-		Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
-		
-		world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y,0));
+		if(heldItemType != null){
+			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
+			switch(heldItemType){
+				case ROCKET: {
+					world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y,0));
+				}
+			}
+			clearItem(); // Now has no item
+		}
 	}
 	
 	public void update(){
