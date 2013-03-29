@@ -45,7 +45,7 @@ public class Player {
 	
 	private boolean				isHit;
 	private boolean				inPit;
-	private int					spin;
+	private float					spin;
 	
 	protected Checkpoint currCheckPoint = null;
 	protected Checkpoint nextCheckPoint = null;
@@ -236,6 +236,12 @@ public class Player {
 			}
 		}
 		
+		//reset position
+		/*if(!inPit && onGround)
+		{
+			this.getKart().position.y = 0f;
+		}
+		*/
 		
 		if(jumpValue == 1 && onGround)
 		{
@@ -257,11 +263,11 @@ public class Player {
 			{
 				getKart().getPersona().getShootPerson().playSound();
 			}
-			
-			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,5, true);
+			float forBack = this.getGameController().getUpDownValue();
+			Vector3f firePosition = this.kart.graphicsComponent.getTransformedVector(0,0,(forBack > 0.4 ? -5f : 5f), true);
 			switch(heldItemType){
 				case ROCKET: {
-					world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y,0), this);
+					world.addRocket(firePosition, new Vector3f(0,this.kart.getRotation().y + (forBack > 0.4 ? -3.14f : 0f),0), this);
 					if(--ammo == 0) clearItem();
 					break;
 				}
@@ -277,7 +283,7 @@ public class Player {
 	
 	public void hitPlayer(){
 		isHit 	= true;
-		spin	= 8;
+		spin	= 6.28f;
 		getKart().getPersona().getHit().playSound();
 	}
 	
@@ -387,12 +393,16 @@ public class Player {
 			listenerComponent.setListenerPosition(getKart().getPosition());
 			playerDelta.set(0, 0, 0);
 		} else {
-			Vector3f.add(getKart().getRotation(), new Vector3f(0, spin/-4f, 0), getKart().getRotation()); 
+			Vector3f.add(getKart().getRotation(), new Vector3f(0, 0.2f, 0), getKart().getRotation()); 
 			playerDelta = getKart().graphicsComponent.getTransformedVector(playerDelta, false);
 			Vector3f.add(getKart().getPosition(), playerDelta, getKart().getPosition());
 			getKart().update();
-			spin -= 0.01f;
-			if(spin == 0.0f) isHit = false;
+			spin -= 0.2f;
+			if(spin <= 0.0f) 
+				{
+					isHit = false;
+					spin = 0.0f;
+				}
 		}
 	}
 	
