@@ -81,7 +81,7 @@ public class Mine implements Entity {
 			if(inc){
 				this.light.setPosition(new Vector3f(position.x, position.y + 20, position.z));
 			} else {
-				this.light.setPosition(new Vector3f(position.x, position.y - 100, position.z));
+				this.light.setPosition(new Vector3f(position.x, position.y - 1000, position.z));
 			}
 			switched = false;
 		}
