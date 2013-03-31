@@ -44,8 +44,8 @@ public class Mine implements Entity {
 		this.inc = true;
 		this.switched = false;
 		this.light.setPosition(new Vector3f(position.x, position.y + 20, position.z));
-		this.light.setColor(new Vector3f(1,-1,-1));
-		this.light.setRad(40);
+		this.light.setColor(new Vector3f(1,0,0));
+		this.light.setRad(60);
 		
 		this.collisionBox	= new CollisionBox(this.position, new Vector3f(12,12,12));
 	}
