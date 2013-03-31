@@ -291,8 +291,16 @@ public class World {
 		
 		this.walls.add(new CollisionBox(new Vector3f(0f,0f,-1083.33f+32f), new Vector3f(2200f,9000f,166.66f)));
 		
+		this.walls.add(new CollisionBox(new Vector3f(1083.33f,0f,0f), new Vector3f(200.0f,9000f,2200f)));
 		
 		
+		//pit walls
+		this.walls.add(new CollisionBox(new Vector3f(2.5f *83.33f - 12.0f,-500.0f,-5.0f * 83.33f), new Vector3f(12f + 3.0f* 83.33f,990f,833.33f)));
+		this.walls.add(new CollisionBox(new Vector3f(5.5f *83.33f - 0.0f,-500.0f,20f + -8.5f * 83.33f), new Vector3f(0f + 9.0f* 83.33f,990f,12.0f +3.0f * 83.33f)));
+		this.walls.add(new CollisionBox(new Vector3f(8.5f *83.33f - 12.0f,-500.0f,-6.0f * 83.33f), new Vector3f(12f + 3.0f* 83.33f,990f,0.0f +8.0f * 83.33f)));
+			
+		
+		//pits
 		this.pits.add(new CollisionBox(new Vector3f(-12f + 5.5f * 83.33f,0f,20f + -4.5f * 83.33f), new Vector3f( 3f * 83.33f,9000f,5f * 83.33f)));
 		this.pits.add(new CollisionBox(new Vector3f(6f * 83.33f,0f,16f + -11f * 83.33f), new Vector3f(12f * 83.33f,9000f,2f * 83.33f)));
 		this.pits.add(new CollisionBox(new Vector3f(-8f + 11f * 83.33f,0f,-6f * 83.33f), new Vector3f(2f * 83.33f,9000f,10f * 83.33f)));
