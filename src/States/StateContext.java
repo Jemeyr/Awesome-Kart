@@ -100,15 +100,16 @@ public class StateContext {
 		kart.killmeVec = new Vector3f(-300f + (10/4) * 150.0f, 0.0f, -300f + (10%4) * 150.0f);
 		kart.killme = 12340f;
 		Vector3f playerDelta = new Vector3f();
-		Vector3f.add(kart.position, new Vector3f(8.5f*83.3f,0.0f, 0f), kart.position);
+		Vector3f.add(kart.position, new Vector3f(8.5f*83.3f,0.0f, offset), kart.position);
 		Camera cam = ((DebugRenderMaster)renderMaster).addView(new Rectangle(0,300 - (int)(offset*7.5f),800,300));
-
+		
 		Player player = new Player(renderMaster, gameController, kart, playerDelta, soundMaster.getListenerComponent(), cam);
 		player.setSounds(this.soundMaster.getSoundComponent("assets/sound/carIdle.wav", false), 
 				this.soundMaster.getSoundComponent("assets/sound/Car Accelerating.wav", false),
 				this.soundMaster.getSoundComponent("assets/sound/carMaxSpeed.wav", false),
 				this.soundMaster.getSoundComponent("assets/sound/car-brake.wav", false));
 		playerList.add(player);
+		
 		offset += 40f;
 	}
 	

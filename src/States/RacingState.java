@@ -50,6 +50,9 @@ public class RacingState implements GameState {
 		{
 			player.setRacingState(this);
 			player.setWorld(this.world);
+			System.out.println("player " + player.getKart().getPosition());
+			player.getCamera().setPosition(player.getKart().getPosition());
+			
 			
 		}
 		

@@ -28,8 +28,8 @@ public class Player {
 	private World				world;
 	private ListenerComponent 	listenerComponent; 
 	private Vector3f			playerDelta;
+	private Vector3f			camPos;
 	private Camera				camera;
-	private Persona				persona;
 	private GraphicsComponent	itemGraphic;
 	
 	private EntityType			heldItemType;
@@ -66,6 +66,7 @@ public class Player {
 		this.playerDelta		= playerDelta;
 		this.listenerComponent 	= listenerComponent;
 		this.camera				= camera;
+		this.camPos				= new Vector3f(kart.position);
 		this.heldItemType 		= null; // Start with no item
 		
 		playerID 				= this.gameController.getId()+1;
@@ -407,8 +408,31 @@ public class Player {
 	}
 	
 	public void updateCamera(){
-		Vector3f camPos, targ; 
-		camPos = getKart().graphicsComponent.getTransformedVector(0.0f, 25.0f, -50f, true);
+		Vector3f targ; 
+		
+		//temp
+		targ = getKart().graphicsComponent.getTransformedVector(0.0f, 25.0f, -50f, true);
+		
+		//spring it
+		camPos.x = camPos.x * 0.8f + targ.x * 0.2f;
+		camPos.y = camPos.y * 0.8f + targ.y * 0.2f;
+		camPos.z = camPos.z * 0.8f + targ.z * 0.2f;
+		
+		CollisionBox fuck = new CollisionBox(camPos, new Vector3f(1.0f,1.0f,1.0f));
+		
+		Vector3f collide = new Vector3f();
+		for(CollisionBox other : world.walls)
+		{
+			collide = fuck.intersects(other); 
+			if(collide != null)
+			{
+				
+				Vector3f.add(camPos, collide, camPos);
+				//break;
+			}
+		}
+		
+		
 		targ = getKart().graphicsComponent.getTransformedVector(0.0f, 1.0f, 0.0f, true);
 		
 		getCamera().setPosition(camPos);
